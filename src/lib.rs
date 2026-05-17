@@ -332,6 +332,15 @@ impl core::fmt::Debug for Spi5 {
 }
 #[doc = "Synchronous Serial Port Controller (IMG WSPI)"]
 pub use self::spi4 as spi5;
+#[doc = "GPIO Port 0 — GP_* output-enable/data registers"]
+pub type Gpio0 = crate::Periph<gpio0::RegisterBlock, 0x0410_2000>;
+impl core::fmt::Debug for Gpio0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Gpio0").finish()
+    }
+}
+#[doc = "GPIO Port 0 — GP_* output-enable/data registers"]
+pub mod gpio0;
 #[doc = "CMOS Image Sensor IF"]
 pub type Cisif = crate::Periph<cisif::RegisterBlock, 0x0210_0000>;
 impl core::fmt::Debug for Cisif {
@@ -374,6 +383,8 @@ pub struct Peripherals {
     pub spi4: Spi4,
     #[doc = "SPI5"]
     pub spi5: Spi5,
+    #[doc = "GPIO0"]
+    pub gpio0: Gpio0,
     #[doc = "CISIF"]
     pub cisif: Cisif,
 }
@@ -412,6 +423,7 @@ impl Peripherals {
             spi3: Spi3::steal(),
             spi4: Spi4::steal(),
             spi5: Spi5::steal(),
+            gpio0: Gpio0::steal(),
             cisif: Cisif::steal(),
         }
     }
