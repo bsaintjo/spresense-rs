@@ -1,0 +1,15 @@
+[package]
+name = "cargo-spresense-flash"
+version = "0.1.0"
+edition = "2021"
+description = "Cargo subcommand to build and flash Rust binaries to a Sony Spresense board"
+license = "MIT OR Apache-2.0"
+
+[[bin]]
+name = "cargo-spresense-flash"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+cargo_metadata = "0.18"
+clap = { version = "4", features = ["derive", "env"] }
