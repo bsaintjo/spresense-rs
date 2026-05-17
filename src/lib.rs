@@ -10,7 +10,7 @@ use generic::*;
 #[doc = r"Common register and bit access and modify traits"]
 pub mod generic;
 #[cfg(feature = "rt")]
-extern "C" {
+unsafe extern "C" {
     fn CRG();
     fn UART1();
     fn SPI3();
@@ -32,8 +32,8 @@ pub union Vector {
 }
 #[cfg(feature = "rt")]
 #[doc(hidden)]
-#[link_section = ".vector_table.interrupts"]
-#[no_mangle]
+#[unsafe(link_section = ".vector_table.interrupts")]
+#[unsafe(no_mangle)]
 pub static __INTERRUPTS: [Vector; 135] = [
     Vector { _reserved: 0 },
     Vector { _handler: CRG },
@@ -407,24 +407,26 @@ impl Peripherals {
     #[doc = r" Each of the returned peripherals must be used at most once."]
     #[inline]
     pub unsafe fn steal() -> Self {
-        DEVICE_PERIPHERALS = true;
-        Peripherals {
-            smp_ram_ctrl: SmpRamCtrl::steal(),
-            crg: Crg::steal(),
-            addrconv: Addrconv::steal(),
-            ge2d: Ge2d::steal(),
-            rot: Rot::steal(),
-            cpu_fifo: CpuFifo::steal(),
-            uart1: Uart1::steal(),
-            uart2: Uart2::steal(),
-            dmac1: Dmac1::steal(),
-            dmac3: Dmac3::steal(),
-            spi0: Spi0::steal(),
-            spi3: Spi3::steal(),
-            spi4: Spi4::steal(),
-            spi5: Spi5::steal(),
-            gpio0: Gpio0::steal(),
-            cisif: Cisif::steal(),
+        unsafe {
+            DEVICE_PERIPHERALS = true;
+            Peripherals {
+                smp_ram_ctrl: SmpRamCtrl::steal(),
+                crg: Crg::steal(),
+                addrconv: Addrconv::steal(),
+                ge2d: Ge2d::steal(),
+                rot: Rot::steal(),
+                cpu_fifo: CpuFifo::steal(),
+                uart1: Uart1::steal(),
+                uart2: Uart2::steal(),
+                dmac1: Dmac1::steal(),
+                dmac3: Dmac3::steal(),
+                spi0: Spi0::steal(),
+                spi3: Spi3::steal(),
+                spi4: Spi4::steal(),
+                spi5: Spi5::steal(),
+                gpio0: Gpio0::steal(),
+                cisif: Cisif::steal(),
+            }
         }
     }
 }
