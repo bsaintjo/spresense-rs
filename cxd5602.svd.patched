@@ -6181,33 +6181,63 @@
     </peripheral>
     <peripheral>
       <name>GPIO0</name>
-      <description>GPIO Port 0</description>
-      <baseAddress>0x04120000</baseAddress>
+      <description>GPIO Port 0 — GP_* output-enable/data registers</description>
+      <baseAddress>0x04102000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x400</size>
+        <size>0x200</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
         <register>
-          <name>PIN97</name>
-          <description>todo</description>
-          <addressOffset>0x168</addressOffset>
+          <name>GP_I2C4_BCK</name>
+          <description>GPIO SYS pin 1 — I2C4 clock / Arduino D14</description>
+          <addressOffset>0x0</addressOffset>
           <access>read-write</access>
-          <resetValue>0x00000000</resetValue>
+          <resetValue>0x00010000</resetValue>
           <fields>
             <field>
-              <name>OUTPUT_EN</name>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>OUTPUT</name>
+              <name>OUT</name>
+              <description>Output data</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
-              <name>INPUT</name>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIN97</name>
+          <description>GPIO APP pin 97 — I2S1_BCK / LED0 on Spresense main board</description>
+          <addressOffset>0x168</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
