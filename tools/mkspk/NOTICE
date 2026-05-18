@@ -1,0 +1,15 @@
+mkspk
+=====
+
+This product contains code derived from Apache NuttX
+(https://github.com/apache/nuttx), licensed under the Apache License 2.0.
+
+  Copyright (c) Apache Software Foundation
+
+The CLEFIA-128 block cipher implementation (src/clefia.rs) is derived from
+nuttx/tools/cxd56/clefia.c, which was originally contributed to NuttX by:
+
+  Sony Semiconductor Solutions Corporation
+
+The SPK image assembly (src/spk.rs) is derived from
+nuttx/tools/cxd56/mkspk.c.
