@@ -12,10 +12,6 @@ use clap::{ArgGroup, Parser};
 
 const DEFAULT_TARGET: &str = "thumbv7em-none-eabihf";
 const DEFAULT_PORT: &str = "/dev/ttyUSB0";
-const MKSPK_BUILD_HINT: &str =
-    "Build mkspk from the nuttx submodule:\n  \
-     cd $SPRESENSE_SDK/nuttx && git submodule update --init\n  \
-     make -C tools/cxd56 -f Makefile.host TOPDIR=$(pwd)";
 
 #[derive(Parser)]
 #[command(
@@ -57,10 +53,6 @@ struct Cli {
     #[arg(long, value_name = "PATH")]
     manifest_path: Option<PathBuf>,
 
-    /// Spresense SDK root (may also be set via SPRESENSE_SDK env var)
-    #[arg(long, value_name = "PATH", env = "SPRESENSE_SDK")]
-    sdk: PathBuf,
-
     /// Serial port device
     #[arg(long, value_name = "DEV", env = "SPRESENSE_PORT", default_value = DEFAULT_PORT)]
     port: String,
@@ -101,14 +93,6 @@ fn main() -> Result<()> {
         .expect("clap ArgGroup guarantees one is set");
     let spk_name = cli.name.as_deref().unwrap_or(artifact_name);
 
-    // Resolve platform-specific SDK tools directory.
-    let tools_dir = sdk_tools_dir(&cli.sdk)?;
-    let mkspk = tools_dir.join("mkspk");
-    let flash_writer = tools_dir.join("flash_writer");
-
-    check_tool(&flash_writer, None)?;
-    check_tool(&mkspk, Some(MKSPK_BUILD_HINT))?;
-
     // Staging directory for stripped ELF and SPK.
     let stage_dir = stage_dir(artifact_name, &cli)?;
     fs::create_dir_all(&stage_dir)
@@ -129,39 +113,10 @@ fn main() -> Result<()> {
 
     strip_debug(&staged_elf);
 
-    package(&mkspk, &staged_elf, spk_name, &staged_spk, cli.core)?;
+    package(&staged_elf, spk_name, &staged_spk, cli.core)?;
 
-    flash(&flash_writer, &cli.port, cli.baud, &staged_spk)?;
+    flash(&cli.port, cli.baud, &staged_spk)?;
 
-    Ok(())
-}
-
-fn sdk_tools_dir(sdk: &Path) -> Result<PathBuf> {
-    let os_dir = match std::env::consts::OS {
-        "linux" => "linux",
-        "macos" => "macos",
-        "windows" => "windows",
-        other => bail!("unsupported host OS '{other}'"),
-    };
-    let dir = sdk.join("sdk").join("tools").join(os_dir);
-    if !dir.exists() {
-        bail!(
-            "SDK tools directory not found: {}\nIs SPRESENSE_SDK set correctly?",
-            dir.display()
-        );
-    }
-    Ok(dir)
-}
-
-fn check_tool(path: &Path, build_hint: Option<&str>) -> Result<()> {
-    if !path.exists() {
-        let mut msg = format!("required tool not found: {}", path.display());
-        if let Some(hint) = build_hint {
-            msg.push_str("\n\n");
-            msg.push_str(hint);
-        }
-        bail!("{}", msg);
-    }
     Ok(())
 }
 
@@ -292,19 +247,19 @@ fn strip_debug(elf: &Path) {
         Ok(s) if s.success() => {}
         Ok(s) => eprintln!("warning: arm-none-eabi-strip exited {s} — continuing anyway"),
         Err(_) => {
-            eprintln!("warning: arm-none-eabi-strip not found — skipping strip (SPK will be larger)");
+            eprintln!("warning: arm-none-eabi-strip not found — skipping strip");
         }
     }
 }
 
-fn package(mkspk: &Path, elf: &Path, name: &str, spk: &Path, core: u32) -> Result<()> {
+fn package(elf: &Path, name: &str, spk: &Path, core: u32) -> Result<()> {
     eprintln!(
         "   Packaging {} -> {} (mkspk -c {})",
         elf.file_name().unwrap_or_default().to_string_lossy(),
         spk.file_name().unwrap_or_default().to_string_lossy(),
         core,
     );
-    let status = Command::new(mkspk)
+    let status = Command::new("mkspk")
         .args([
             "-c",
             &core.to_string(),
@@ -313,7 +268,13 @@ fn package(mkspk: &Path, elf: &Path, name: &str, spk: &Path, core: u32) -> Resul
             &spk.to_string_lossy(),
         ])
         .status()
-        .context("failed to spawn mkspk")?;
+        .map_err(|e| {
+            if e.kind() == std::io::ErrorKind::NotFound {
+                anyhow!("mkspk not found on PATH — run: cargo install --path tools/mkspk")
+            } else {
+                anyhow!("failed to spawn mkspk: {e}")
+            }
+        })?;
 
     if !status.success() {
         bail!("mkspk failed (exit {})", status);
@@ -321,7 +282,7 @@ fn package(mkspk: &Path, elf: &Path, name: &str, spk: &Path, core: u32) -> Resul
     Ok(())
 }
 
-fn flash(flash_writer: &Path, port: &str, baud: u32, spk: &Path) -> Result<()> {
+fn flash(port: &str, baud: u32, spk: &Path) -> Result<()> {
     let baud_str = baud.to_string();
     eprintln!(
         "   Flashing {} @ {} baud  (flash_writer -s -c {port} -d)",
@@ -329,7 +290,7 @@ fn flash(flash_writer: &Path, port: &str, baud: u32, spk: &Path) -> Result<()> {
         if baud == 0 { "115200" } else { &baud_str },
     );
 
-    let mut cmd = Command::new(flash_writer);
+    let mut cmd = Command::new("flash_writer");
     cmd.args(["-s", "-c", port, "-d"]);
     if baud != 0 {
         cmd.args(["-b", &baud_str]);
@@ -337,7 +298,13 @@ fn flash(flash_writer: &Path, port: &str, baud: u32, spk: &Path) -> Result<()> {
     cmd.arg(spk);
 
     // Inherit stdio so the user sees flash_writer's progress directly.
-    let status = cmd.status().context("failed to spawn flash_writer")?;
+    let status = cmd.status().map_err(|e| {
+        if e.kind() == std::io::ErrorKind::NotFound {
+            anyhow!("flash_writer not found on PATH — run: cargo install --path tools/flash-writer")
+        } else {
+            anyhow!("failed to spawn flash_writer: {e}")
+        }
+    })?;
     if !status.success() {
         bail!("flash_writer failed (exit {})", status);
     }
