@@ -1,1 +1,4 @@
 **/target
+
+# Output files from mkspk for flashing to Sony Spresense
+*.spk
