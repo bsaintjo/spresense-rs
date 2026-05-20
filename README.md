@@ -50,8 +50,13 @@ form -i lib.rs -o src/
 
 #### `chiptool`
 
+Chiptool panics on SVD names that start with a digit (`syn::Ident::new` rejects
+them). `transform.chiptool.yaml` patches these at code-generation time so the
+upstream `patch.yml` stays usable for other generators like `svd2rust`.
+
 ```bash
-chiptool generate --svd cxd5602.svd.patched
+svdtools patch patch.yml
+chiptool generate --svd cxd5602.svd.patched --transform transform.chiptool.yaml
 form -i lib.rs -o src/
 ```
 
@@ -66,4 +71,52 @@ $ brandonsaint-john@saint-john-M93 spresense % svd2pac --license-file LICENSE cx
 [2025-09-17T00:41:47Z INFO  svd2pac::rust_gen] Start generating rust code
 [2025-09-17T00:41:47Z ERROR svd2pac::rust_gen::xml2ir] Inheritance of access is not supported. Bitfield: TILE_CLK_GATING_ENB access shall be specified. Bitfield skipped
 [2025-09-17T00:41:47Z ERROR svd2pac] Failed to generate code with err Unsupported feature derived_from is not supported in field
+```
+
+## Flashing manually with SDK tools
+
+This section describes how to flash a Rust binary using only the SDK's own
+tools (`mkspk` and `flash_writer`). This is useful when you want to understand
+the underlying process or when installing the Rust tools is not practical.
+
+### Prerequisites
+
+The SDK's `mkspk` ships as C source and must be built once:
+
+```bash
+make -C $SPRESENSE_SDK/nuttx/tools/cxd56 -f Makefile.host TOPDIR=$SPRESENSE_SDK/nuttx
+```
+
+### Step 1 — Build the Rust binary
+
+```bash
+cargo build --release \
+  --target thumbv7em-none-eabihf \
+  --features rt \
+  --example gpio_blink      # or --bin <name>
+```
+
+The ELF lands at `target/thumbv7em-none-eabihf/release/examples/gpio_blink`.
+
+### Step 2 — Package into an SPK
+
+```bash
+$SPRESENSE_SDK/nuttx/tools/cxd56/mkspk \
+  -c 2 \
+  target/thumbv7em-none-eabihf/release/examples/gpio_blink \
+  nuttx \
+  gpio_blink.spk
+```
+
+_IMPORTANT_: Must be called nuttx! Hard-coded check by bootloader
+
+`-c 2` selects the M0P application core. The second positional argument is the
+install name stored in the package header (max 63 bytes).
+
+### Step 3 — Flash
+
+```bash
+$SPRESENSE_SDK/sdk/tools/flash.sh \
+  -c /dev/ttyUSB0 \
+  gpio_blink.spk
 ```
