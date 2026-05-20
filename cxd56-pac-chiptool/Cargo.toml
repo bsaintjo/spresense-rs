@@ -1,5 +1,5 @@
 [package]
-name = "cxd56xx-chiptool-pac"
+name = "cxd56-pac-chiptool"
 version = "0.1.0"
 edition = "2024"
 
