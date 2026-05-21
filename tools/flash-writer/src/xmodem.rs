@@ -144,17 +144,21 @@ pub fn send_xmodem_1k<R: Read, S: SerialIo>(
         };
 
         // Send the packet; retry up to MAX_RETRY on NAK.
+        let mut progressed_this_packet = false;
         loop {
             io.putc(&[header], 1000);
             io.putc(&[sequence], 1000);
             io.putc(&[0xff - sequence], 1000);
             io.putc(&packet, 1000);
+            if !progressed_this_packet {
+                on_progress(bytes_sent + n as u64);
+                progressed_this_packet = true;
+            }
             io.putc(&checksum, 1000);
 
             let ch = io.getc(1, 1000);
             if !ch.is_empty() && ch[0] == ACK {
                 bytes_sent += n as u64;
-                on_progress(bytes_sent);
                 break;
             }
             if !ch.is_empty() && ch[0] == NAK {
