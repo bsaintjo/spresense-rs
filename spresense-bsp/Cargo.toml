@@ -1,0 +1,15 @@
+[package]
+name = "spresense-bsp"
+version = "0.1.0"
+edition = "2024"
+description = "Board support package for the Sony Spresense main board (CXD5602)"
+license = "BSD-3-Clause"
+
+[dependencies]
+cxd56-hal          = { version = "0.1.0", path = "../cxd56-hal" }
+cxd56-pac-svd2rust = { version = "0.1.0", path = "../cxd56-pac-svd2rust", features = ["critical-section"] }
+embedded-hal       = "1.0.0"
+
+[features]
+default = []
+rt      = ["cxd56-pac-svd2rust/rt"]
