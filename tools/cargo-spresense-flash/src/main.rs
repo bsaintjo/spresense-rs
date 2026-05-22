@@ -6,7 +6,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Context, Result};
-use cargo_metadata::{Message, MetadataCommand};
+use cargo_metadata::{Message, MetadataCommand, TargetKind};
 use clap::{ArgGroup, Parser};
 
 const DEFAULT_TARGET: &str = "thumbv7em-none-eabihf";
@@ -63,8 +63,8 @@ struct Cli {
     #[arg(long, value_name = "DEV", env = "SPRESENSE_PORT", default_value = DEFAULT_PORT)]
     port: String,
 
-    /// XMODEM-phase baud rate (0 = stay at 115200 throughout)
-    #[arg(long, value_name = "RATE", default_value_t = 0)]
+    /// XMODEM-phase baud rate
+    #[arg(long, value_name = "RATE", default_value_t = 115200)]
     baud: u32,
 
     /// mkspk -c core selector
@@ -81,7 +81,9 @@ struct Cli {
 }
 
 fn main() -> Result<()> {
+    env_logger::init();
     let CargoCli::SpresenseFlash(cli) = CargoCli::parse();
+    log::debug!("{cli:?}");
 
     let artifact_name = cli
         .bin
@@ -169,13 +171,17 @@ fn build(cli: &Cli, artifact_name: &str) -> Result<PathBuf> {
     let stdout = child.stdout.take().unwrap();
 
     let mut elf_path: Option<PathBuf> = None;
-    let expected_kind = if cli.bin.is_some() { "bin" } else { "example" };
+    let expected_kind = if cli.bin.is_some() {
+        TargetKind::Bin
+    } else {
+        TargetKind::Example
+    };
 
     for message in Message::parse_stream(BufReader::new(stdout)) {
         match message.context("reading cargo JSON stream")? {
             Message::CompilerArtifact(art)
                 if art.target.name == artifact_name
-                    && art.target.kind.iter().any(|k| k == expected_kind) =>
+                    && art.target.kind.iter().any(|k| *k == expected_kind) =>
             {
                 if let Some(exe) = art.executable {
                     elf_path = Some(exe.into_std_path_buf());
@@ -237,20 +243,15 @@ fn strip_debug(elf: &Path) {
         .status();
     match status {
         Ok(s) if s.success() => {}
-        Ok(s) => eprintln!("warning: arm-none-eabi-strip exited {s} — continuing anyway"),
+        Ok(s) => log::warn!("arm-none-eabi-strip exited {s} — continuing anyway"),
         Err(_) => {
-            eprintln!("warning: arm-none-eabi-strip not found — skipping strip");
+            log::warn!("warning: arm-none-eabi-strip not found — skipping strip");
         }
     }
 }
 
 fn package(elf: &Path, name: &str, spk: &Path, core: u32) -> Result<()> {
-    eprintln!(
-        "   Packaging {} -> {} (mkspk -c {})",
-        elf.file_name().unwrap_or_default().to_string_lossy(),
-        spk.file_name().unwrap_or_default().to_string_lossy(),
-        core,
-    );
+    log::info!("Packaging {elf:?} -> {spk:?} (mkspk -c {core})",);
     let status = Command::new("mkspk")
         .args([
             "-c",
@@ -275,18 +276,10 @@ fn package(elf: &Path, name: &str, spk: &Path, core: u32) -> Result<()> {
 }
 
 fn flash(port: &str, baud: u32, spk: &Path) -> Result<()> {
-    let baud_str = baud.to_string();
-    eprintln!(
-        "   Flashing {} @ {} baud  (flash_writer -s -c {port} -d)",
-        spk.file_name().unwrap_or_default().to_string_lossy(),
-        if baud == 0 { "115200" } else { &baud_str },
-    );
+    log::info!("Flashing {spk:?} @ {baud} baud  (flash_writer -s -c {port} -d)",);
 
     let mut cmd = Command::new("flash_writer");
-    cmd.args(["-s", "-c", port, "-d"]);
-    if baud != 0 {
-        cmd.args(["-b", &baud_str]);
-    }
+    cmd.args(["-s", "-c", port, "-d", "-b", &baud.to_string()]);
     cmd.arg(spk);
 
     // Inherit stdio so the user sees flash_writer's progress directly.
@@ -301,6 +294,6 @@ fn flash(port: &str, baud: u32, spk: &Path) -> Result<()> {
         bail!("flash_writer failed (exit {})", status);
     }
 
-    eprintln!("   Done. Board rebooting into M0P.");
+    log::info!("Done. Board rebooting.");
     Ok(())
 }
