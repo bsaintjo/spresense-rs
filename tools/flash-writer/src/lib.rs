@@ -1,6 +1,6 @@
+pub mod nash;
 pub mod serial;
 pub mod xmodem;
-pub mod nash;
 
 use std::{io, path::Path};
 

@@ -16,7 +16,12 @@ struct Cli {
     serial: bool,
 
     /// Serial port device (e.g. /dev/ttyUSB0)
-    #[arg(short = 'c', long = "serial-port", value_name = "PORT", required = true)]
+    #[arg(
+        short = 'c',
+        long = "serial-port",
+        value_name = "PORT",
+        required = true
+    )]
     port: String,
 
     /// Skip the DTR-pulse / nash handshake (only for boards where DTR is not wired)

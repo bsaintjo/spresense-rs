@@ -12,7 +12,9 @@ impl std::fmt::Display for MkSpkError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             MkSpkError::InvalidElf(msg) => write!(f, "invalid ELF: {msg}"),
-            MkSpkError::NoLoadablePhdrs => write!(f, "no loadable PT_LOAD segments with p_memsz > 0"),
+            MkSpkError::NoLoadablePhdrs => {
+                write!(f, "no loadable PT_LOAD segments with p_memsz > 0")
+            }
             MkSpkError::NameTooLong => write!(f, "savename too long (max 63 bytes)"),
         }
     }

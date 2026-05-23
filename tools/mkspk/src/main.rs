@@ -49,7 +49,10 @@ fn main() {
     };
 
     // Match C's strtol(optarg, &endp, 0): decimal or 0x-prefixed hex
-    let parsed = if let Some(hex) = core_str.strip_prefix("0x").or_else(|| core_str.strip_prefix("0X")) {
+    let parsed = if let Some(hex) = core_str
+        .strip_prefix("0x")
+        .or_else(|| core_str.strip_prefix("0X"))
+    {
         i64::from_str_radix(hex, 16).ok()
     } else {
         core_str.parse::<i64>().ok()

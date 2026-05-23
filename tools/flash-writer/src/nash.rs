@@ -1,14 +1,8 @@
 // nash bootloader dialog — port of FlashWriter class in flash_writer.py
 
-use std::{
-    io::stdout,
-    path::Path,
-    thread,
-    time::Duration,
-    fs,
-};
+use std::{fs, io::stdout, path::Path, thread, time::Duration};
 
-use crate::{FlashError, serial::Serial, xmodem};
+use crate::{serial::Serial, xmodem, FlashError};
 
 const ROM_MSG: &[u8] = b"Welcome to nash";
 const XMDM_MSG: &[u8] = b"Waiting for XMODEM (CRC or 1K) transfer. Ctrl-X to cancel.";
@@ -102,9 +96,7 @@ pub fn install_one(
     spk: &Path,
     xmodem_baud: Option<u32>,
 ) -> Result<(), FlashError> {
-    let file_size = fs::metadata(spk)
-        .map_err(FlashError::Io)?
-        .len();
+    let file_size = fs::metadata(spk).map_err(FlashError::Io)?.len();
 
     let spk_name = spk.display();
 

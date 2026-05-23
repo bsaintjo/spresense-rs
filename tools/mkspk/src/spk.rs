@@ -1,15 +1,14 @@
 // SPK image assembly — port of nuttx/tools/cxd56/mkspk.c:create_image()
 
+use object::elf::PT_LOAD;
 use object::endian::LittleEndian;
 use object::read::elf::{ElfFile32, ProgramHeader};
 use object::read::{Object, ObjectSymbol};
-use object::elf::PT_LOAD;
 
 use crate::MkSpkError;
 
 const VMK: [u8; 16] = [
-    0x27, 0xc0, 0xaf, 0x1b, 0x5d, 0xcb, 0xc6, 0xc5,
-    0x58, 0x22, 0x1c, 0xdd, 0xaf, 0xf3, 0x20, 0x21,
+    0x27, 0xc0, 0xaf, 0x1b, 0x5d, 0xcb, 0xc6, 0xc5, 0x58, 0x22, 0x1c, 0xdd, 0xaf, 0xf3, 0x20, 0x21,
 ];
 
 fn align16(x: usize) -> usize {
@@ -37,10 +36,7 @@ pub fn build(elf_bytes: &[u8], savename: &str, core: u8) -> Result<Vec<u8>, MkSp
     let phdrs: Vec<_> = elf
         .elf_program_headers()
         .iter()
-        .filter(|ph| {
-            ph.p_type(LittleEndian) == PT_LOAD
-                && ph.p_memsz(LittleEndian) > 0
-        })
+        .filter(|ph| ph.p_type(LittleEndian) == PT_LOAD && ph.p_memsz(LittleEndian) > 0)
         .collect();
 
     if phdrs.is_empty() {
@@ -85,10 +81,10 @@ pub fn build(elf_bytes: &[u8], savename: &str, core: u8) -> Result<Vec<u8>, MkSp
 
     for (i, ph) in phdrs.iter().enumerate() {
         let load_address = ph.p_paddr(LittleEndian);
-        let file_off     = ph.p_offset(LittleEndian) as usize;
-        let file_sz      = ph.p_filesz(LittleEndian) as usize;
-        let mem_sz       = ph.p_memsz(LittleEndian);
-        let padded       = align16(file_sz);
+        let file_off = ph.p_offset(LittleEndian) as usize;
+        let file_sz = ph.p_filesz(LittleEndian) as usize;
+        let mem_sz = ph.p_memsz(LittleEndian);
+        let padded = align16(file_sz);
 
         let pi_off = pi_base + i * 16;
         img[pi_off..pi_off + 4].copy_from_slice(&load_address.to_le_bytes());
@@ -106,8 +102,7 @@ pub fn build(elf_bytes: &[u8], savename: &str, core: u8) -> Result<Vec<u8>, MkSp
     }
 
     // ---- CLEFIA-CMAC over imgsize bytes ----
-    let cmac = crate::clefia::calc_cmac(&VMK, &img[..imgsize])
-        .expect("imgsize must be 16-aligned");
+    let cmac = crate::clefia::calc_cmac(&VMK, &img[..imgsize]).expect("imgsize must be 16-aligned");
     img[imgsize..imgsize + 16].copy_from_slice(&cmac);
 
     // ---- footer ----

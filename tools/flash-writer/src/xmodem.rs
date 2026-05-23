@@ -235,7 +235,7 @@ mod tests {
 
     struct MockSerial {
         rx: std::collections::VecDeque<u8>, // bytes to return from getc
-        tx: Vec<u8>,                         // bytes written by putc
+        tx: Vec<u8>,                        // bytes written by putc
     }
 
     impl MockSerial {
@@ -249,9 +249,7 @@ mod tests {
 
     impl SerialIo for MockSerial {
         fn getc(&mut self, n: usize, _timeout_ms: u64) -> Vec<u8> {
-            (0..n)
-                .filter_map(|_| self.rx.pop_front())
-                .collect()
+            (0..n).filter_map(|_| self.rx.pop_front()).collect()
         }
         fn putc(&mut self, data: &[u8], _timeout_ms: u64) {
             self.tx.extend_from_slice(data);
@@ -265,21 +263,24 @@ mod tests {
         let payload = vec![0xABu8; 500];
         let rx_bytes: Vec<u8> = {
             let mut v = vec![CRC_BYTE]; // initial 'C'
-            v.push(ACK);               // ACK for the single 1K packet
-            v.push(ACK);               // ACK for EOT
+            v.push(ACK); // ACK for the single 1K packet
+            v.push(ACK); // ACK for EOT
             v
         };
         let mut mock = MockSerial::new(&rx_bytes);
         let mut src = std::io::Cursor::new(payload.clone());
         let mut progress_called = false;
-        send_xmodem_1k(&mut src, &mut mock, 500, |_| { progress_called = true; }).unwrap();
+        send_xmodem_1k(&mut src, &mut mock, 500, |_| {
+            progress_called = true;
+        })
+        .unwrap();
         assert!(progress_called);
 
         // Verify packet header
         assert_eq!(mock.tx[0], STX);
-        assert_eq!(mock.tx[1], 1);    // sequence
+        assert_eq!(mock.tx[1], 1); // sequence
         assert_eq!(mock.tx[2], 0xfe); // ~sequence
-        // payload bytes
+                                      // payload bytes
         assert_eq!(&mock.tx[3..3 + 500], &payload[..]);
         // padding
         assert!(mock.tx[3 + 500..3 + 1024].iter().all(|&b| b == PAD));
