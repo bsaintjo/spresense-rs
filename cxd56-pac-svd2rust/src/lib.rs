@@ -268,6 +268,33 @@ impl core::fmt::Debug for CpuFifo {
 }
 ///CPU FIFO Control
 pub mod cpu_fifo;
+///ARM PrimeCell SP804 dual-input timer 0
+pub type Timer0 = crate::Periph<timer0::RegisterBlock, 0xe004_3000>;
+impl core::fmt::Debug for Timer0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Timer0").finish()
+    }
+}
+///ARM PrimeCell SP804 dual-input timer 0
+pub mod timer0;
+///ARM PrimeCell SP804 dual-input timer 1
+pub type Timer1 = crate::Periph<timer0::RegisterBlock, 0xe004_3020>;
+impl core::fmt::Debug for Timer1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Timer1").finish()
+    }
+}
+///ARM PrimeCell SP804 dual-input timer 1
+pub use self::timer0 as timer1;
+///ARM PrimeCell SP805 watchdog timer
+pub type Wdog = crate::Periph<wdog::RegisterBlock, 0xe004_4000>;
+impl core::fmt::Debug for Wdog {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Wdog").finish()
+    }
+}
+///ARM PrimeCell SP805 watchdog timer
+pub mod wdog;
 ///UART
 pub type Uart1 = crate::Periph<uart1::RegisterBlock, 0x041a_c000>;
 impl core::fmt::Debug for Uart1 {
@@ -367,6 +394,24 @@ impl core::fmt::Debug for TopregSub {
 }
 ///APP / GNSS sub-domain clock and reset controller
 pub mod topreg_sub;
+///Real-time clock 0 (always-on, 32.768 kHz, 47-bit dual counter, 3 alarms)
+pub type Rtc0 = crate::Periph<rtc0::RegisterBlock, 0x0410_8000>;
+impl core::fmt::Debug for Rtc0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Rtc0").finish()
+    }
+}
+///Real-time clock 0 (always-on, 32.768 kHz, 47-bit dual counter, 3 alarms)
+pub mod rtc0;
+///Real-time clock 1 (SYSIOP-gated, 32.768 kHz, 47-bit dual counter, 3 alarms)
+pub type Rtc1 = crate::Periph<rtc0::RegisterBlock, 0x0410_9000>;
+impl core::fmt::Debug for Rtc1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("Rtc1").finish()
+    }
+}
+///Real-time clock 1 (SYSIOP-gated, 32.768 kHz, 47-bit dual counter, 3 alarms)
+pub use self::rtc0 as rtc1;
 ///CMOS Image Sensor IF
 pub type Cisif = crate::Periph<cisif::RegisterBlock, 0x0210_0000>;
 impl core::fmt::Debug for Cisif {
@@ -393,6 +438,12 @@ pub struct Peripherals {
     pub rot: Rot,
     ///CPU_FIFO
     pub cpu_fifo: CpuFifo,
+    ///TIMER0
+    pub timer0: Timer0,
+    ///TIMER1
+    pub timer1: Timer1,
+    ///WDOG
+    pub wdog: Wdog,
     ///UART1
     pub uart1: Uart1,
     ///UART2
@@ -415,6 +466,10 @@ pub struct Peripherals {
     pub gpio0: Gpio0,
     ///TOPREG_SUB
     pub topreg_sub: TopregSub,
+    ///RTC0
+    pub rtc0: Rtc0,
+    ///RTC1
+    pub rtc1: Rtc1,
     ///CISIF
     pub cisif: Cisif,
 }
@@ -445,6 +500,9 @@ impl Peripherals {
             ge2d: Ge2d::steal(),
             rot: Rot::steal(),
             cpu_fifo: CpuFifo::steal(),
+            timer0: Timer0::steal(),
+            timer1: Timer1::steal(),
+            wdog: Wdog::steal(),
             uart1: Uart1::steal(),
             uart2: Uart2::steal(),
             dmac1: Dmac1::steal(),
@@ -456,6 +514,8 @@ impl Peripherals {
             topreg: Topreg::steal(),
             gpio0: Gpio0::steal(),
             topreg_sub: TopregSub::steal(),
+            rtc0: Rtc0::steal(),
+            rtc1: Rtc1::steal(),
             cisif: Cisif::steal(),
         }
     }
