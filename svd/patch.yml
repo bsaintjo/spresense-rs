@@ -1656,3 +1656,541 @@ _add:
         addressOffset: 0xc28
         access: read-write
         resetValue: 0x00000000
+
+  # TIMER0/TIMER1: ARM PrimeCell SP804 dual-input timers.
+  # Base: CXD56_TIMER_BASE = 0xE0043000 (TIMER0), +0x0020 (TIMER1).
+  # Source: nuttx/arch/arm/src/cxd56xx/hardware/cxd56_timer.h
+  TIMER0:
+    description: "ARM PrimeCell SP804 dual-input timer 0"
+    baseAddress: 0xE0043000
+    addressBlock:
+      offset: 0x0
+      size: 0x20
+      usage: "registers"
+    registers:
+      LOAD:
+        description: "Counter reload value"
+        addressOffset: 0x000
+        access: read-write
+        resetValue: 0x00000000
+      VALUE:
+        description: "Current counter value (read-only)"
+        addressOffset: 0x004
+        access: read-only
+        resetValue: 0xFFFFFFFF
+      CONTROL:
+        description: "Timer mode, prescaler, and interrupt control"
+        addressOffset: 0x008
+        access: read-write
+        resetValue: 0x00000020
+        fields:
+          ENABLE:
+            description: "Timer enable"
+            bitOffset: 7
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+          PERIODIC:
+            description: "Counter mode"
+            bitOffset: 6
+            bitWidth: 1
+            enumeratedValues:
+              - name: FreeRun
+                description: "Free-running mode"
+                value: 0
+              - name: Periodic
+                description: "Periodic (reload on zero) mode"
+                value: 1
+          INTENABLE:
+            description: "Interrupt enable"
+            bitOffset: 5
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+          DIV:
+            description: "Input clock prescaler"
+            bitOffset: 2
+            bitWidth: 2
+            enumeratedValues:
+              - name: Div1
+                description: "Divide by 1"
+                value: 0
+              - name: Div16
+                description: "Divide by 16"
+                value: 1
+              - name: Div256
+                description: "Divide by 256"
+                value: 2
+          SIZE:
+            description: "Counter width"
+            bitOffset: 1
+            bitWidth: 1
+            enumeratedValues:
+              - name: Bits16
+                description: "16-bit counter"
+                value: 0
+              - name: Bits32
+                description: "32-bit counter"
+                value: 1
+          MODE:
+            description: "Reload behavior on zero"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Wrap
+                description: "Wrapping (free-running after reload)"
+                value: 0
+              - name: OneShot
+                description: "One-shot (stops after first zero)"
+                value: 1
+      INTCLR:
+        description: "Interrupt clear (write any value to clear)"
+        addressOffset: 0x00C
+        access: write-only
+        resetValue: 0x00000000
+      RIS:
+        description: "Raw interrupt status"
+        addressOffset: 0x010
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          TIMER_INTERRUPT:
+            description: "Raw interrupt (set when counter reaches zero)"
+            bitOffset: 0
+            bitWidth: 1
+      MIS:
+        description: "Masked interrupt status"
+        addressOffset: 0x014
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          TIMER_INTERRUPT:
+            description: "Masked interrupt (RIS AND INTENABLE)"
+            bitOffset: 0
+            bitWidth: 1
+      BGLOAD:
+        description: "Background load register (no immediate counter restart)"
+        addressOffset: 0x018
+        access: read-write
+        resetValue: 0x00000000
+
+  TIMER1:
+    description: "ARM PrimeCell SP804 dual-input timer 1"
+    baseAddress: 0xE0043020
+    derivedFrom: TIMER0
+
+  # WDOG: ARM PrimeCell SP805 watchdog.
+  # Base: CXD56_WDOG_BASE = 0xE0044000.
+  # Source: nuttx/arch/arm/src/cxd56xx/hardware/cxd56_wdt.h
+  WDOG:
+    description: "ARM PrimeCell SP805 watchdog timer"
+    baseAddress: 0xE0044000
+    addressBlock:
+      offset: 0x0
+      size: 0xD00
+      usage: "registers"
+    registers:
+      WDOGLOAD:
+        description: "Watchdog load register"
+        addressOffset: 0x000
+        access: read-write
+        resetValue: 0xFFFFFFFF
+      WDOGVALUE:
+        description: "Watchdog current value register (read-only)"
+        addressOffset: 0x004
+        access: read-only
+        resetValue: 0xFFFFFFFF
+      WDOGCONTROL:
+        description: "Watchdog control register"
+        addressOffset: 0x008
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          RESEN:
+            description: "Reset output enable (enables chip reset on second underflow)"
+            bitOffset: 1
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+          INTEN:
+            description: "Interrupt output enable (starts the counter)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+      WDOGINTCLR:
+        description: "Watchdog interrupt clear (write any value to clear and reload)"
+        addressOffset: 0x00C
+        access: write-only
+        resetValue: 0x00000000
+      WDOGRIS:
+        description: "Watchdog raw interrupt status"
+        addressOffset: 0x010
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          RAWINT:
+            description: "Raw interrupt status"
+            bitOffset: 0
+            bitWidth: 1
+      WDOGMIS:
+        description: "Watchdog masked interrupt status"
+        addressOffset: 0x014
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          INT:
+            description: "Masked interrupt status (RAWINT AND INTEN)"
+            bitOffset: 0
+            bitWidth: 1
+      WDOGLOCK:
+        # Write 0x1ACCE551 to unlock; any other value re-locks.
+        description: "Watchdog lock register (write 0x1ACCE551 to unlock)"
+        addressOffset: 0xC00
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ACCESS:
+            description: "Register write-access state (0 = unlocked, 1 = locked)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enabled
+                description: "Writes enabled"
+                value: 0
+              - name: Disabled
+                description: "Writes disabled (locked)"
+                value: 1
+
+  # RTC0/RTC1: real-time clock peripheral.
+  # Bases: CXD56_SYS_MIRROR+0x108000 = 0x04108000 (RTC0, always-on PMU domain)
+  #        CXD56_SYS_MIRROR+0x109000 = 0x04109000 (RTC1, SYSIOP-gated)
+  # Source: nuttx/arch/arm/src/cxd56xx/hardware/cxd56_rtc.h
+  RTC0:
+    description: "Real-time clock 0 (always-on, 32.768 kHz, 47-bit dual counter, 3 alarms)"
+    baseAddress: 0x04108000
+    addressBlock:
+      offset: 0x0
+      size: 0xA8
+      usage: "registers"
+    registers:
+      WRREGPOSTCNT:
+        description: "Write post-counter (32-bit integer seconds to set)"
+        addressOffset: 0x00
+        access: read-write
+        resetValue: 0x00000000
+      WRREGPRECNT:
+        description: "Write pre-counter (15-bit fractional 32 kHz ticks to set)"
+        addressOffset: 0x04
+        access: read-write
+        resetValue: 0x00000000
+      WRREGREQ:
+        description: "Counter write request and busy status"
+        addressOffset: 0x08
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          BUSYA:
+            description: "Counter write A-side busy"
+            bitOffset: 0
+            bitWidth: 1
+          BUSYB:
+            description: "Counter write B-side busy"
+            bitOffset: 1
+            bitWidth: 1
+      WRINTPOSTCNT:
+        description: "Write interrupt post-counter compare value"
+        addressOffset: 0x10
+        access: read-write
+        resetValue: 0x00000000
+      WRINTPRECNT:
+        description: "Write interrupt pre-counter compare value"
+        addressOffset: 0x14
+        access: read-write
+        resetValue: 0x00000000
+      WRINTCTRL:
+        description: "Write interrupt control"
+        addressOffset: 0x18
+        access: read-write
+        resetValue: 0x00000000
+      WRINTCLR:
+        description: "Write interrupt clear"
+        addressOffset: 0x1C
+        access: read-write
+        resetValue: 0x00000000
+      OFFSETVAL:
+        description: "Frequency offset correction value"
+        addressOffset: 0x20
+        access: read-write
+        resetValue: 0x00000000
+      OFFSETREQ:
+        description: "Frequency offset correction request and busy"
+        addressOffset: 0x24
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ASET_BUSY:
+            description: "Offset correction write busy"
+            bitOffset: 16
+            bitWidth: 1
+      RDREQ:
+        description: "Read request (triggers a counter capture)"
+        addressOffset: 0x30
+        access: read-write
+        resetValue: 0x00000000
+      RDPOSTCNT:
+        description: "Captured post-counter value (integer seconds)"
+        addressOffset: 0x34
+        access: read-only
+        resetValue: 0x00000000
+      RDPRECNT:
+        description: "Captured pre-counter value (15-bit fractional ticks)"
+        addressOffset: 0x38
+        access: read-only
+        resetValue: 0x00000000
+      RTPOSTCNT:
+        description: "Real-time post-counter (free-running read)"
+        addressOffset: 0x40
+        access: read-only
+        resetValue: 0x00000000
+      RTPRECNT:
+        description: "Real-time pre-counter (free-running read)"
+        addressOffset: 0x44
+        access: read-only
+        resetValue: 0x00000000
+      SETALMPOSTCNT0:
+        description: "Alarm 0 post-counter compare value"
+        addressOffset: 0x50
+        access: read-write
+        resetValue: 0x00000000
+      SETALMPRECNT0:
+        description: "Alarm 0 pre-counter compare value"
+        addressOffset: 0x54
+        access: read-write
+        resetValue: 0x00000000
+      SETALMPOSTCNT1:
+        description: "Alarm 1 post-counter compare value"
+        addressOffset: 0x58
+        access: read-write
+        resetValue: 0x00000000
+      SETALMPRECNT1:
+        description: "Alarm 1 pre-counter compare value"
+        addressOffset: 0x5C
+        access: read-write
+        resetValue: 0x00000000
+      SETALMPOSTCNT2:
+        description: "Alarm 2 post-counter compare value"
+        addressOffset: 0x60
+        access: read-write
+        resetValue: 0x00000000
+      SETALMPRECNT2:
+        description: "Alarm 2 pre-counter compare value"
+        addressOffset: 0x64
+        access: read-write
+        resetValue: 0x00000000
+      ALMCLR:
+        description: "Alarm flag clear register"
+        addressOffset: 0x70
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ALM0:
+            description: "Clear alarm 0 flag"
+            bitOffset: 0
+            bitWidth: 1
+          ALM1:
+            description: "Clear alarm 1 flag"
+            bitOffset: 1
+            bitWidth: 1
+          ALM2:
+            description: "Clear alarm 2 flag"
+            bitOffset: 2
+            bitWidth: 1
+          ALM0_ERR:
+            description: "Clear alarm 0 error flag"
+            bitOffset: 16
+            bitWidth: 1
+          ALM1_ERR:
+            description: "Clear alarm 1 error flag"
+            bitOffset: 17
+            bitWidth: 1
+      ALMOUTEN0:
+        description: "Alarm 0 output enable and busy status"
+        addressOffset: 0x74
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ALM_EN:
+            description: "Alarm 0 enable"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+          ALM_BUSY:
+            description: "Alarm 0 write busy"
+            bitOffset: 8
+            bitWidth: 1
+          ALM_DBG:
+            description: "Alarm 0 debug enable"
+            bitOffset: 15
+            bitWidth: 1
+          ALM_ERREN:
+            description: "Alarm 0 error output enable"
+            bitOffset: 16
+            bitWidth: 1
+          ALM_ERRDBG:
+            description: "Alarm 0 error debug enable"
+            bitOffset: 31
+            bitWidth: 1
+      ALMOUTEN1:
+        description: "Alarm 1 output enable and busy status"
+        addressOffset: 0x78
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ALM_EN:
+            description: "Alarm 1 enable"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+          ALM_BUSY:
+            description: "Alarm 1 write busy"
+            bitOffset: 8
+            bitWidth: 1
+          ALM_DBG:
+            description: "Alarm 1 debug enable"
+            bitOffset: 15
+            bitWidth: 1
+          ALM_ERREN:
+            description: "Alarm 1 error output enable"
+            bitOffset: 16
+            bitWidth: 1
+          ALM_ERRDBG:
+            description: "Alarm 1 error debug enable"
+            bitOffset: 31
+            bitWidth: 1
+      ALMOUTEN2:
+        description: "Alarm 2 output enable and busy status"
+        addressOffset: 0x7C
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ALM_EN:
+            description: "Alarm 2 enable"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: ""
+                value: 0
+              - name: Enabled
+                description: ""
+                value: 1
+          ALM_BUSY:
+            description: "Alarm 2 write busy"
+            bitOffset: 8
+            bitWidth: 1
+          ALM_DBG:
+            description: "Alarm 2 debug enable"
+            bitOffset: 15
+            bitWidth: 1
+          ALM_ERREN:
+            description: "Alarm 2 error output enable"
+            bitOffset: 16
+            bitWidth: 1
+          ALM_ERRDBG:
+            description: "Alarm 2 error debug enable"
+            bitOffset: 31
+            bitWidth: 1
+      ALMFLG:
+        description: "Alarm flag status (read-only)"
+        addressOffset: 0x80
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          ALM0:
+            description: "Alarm 0 flag"
+            bitOffset: 0
+            bitWidth: 1
+          ALM1:
+            description: "Alarm 1 flag"
+            bitOffset: 1
+            bitWidth: 1
+          ALM2:
+            description: "Alarm 2 flag"
+            bitOffset: 2
+            bitWidth: 1
+          ALM0_ERR:
+            description: "Alarm 0 error flag"
+            bitOffset: 16
+            bitWidth: 1
+          ALM1_ERR:
+            description: "Alarm 1 error flag"
+            bitOffset: 17
+            bitWidth: 1
+      DBGSETALMPOSTCNT0:
+        description: "Debug alarm 0 post-counter compare"
+        addressOffset: 0x90
+        access: read-write
+        resetValue: 0x00000000
+      DBGSETALMPRECNT0:
+        description: "Debug alarm 0 pre-counter compare"
+        addressOffset: 0x94
+        access: read-write
+        resetValue: 0x00000000
+      DBGSETALMPOSTCNT1:
+        description: "Debug alarm 1 post-counter compare"
+        addressOffset: 0x98
+        access: read-write
+        resetValue: 0x00000000
+      DBGSETALMPRECNT1:
+        description: "Debug alarm 1 pre-counter compare"
+        addressOffset: 0x9C
+        access: read-write
+        resetValue: 0x00000000
+      DBGSETALMPOSTCNT2:
+        description: "Debug alarm 2 post-counter compare"
+        addressOffset: 0xA0
+        access: read-write
+        resetValue: 0x00000000
+      DBGSETALMPRECNT2:
+        description: "Debug alarm 2 pre-counter compare"
+        addressOffset: 0xA4
+        access: read-write
+        resetValue: 0x00000000
+
+  RTC1:
+    description: "Real-time clock 1 (SYSIOP-gated, 32.768 kHz, 47-bit dual counter, 3 alarms)"
+    baseAddress: 0x04109000
+    derivedFrom: RTC0

@@ -1487,6 +1487,225 @@
       </registers>
     </peripheral>
     <peripheral>
+      <name>TIMER0</name>
+      <description>ARM PrimeCell SP804 dual-input timer 0</description>
+      <baseAddress>0xE0043000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x20</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>LOAD</name>
+          <description>Counter reload value</description>
+          <addressOffset>0x0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>VALUE</name>
+          <description>Current counter value (read-only)</description>
+          <addressOffset>0x4</addressOffset>
+          <access>read-only</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+        </register>
+        <register>
+          <name>CONTROL</name>
+          <description>Timer mode, prescaler, and interrupt control</description>
+          <addressOffset>0x8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000020</resetValue>
+          <fields>
+            <field>
+              <name>ENABLE</name>
+              <description>Timer enable</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PERIODIC</name>
+              <description>Counter mode</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INTENABLE</name>
+              <description>Interrupt enable</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DIV</name>
+              <description>Input clock prescaler</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>SIZE</name>
+              <description>Counter width</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MODE</name>
+              <description>Reload behavior on zero</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTCLR</name>
+          <description>Interrupt clear (write any value to clear)</description>
+          <addressOffset>0xC</addressOffset>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>RIS</name>
+          <description>Raw interrupt status</description>
+          <addressOffset>0x10</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TIMER_INTERRUPT</name>
+              <description>Raw interrupt (set when counter reaches zero)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MIS</name>
+          <description>Masked interrupt status</description>
+          <addressOffset>0x14</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TIMER_INTERRUPT</name>
+              <description>Masked interrupt (RIS AND INTENABLE)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>BGLOAD</name>
+          <description>Background load register (no immediate counter restart)</description>
+          <addressOffset>0x18</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral derivedFrom="TIMER0">
+      <name>TIMER1</name>
+      <description>ARM PrimeCell SP804 dual-input timer 1</description>
+      <baseAddress>0xE0043020</baseAddress>
+    </peripheral>
+    <peripheral>
+      <name>WDOG</name>
+      <description>ARM PrimeCell SP805 watchdog timer</description>
+      <baseAddress>0xE0044000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0xD00</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>WDOGLOAD</name>
+          <description>Watchdog load register</description>
+          <addressOffset>0x0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+        </register>
+        <register>
+          <name>WDOGVALUE</name>
+          <description>Watchdog current value register (read-only)</description>
+          <addressOffset>0x4</addressOffset>
+          <access>read-only</access>
+          <resetValue>0xFFFFFFFF</resetValue>
+        </register>
+        <register>
+          <name>WDOGCONTROL</name>
+          <description>Watchdog control register</description>
+          <addressOffset>0x8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RESEN</name>
+              <description>Reset output enable (enables chip reset on second underflow)</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>INTEN</name>
+              <description>Interrupt output enable (starts the counter)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>WDOGINTCLR</name>
+          <description>Watchdog interrupt clear (write any value to clear and reload)</description>
+          <addressOffset>0xC</addressOffset>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>WDOGRIS</name>
+          <description>Watchdog raw interrupt status</description>
+          <addressOffset>0x10</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>RAWINT</name>
+              <description>Raw interrupt status</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>WDOGMIS</name>
+          <description>Watchdog masked interrupt status</description>
+          <addressOffset>0x14</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>INT</name>
+              <description>Masked interrupt status (RAWINT AND INTEN)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>WDOGLOCK</name>
+          <description>Watchdog lock register (write 0x1ACCE551 to unlock)</description>
+          <addressOffset>0xC00</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ACCESS</name>
+              <description>Register write-access state (0 = unlocked, 1 = locked)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>UART1</name>
       <version>1.0</version>
       <description>UART</description>
@@ -7553,6 +7772,422 @@
           <resetValue>0x00000000</resetValue>
         </register>
       </registers>
+    </peripheral>
+    <peripheral>
+      <name>RTC0</name>
+      <description>Real-time clock 0 (always-on, 32.768 kHz, 47-bit dual counter, 3 alarms)</description>
+      <baseAddress>0x04108000</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0xA8</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>WRREGPOSTCNT</name>
+          <description>Write post-counter (32-bit integer seconds to set)</description>
+          <addressOffset>0x0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>WRREGPRECNT</name>
+          <description>Write pre-counter (15-bit fractional 32 kHz ticks to set)</description>
+          <addressOffset>0x4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>WRREGREQ</name>
+          <description>Counter write request and busy status</description>
+          <addressOffset>0x8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>BUSYA</name>
+              <description>Counter write A-side busy</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>BUSYB</name>
+              <description>Counter write B-side busy</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>WRINTPOSTCNT</name>
+          <description>Write interrupt post-counter compare value</description>
+          <addressOffset>0x10</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>WRINTPRECNT</name>
+          <description>Write interrupt pre-counter compare value</description>
+          <addressOffset>0x14</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>WRINTCTRL</name>
+          <description>Write interrupt control</description>
+          <addressOffset>0x18</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>WRINTCLR</name>
+          <description>Write interrupt clear</description>
+          <addressOffset>0x1C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>OFFSETVAL</name>
+          <description>Frequency offset correction value</description>
+          <addressOffset>0x20</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>OFFSETREQ</name>
+          <description>Frequency offset correction request and busy</description>
+          <addressOffset>0x24</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ASET_BUSY</name>
+              <description>Offset correction write busy</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RDREQ</name>
+          <description>Read request (triggers a counter capture)</description>
+          <addressOffset>0x30</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>RDPOSTCNT</name>
+          <description>Captured post-counter value (integer seconds)</description>
+          <addressOffset>0x34</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>RDPRECNT</name>
+          <description>Captured pre-counter value (15-bit fractional ticks)</description>
+          <addressOffset>0x38</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>RTPOSTCNT</name>
+          <description>Real-time post-counter (free-running read)</description>
+          <addressOffset>0x40</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>RTPRECNT</name>
+          <description>Real-time pre-counter (free-running read)</description>
+          <addressOffset>0x44</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>SETALMPOSTCNT0</name>
+          <description>Alarm 0 post-counter compare value</description>
+          <addressOffset>0x50</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>SETALMPRECNT0</name>
+          <description>Alarm 0 pre-counter compare value</description>
+          <addressOffset>0x54</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>SETALMPOSTCNT1</name>
+          <description>Alarm 1 post-counter compare value</description>
+          <addressOffset>0x58</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>SETALMPRECNT1</name>
+          <description>Alarm 1 pre-counter compare value</description>
+          <addressOffset>0x5C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>SETALMPOSTCNT2</name>
+          <description>Alarm 2 post-counter compare value</description>
+          <addressOffset>0x60</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>SETALMPRECNT2</name>
+          <description>Alarm 2 pre-counter compare value</description>
+          <addressOffset>0x64</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>ALMCLR</name>
+          <description>Alarm flag clear register</description>
+          <addressOffset>0x70</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ALM0</name>
+              <description>Clear alarm 0 flag</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM1</name>
+              <description>Clear alarm 1 flag</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM2</name>
+              <description>Clear alarm 2 flag</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM0_ERR</name>
+              <description>Clear alarm 0 error flag</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM1_ERR</name>
+              <description>Clear alarm 1 error flag</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ALMOUTEN0</name>
+          <description>Alarm 0 output enable and busy status</description>
+          <addressOffset>0x74</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ALM_EN</name>
+              <description>Alarm 0 enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_BUSY</name>
+              <description>Alarm 0 write busy</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_DBG</name>
+              <description>Alarm 0 debug enable</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_ERREN</name>
+              <description>Alarm 0 error output enable</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_ERRDBG</name>
+              <description>Alarm 0 error debug enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ALMOUTEN1</name>
+          <description>Alarm 1 output enable and busy status</description>
+          <addressOffset>0x78</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ALM_EN</name>
+              <description>Alarm 1 enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_BUSY</name>
+              <description>Alarm 1 write busy</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_DBG</name>
+              <description>Alarm 1 debug enable</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_ERREN</name>
+              <description>Alarm 1 error output enable</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_ERRDBG</name>
+              <description>Alarm 1 error debug enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ALMOUTEN2</name>
+          <description>Alarm 2 output enable and busy status</description>
+          <addressOffset>0x7C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ALM_EN</name>
+              <description>Alarm 2 enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_BUSY</name>
+              <description>Alarm 2 write busy</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_DBG</name>
+              <description>Alarm 2 debug enable</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_ERREN</name>
+              <description>Alarm 2 error output enable</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM_ERRDBG</name>
+              <description>Alarm 2 error debug enable</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ALMFLG</name>
+          <description>Alarm flag status (read-only)</description>
+          <addressOffset>0x80</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ALM0</name>
+              <description>Alarm 0 flag</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM1</name>
+              <description>Alarm 1 flag</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM2</name>
+              <description>Alarm 2 flag</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM0_ERR</name>
+              <description>Alarm 0 error flag</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ALM1_ERR</name>
+              <description>Alarm 1 error flag</description>
+              <bitOffset>17</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DBGSETALMPOSTCNT0</name>
+          <description>Debug alarm 0 post-counter compare</description>
+          <addressOffset>0x90</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>DBGSETALMPRECNT0</name>
+          <description>Debug alarm 0 pre-counter compare</description>
+          <addressOffset>0x94</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>DBGSETALMPOSTCNT1</name>
+          <description>Debug alarm 1 post-counter compare</description>
+          <addressOffset>0x98</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>DBGSETALMPRECNT1</name>
+          <description>Debug alarm 1 pre-counter compare</description>
+          <addressOffset>0x9C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>DBGSETALMPOSTCNT2</name>
+          <description>Debug alarm 2 post-counter compare</description>
+          <addressOffset>0xA0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>DBGSETALMPRECNT2</name>
+          <description>Debug alarm 2 pre-counter compare</description>
+          <addressOffset>0xA4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral derivedFrom="RTC0">
+      <name>RTC1</name>
+      <description>Real-time clock 1 (SYSIOP-gated, 32.768 kHz, 47-bit dual counter, 3 alarms)</description>
+      <baseAddress>0x04109000</baseAddress>
     </peripheral>
     <peripheral>
       <name>CISIF</name>
