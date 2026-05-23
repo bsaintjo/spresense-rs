@@ -1,4 +1,3 @@
-#![no_std]
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
@@ -40,13 +39,15 @@ unsafe impl cortex_m::interrupt::InterruptNumber for Interrupt {
 #[cfg(feature = "rt")]
 mod _vectors;
 ///SRAM Control
-pub const SMP_RAM_CTRL: SMP_RAM_CTRL::SMP_RAM_CTRL =
-    unsafe { SMP_RAM_CTRL::SMP_RAM_CTRL::from_ptr(0x0200_1000usize as _) };
+pub const SMP_RAM_CTRL: SMP_RAM_CTRL::SMP_RAM_CTRL = unsafe {
+    SMP_RAM_CTRL::SMP_RAM_CTRL::from_ptr(0x0200_1000usize as _)
+};
 ///Clock / Reset / Gating
 pub const CRG: CRG::CRG = unsafe { CRG::CRG::from_ptr(0x0201_1000usize as _) };
 ///Address Converter
-pub const ADDRCONV: ADDRCONV::ADDRCONV =
-    unsafe { ADDRCONV::ADDRCONV::from_ptr(0x0201_2000usize as _) };
+pub const ADDRCONV: ADDRCONV::ADDRCONV = unsafe {
+    ADDRCONV::ADDRCONV::from_ptr(0x0201_2000usize as _)
+};
 ///DMA controller (ADMAC)
 pub const DMAC1: DMAC1::DMAC1 = unsafe { DMAC1::DMAC1::from_ptr(0x0202_0000usize as _) };
 ///CMOS Image Sensor IF
@@ -63,8 +64,16 @@ pub const UART2: UART2::UART2 = unsafe { UART2::UART2::from_ptr(0x0210_3000usize
 pub const SPI4: SPI4::SPI4 = unsafe { SPI4::SPI4::from_ptr(0x0210_3400usize as _) };
 ///Synchronous Serial Port Controller (IMG WSPI)
 pub const SPI5: SPI4::SPI4 = unsafe { SPI4::SPI4::from_ptr(0x0210_3c00usize as _) };
+///Top-of-chip clock / PMU / oscillator / PLL controller
+pub const TOPREG: TOPREG::TOPREG = unsafe {
+    TOPREG::TOPREG::from_ptr(0x0410_0000usize as _)
+};
 ///GPIO Port 0 — GP_* output-enable/data registers
 pub const GPIO0: GPIO0::GPIO0 = unsafe { GPIO0::GPIO0::from_ptr(0x0410_2000usize as _) };
+///APP / GNSS sub-domain clock and reset controller
+pub const TOPREG_SUB: TOPREG_SUB::TOPREG_SUB = unsafe {
+    TOPREG_SUB::TOPREG_SUB::from_ptr(0x0410_3000usize as _)
+};
 ///Synchronous Serial Port Controller (SCU SPI)
 pub const SPI3: SPI0::SPI0 = unsafe { SPI0::SPI0::from_ptr(0x0418_d000usize as _) };
 ///Synchronous Serial Port Controller (SPIM)
@@ -72,15 +81,16 @@ pub const SPI0: SPI0::SPI0 = unsafe { SPI0::SPI0::from_ptr(0x041a_a000usize as _
 ///UART
 pub const UART1: UART1::UART1 = unsafe { UART1::UART1::from_ptr(0x041a_c000usize as _) };
 ///CPU FIFO Control
-pub const CPU_FIFO: CPU_FIFO::CPU_FIFO =
-    unsafe { CPU_FIFO::CPU_FIFO::from_ptr(0x4600_c400usize as _) };
+pub const CPU_FIFO: CPU_FIFO::CPU_FIFO = unsafe {
+    CPU_FIFO::CPU_FIFO::from_ptr(0x4600_c400usize as _)
+};
 /// Number available in the NVIC for configuring priority
 #[cfg(feature = "rt")]
 pub const NVIC_PRIO_BITS: u8 = 3;
 #[cfg(feature = "rt")]
-pub use Interrupt as interrupt;
-#[cfg(feature = "rt")]
 pub use cortex_m_rt::interrupt;
+#[cfg(feature = "rt")]
+pub use Interrupt as interrupt;
 pub mod ADDRCONV;
 pub mod CISIF;
 pub mod CPU_FIFO;
@@ -93,6 +103,8 @@ pub mod ROT;
 pub mod SMP_RAM_CTRL;
 pub mod SPI0;
 pub mod SPI4;
+pub mod TOPREG;
+pub mod TOPREG_SUB;
 pub mod UART1;
 pub mod UART2;
 pub mod common;

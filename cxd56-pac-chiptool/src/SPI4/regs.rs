@@ -24,9 +24,7 @@ impl Default for SSPCPSR {
 }
 impl core::fmt::Debug for SSPCPSR {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SSPCPSR")
-            .field("CPSDVSR", &self.CPSDVSR())
-            .finish()
+        f.debug_struct("SSPCPSR").field("CPSDVSR", &self.CPSDVSR()).finish()
     }
 }
 #[cfg(feature = "defmt")]
@@ -50,7 +48,8 @@ impl SSPCR0 {
     ///Data Size Select.
     #[inline(always)]
     pub const fn set_DSS(&mut self, val: super::vals::DSS) {
-        self.0 = (self.0 & !(0x0f << 0usize)) | (((val.to_bits() as u32) & 0x0f) << 0usize);
+        self.0 = (self.0 & !(0x0f << 0usize))
+            | (((val.to_bits() as u32) & 0x0f) << 0usize);
     }
     ///Frame format.
     #[must_use]
@@ -62,7 +61,8 @@ impl SSPCR0 {
     ///Frame format.
     #[inline(always)]
     pub const fn set_FRF(&mut self, val: super::vals::FRF) {
-        self.0 = (self.0 & !(0x03 << 4usize)) | (((val.to_bits() as u32) & 0x03) << 4usize);
+        self.0 = (self.0 & !(0x03 << 4usize))
+            | (((val.to_bits() as u32) & 0x03) << 4usize);
     }
     ///SSPCLKOUT polarity.
     #[must_use]
@@ -124,11 +124,7 @@ impl defmt::Format for SSPCR0 {
         defmt::write!(
             f,
             "SSPCR0 {{ DSS: {:?}, FRF: {:?}, SPO: {=bool:?}, SPH: {=bool:?}, SCR: {=u8:?} }}",
-            self.DSS(),
-            self.FRF(),
-            self.SPO(),
-            self.SPH(),
-            self.SCR()
+            self.DSS(), self.FRF(), self.SPO(), self.SPH(), self.SCR()
         )
     }
 }
@@ -147,7 +143,8 @@ impl SSPCR1 {
     ///Loop back mode.
     #[inline(always)]
     pub const fn set_LBM(&mut self, val: super::vals::LBM) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
     ///Synchronous serial port enable.
     #[must_use]
@@ -159,7 +156,8 @@ impl SSPCR1 {
     ///Synchronous serial port enable.
     #[inline(always)]
     pub const fn set_SSE(&mut self, val: super::vals::SSE) {
-        self.0 = (self.0 & !(0x01 << 1usize)) | (((val.to_bits() as u32) & 0x01) << 1usize);
+        self.0 = (self.0 & !(0x01 << 1usize))
+            | (((val.to_bits() as u32) & 0x01) << 1usize);
     }
     ///Master or slave mode select.
     #[must_use]
@@ -171,7 +169,8 @@ impl SSPCR1 {
     ///Master or slave mode select.
     #[inline(always)]
     pub const fn set_MS(&mut self, val: super::vals::MS) {
-        self.0 = (self.0 & !(0x01 << 2usize)) | (((val.to_bits() as u32) & 0x01) << 2usize);
+        self.0 = (self.0 & !(0x01 << 2usize))
+            | (((val.to_bits() as u32) & 0x01) << 2usize);
     }
     ///Slave-mode output disable.
     #[must_use]
@@ -183,7 +182,8 @@ impl SSPCR1 {
     ///Slave-mode output disable.
     #[inline(always)]
     pub const fn set_SOD(&mut self, val: super::vals::SOD) {
-        self.0 = (self.0 & !(0x01 << 3usize)) | (((val.to_bits() as u32) & 0x01) << 3usize);
+        self.0 = (self.0 & !(0x01 << 3usize))
+            | (((val.to_bits() as u32) & 0x01) << 3usize);
     }
 }
 impl Default for SSPCR1 {
@@ -206,12 +206,8 @@ impl core::fmt::Debug for SSPCR1 {
 impl defmt::Format for SSPCR1 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPCR1 {{ LBM: {:?}, SSE: {:?}, MS: {:?}, SOD: {:?} }}",
-            self.LBM(),
-            self.SSE(),
-            self.MS(),
-            self.SOD()
+            f, "SSPCR1 {{ LBM: {:?}, SSE: {:?}, MS: {:?}, SOD: {:?} }}", self.LBM(), self
+            .SSE(), self.MS(), self.SOD()
         )
     }
 }
@@ -230,7 +226,8 @@ impl SSPDMACR {
     ///Receive DMA enable.
     #[inline(always)]
     pub const fn set_RXDMAE(&mut self, val: super::vals::RXDMAE) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
     ///Transmit DMA enable.
     #[must_use]
@@ -242,7 +239,8 @@ impl SSPDMACR {
     ///Transmit DMA enable.
     #[inline(always)]
     pub const fn set_TXDMAE(&mut self, val: super::vals::TXDMAE) {
-        self.0 = (self.0 & !(0x01 << 1usize)) | (((val.to_bits() as u32) & 0x01) << 1usize);
+        self.0 = (self.0 & !(0x01 << 1usize))
+            | (((val.to_bits() as u32) & 0x01) << 1usize);
     }
 }
 impl Default for SSPDMACR {
@@ -263,10 +261,7 @@ impl core::fmt::Debug for SSPDMACR {
 impl defmt::Format for SSPDMACR {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPDMACR {{ RXDMAE: {:?}, TXDMAE: {:?} }}",
-            self.RXDMAE(),
-            self.TXDMAE()
+            f, "SSPDMACR {{ RXDMAE: {:?}, TXDMAE: {:?} }}", self.RXDMAE(), self.TXDMAE()
         )
     }
 }
@@ -353,10 +348,8 @@ impl core::fmt::Debug for SSPICR {
 impl defmt::Format for SSPICR {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPICR {{ RORIC: {=bool:?}, RTIC: {=bool:?} }}",
-            self.RORIC(),
-            self.RTIC()
+            f, "SSPICR {{ RORIC: {=bool:?}, RTIC: {=bool:?} }}", self.RORIC(), self
+            .RTIC()
         )
     }
 }
@@ -375,7 +368,8 @@ impl SSPIMSC {
     ///Receive overrun interrupt mask.
     #[inline(always)]
     pub const fn set_RORIM(&mut self, val: super::vals::RORIM) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
     ///Receive timeout interrupt mask.
     #[must_use]
@@ -387,7 +381,8 @@ impl SSPIMSC {
     ///Receive timeout interrupt mask.
     #[inline(always)]
     pub const fn set_RTIM(&mut self, val: super::vals::RTIM) {
-        self.0 = (self.0 & !(0x01 << 1usize)) | (((val.to_bits() as u32) & 0x01) << 1usize);
+        self.0 = (self.0 & !(0x01 << 1usize))
+            | (((val.to_bits() as u32) & 0x01) << 1usize);
     }
     ///Receive FIFO interrupt mask.
     #[must_use]
@@ -399,7 +394,8 @@ impl SSPIMSC {
     ///Receive FIFO interrupt mask.
     #[inline(always)]
     pub const fn set_RXIM(&mut self, val: super::vals::RXIM) {
-        self.0 = (self.0 & !(0x01 << 2usize)) | (((val.to_bits() as u32) & 0x01) << 2usize);
+        self.0 = (self.0 & !(0x01 << 2usize))
+            | (((val.to_bits() as u32) & 0x01) << 2usize);
     }
     ///Transmit FIFO interrupt mask.
     #[must_use]
@@ -411,7 +407,8 @@ impl SSPIMSC {
     ///Transmit FIFO interrupt mask.
     #[inline(always)]
     pub const fn set_TXIM(&mut self, val: super::vals::TXIM) {
-        self.0 = (self.0 & !(0x01 << 3usize)) | (((val.to_bits() as u32) & 0x01) << 3usize);
+        self.0 = (self.0 & !(0x01 << 3usize))
+            | (((val.to_bits() as u32) & 0x01) << 3usize);
     }
 }
 impl Default for SSPIMSC {
@@ -434,12 +431,8 @@ impl core::fmt::Debug for SSPIMSC {
 impl defmt::Format for SSPIMSC {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPIMSC {{ RORIM: {:?}, RTIM: {:?}, RXIM: {:?}, TXIM: {:?} }}",
-            self.RORIM(),
-            self.RTIM(),
-            self.RXIM(),
-            self.TXIM()
+            f, "SSPIMSC {{ RORIM: {:?}, RTIM: {:?}, RXIM: {:?}, TXIM: {:?} }}", self
+            .RORIM(), self.RTIM(), self.RXIM(), self.TXIM()
         )
     }
 }
@@ -458,7 +451,8 @@ impl SSPMIS {
     ///Receive overrun interrupt mask.
     #[inline(always)]
     pub const fn set_RORMIS(&mut self, val: super::vals::RORMIS) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
     ///Receive timeout interrupt mask.
     #[must_use]
@@ -470,7 +464,8 @@ impl SSPMIS {
     ///Receive timeout interrupt mask.
     #[inline(always)]
     pub const fn set_RTMIS(&mut self, val: super::vals::RTMIS) {
-        self.0 = (self.0 & !(0x01 << 1usize)) | (((val.to_bits() as u32) & 0x01) << 1usize);
+        self.0 = (self.0 & !(0x01 << 1usize))
+            | (((val.to_bits() as u32) & 0x01) << 1usize);
     }
     ///Receive FIFO interrupt mask.
     #[must_use]
@@ -482,7 +477,8 @@ impl SSPMIS {
     ///Receive FIFO interrupt mask.
     #[inline(always)]
     pub const fn set_RXMIS(&mut self, val: super::vals::RXMIS) {
-        self.0 = (self.0 & !(0x01 << 2usize)) | (((val.to_bits() as u32) & 0x01) << 2usize);
+        self.0 = (self.0 & !(0x01 << 2usize))
+            | (((val.to_bits() as u32) & 0x01) << 2usize);
     }
     ///Transmit FIFO interrupt mask.
     #[must_use]
@@ -494,7 +490,8 @@ impl SSPMIS {
     ///Transmit FIFO interrupt mask.
     #[inline(always)]
     pub const fn set_TXMIS(&mut self, val: super::vals::TXMIS) {
-        self.0 = (self.0 & !(0x01 << 3usize)) | (((val.to_bits() as u32) & 0x01) << 3usize);
+        self.0 = (self.0 & !(0x01 << 3usize))
+            | (((val.to_bits() as u32) & 0x01) << 3usize);
     }
 }
 impl Default for SSPMIS {
@@ -517,12 +514,8 @@ impl core::fmt::Debug for SSPMIS {
 impl defmt::Format for SSPMIS {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPMIS {{ RORMIS: {:?}, RTMIS: {:?}, RXMIS: {:?}, TXMIS: {:?} }}",
-            self.RORMIS(),
-            self.RTMIS(),
-            self.RXMIS(),
-            self.TXMIS()
+            f, "SSPMIS {{ RORMIS: {:?}, RTMIS: {:?}, RXMIS: {:?}, TXMIS: {:?} }}", self
+            .RORMIS(), self.RTMIS(), self.RXMIS(), self.TXMIS()
         )
     }
 }
@@ -541,7 +534,8 @@ impl SSPRIS {
     ///Receive overrun interrupt mask.
     #[inline(always)]
     pub const fn set_RORRIS(&mut self, val: super::vals::RORRIS) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
     ///Receive timeout interrupt mask.
     #[must_use]
@@ -553,7 +547,8 @@ impl SSPRIS {
     ///Receive timeout interrupt mask.
     #[inline(always)]
     pub const fn set_RTRIS(&mut self, val: super::vals::RTRIS) {
-        self.0 = (self.0 & !(0x01 << 1usize)) | (((val.to_bits() as u32) & 0x01) << 1usize);
+        self.0 = (self.0 & !(0x01 << 1usize))
+            | (((val.to_bits() as u32) & 0x01) << 1usize);
     }
     ///Receive FIFO interrupt mask.
     #[must_use]
@@ -565,7 +560,8 @@ impl SSPRIS {
     ///Receive FIFO interrupt mask.
     #[inline(always)]
     pub const fn set_RXRIS(&mut self, val: super::vals::RXRIS) {
-        self.0 = (self.0 & !(0x01 << 2usize)) | (((val.to_bits() as u32) & 0x01) << 2usize);
+        self.0 = (self.0 & !(0x01 << 2usize))
+            | (((val.to_bits() as u32) & 0x01) << 2usize);
     }
     ///Transmit FIFO interrupt mask.
     #[must_use]
@@ -577,7 +573,8 @@ impl SSPRIS {
     ///Transmit FIFO interrupt mask.
     #[inline(always)]
     pub const fn set_TXRIS(&mut self, val: super::vals::TXRIS) {
-        self.0 = (self.0 & !(0x01 << 3usize)) | (((val.to_bits() as u32) & 0x01) << 3usize);
+        self.0 = (self.0 & !(0x01 << 3usize))
+            | (((val.to_bits() as u32) & 0x01) << 3usize);
     }
 }
 impl Default for SSPRIS {
@@ -600,12 +597,8 @@ impl core::fmt::Debug for SSPRIS {
 impl defmt::Format for SSPRIS {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPRIS {{ RORRIS: {:?}, RTRIS: {:?}, RXRIS: {:?}, TXRIS: {:?} }}",
-            self.RORRIS(),
-            self.RTRIS(),
-            self.RXRIS(),
-            self.TXRIS()
+            f, "SSPRIS {{ RORRIS: {:?}, RTRIS: {:?}, RXRIS: {:?}, TXRIS: {:?} }}", self
+            .RORRIS(), self.RTRIS(), self.RXRIS(), self.TXRIS()
         )
     }
 }
@@ -624,7 +617,8 @@ impl SSPSR {
     ///Transmit FIFO empty.
     #[inline(always)]
     pub const fn set_TFE(&mut self, val: super::vals::TFE) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
     ///Transmit FIFO not full.
     #[must_use]
@@ -636,7 +630,8 @@ impl SSPSR {
     ///Transmit FIFO not full.
     #[inline(always)]
     pub const fn set_TNF(&mut self, val: super::vals::TNF) {
-        self.0 = (self.0 & !(0x01 << 1usize)) | (((val.to_bits() as u32) & 0x01) << 1usize);
+        self.0 = (self.0 & !(0x01 << 1usize))
+            | (((val.to_bits() as u32) & 0x01) << 1usize);
     }
     ///Rceive FIFIO not empty.
     #[must_use]
@@ -648,7 +643,8 @@ impl SSPSR {
     ///Rceive FIFIO not empty.
     #[inline(always)]
     pub const fn set_RNE(&mut self, val: super::vals::RNE) {
-        self.0 = (self.0 & !(0x01 << 2usize)) | (((val.to_bits() as u32) & 0x01) << 2usize);
+        self.0 = (self.0 & !(0x01 << 2usize))
+            | (((val.to_bits() as u32) & 0x01) << 2usize);
     }
     ///Receive FIFO full.
     #[must_use]
@@ -660,7 +656,8 @@ impl SSPSR {
     ///Receive FIFO full.
     #[inline(always)]
     pub const fn set_RFF(&mut self, val: super::vals::RFF) {
-        self.0 = (self.0 & !(0x01 << 3usize)) | (((val.to_bits() as u32) & 0x01) << 3usize);
+        self.0 = (self.0 & !(0x01 << 3usize))
+            | (((val.to_bits() as u32) & 0x01) << 3usize);
     }
     ///SSP busy flag.
     #[must_use]
@@ -672,7 +669,8 @@ impl SSPSR {
     ///SSP busy flag.
     #[inline(always)]
     pub const fn set_BSY(&mut self, val: super::vals::BSY) {
-        self.0 = (self.0 & !(0x01 << 4usize)) | (((val.to_bits() as u32) & 0x01) << 4usize);
+        self.0 = (self.0 & !(0x01 << 4usize))
+            | (((val.to_bits() as u32) & 0x01) << 4usize);
     }
 }
 impl Default for SSPSR {
@@ -696,13 +694,8 @@ impl core::fmt::Debug for SSPSR {
 impl defmt::Format for SSPSR {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "SSPSR {{ TFE: {:?}, TNF: {:?}, RNE: {:?}, RFF: {:?}, BSY: {:?} }}",
-            self.TFE(),
-            self.TNF(),
-            self.RNE(),
-            self.RFF(),
-            self.BSY()
+            f, "SSPSR {{ TFE: {:?}, TNF: {:?}, RNE: {:?}, RFF: {:?}, BSY: {:?} }}", self
+            .TFE(), self.TNF(), self.RNE(), self.RFF(), self.BSY()
         )
     }
 }

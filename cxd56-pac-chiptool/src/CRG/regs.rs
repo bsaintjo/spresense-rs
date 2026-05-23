@@ -13,7 +13,8 @@ impl CKEN_EMMC {
     ///Enable eMMC clock.
     #[inline(always)]
     pub const fn set_CLKIN(&mut self, val: super::vals::CLKIN) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
 }
 impl Default for CKEN_EMMC {
@@ -24,9 +25,7 @@ impl Default for CKEN_EMMC {
 }
 impl core::fmt::Debug for CKEN_EMMC {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("CKEN_EMMC")
-            .field("CLKIN", &self.CLKIN())
-            .finish()
+        f.debug_struct("CKEN_EMMC").field("CLKIN", &self.CLKIN()).finish()
     }
 }
 #[cfg(feature = "defmt")]
@@ -50,7 +49,8 @@ impl CK_GATE_AHB {
     ///0=Gated, 1=Ungated.
     #[inline(always)]
     pub const fn set_CK_GATE_AUD(&mut self, val: super::vals::CK_GATE_AUD) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
 }
 impl Default for CK_GATE_AHB {
@@ -61,9 +61,7 @@ impl Default for CK_GATE_AHB {
 }
 impl core::fmt::Debug for CK_GATE_AHB {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("CK_GATE_AHB")
-            .field("CK_GATE_AUD", &self.CK_GATE_AUD())
-            .finish()
+        f.debug_struct("CK_GATE_AHB").field("CK_GATE_AUD", &self.CK_GATE_AUD()).finish()
     }
 }
 #[cfg(feature = "defmt")]
@@ -116,10 +114,8 @@ impl core::fmt::Debug for GEAR_AHB {
 impl defmt::Format for GEAR_AHB {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "GEAR_AHB {{ GEAR_M_AHB: {=u8:?}, GEAR_N_AHB: {=u8:?} }}",
-            self.GEAR_M_AHB(),
-            self.GEAR_N_AHB()
+            f, "GEAR_AHB {{ GEAR_M_AHB: {=u8:?}, GEAR_N_AHB: {=u8:?} }}", self
+            .GEAR_M_AHB(), self.GEAR_N_AHB()
         )
     }
 }
@@ -167,10 +163,8 @@ impl core::fmt::Debug for GEAR_IMG_SPI {
 impl defmt::Format for GEAR_IMG_SPI {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "GEAR_IMG_SPI {{ GEAR_M_SPI: {=u8:?}, GEAR_N_SPI: {=bool:?} }}",
-            self.GEAR_M_SPI(),
-            self.GEAR_N_SPI()
+            f, "GEAR_IMG_SPI {{ GEAR_M_SPI: {=u8:?}, GEAR_N_SPI: {=bool:?} }}", self
+            .GEAR_M_SPI(), self.GEAR_N_SPI()
         )
     }
 }
@@ -218,10 +212,8 @@ impl core::fmt::Debug for GEAR_IMG_UART {
 impl defmt::Format for GEAR_IMG_UART {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "GEAR_IMG_UART {{ GEAR_M_UART: {=u8:?}, GEAR_N_UART: {=bool:?} }}",
-            self.GEAR_M_UART(),
-            self.GEAR_N_UART()
+            f, "GEAR_IMG_UART {{ GEAR_M_UART: {=u8:?}, GEAR_N_UART: {=bool:?} }}", self
+            .GEAR_M_UART(), self.GEAR_N_UART()
         )
     }
 }
@@ -271,8 +263,7 @@ impl defmt::Format for GEAR_IMG_WSPI {
         defmt::write!(
             f,
             "GEAR_IMG_WSPI {{ GEAR_M_IMG_WSPI: {=u8:?}, GEAR_N_IMG_WSPI: {=bool:?} }}",
-            self.GEAR_M_IMG_WSPI(),
-            self.GEAR_N_IMG_WSPI()
+            self.GEAR_M_IMG_WSPI(), self.GEAR_N_IMG_WSPI()
         )
     }
 }
@@ -320,10 +311,8 @@ impl core::fmt::Debug for GEAR_PER_SDIO {
 impl defmt::Format for GEAR_PER_SDIO {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "GEAR_PER_SDIO {{ GEAR_M_SDIO: {=u8:?}, GEAR_N_SDIO: {=bool:?} }}",
-            self.GEAR_M_SDIO(),
-            self.GEAR_N_SDIO()
+            f, "GEAR_PER_SDIO {{ GEAR_M_SDIO: {=u8:?}, GEAR_N_SDIO: {=bool:?} }}", self
+            .GEAR_M_SDIO(), self.GEAR_N_SDIO()
         )
     }
 }
@@ -371,10 +360,8 @@ impl core::fmt::Debug for GEAR_PER_USB {
 impl defmt::Format for GEAR_PER_USB {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
-            f,
-            "GEAR_PER_USB {{ GEAR_M_USB: {=u16:?}, GEAR_N_USB: {=bool:?} }}",
-            self.GEAR_M_USB(),
-            self.GEAR_N_USB()
+            f, "GEAR_PER_USB {{ GEAR_M_USB: {=u16:?}, GEAR_N_USB: {=bool:?} }}", self
+            .GEAR_M_USB(), self.GEAR_N_USB()
         )
     }
 }
@@ -393,7 +380,8 @@ impl RESET {
     ///0=reset, 1=active.
     #[inline(always)]
     pub const fn set_XRS_AUD(&mut self, val: super::vals::XRS_AUD) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val.to_bits() as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize))
+            | (((val.to_bits() as u32) & 0x01) << 0usize);
     }
 }
 impl Default for RESET {
@@ -404,9 +392,7 @@ impl Default for RESET {
 }
 impl core::fmt::Debug for RESET {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("RESET")
-            .field("XRS_AUD", &self.XRS_AUD())
-            .finish()
+        f.debug_struct("RESET").field("XRS_AUD", &self.XRS_AUD()).finish()
     }
 }
 #[cfg(feature = "defmt")]

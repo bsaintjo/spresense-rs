@@ -16,22 +16,30 @@ impl ROT {
     }
     ///Interrupt Status.
     #[inline(always)]
-    pub const fn INTR_STATUS(self) -> crate::common::Reg<regs::INTR_STATUS, crate::common::R> {
+    pub const fn INTR_STATUS(
+        self,
+    ) -> crate::common::Reg<regs::INTR_STATUS, crate::common::R> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0usize) as _) }
     }
     ///Interrupt Enable.
     #[inline(always)]
-    pub const fn INTR_ENABLE(self) -> crate::common::Reg<regs::INTR_ENABLE, crate::common::RW> {
+    pub const fn INTR_ENABLE(
+        self,
+    ) -> crate::common::Reg<regs::INTR_ENABLE, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x04usize) as _) }
     }
     ///Interrupt Disable.
     #[inline(always)]
-    pub const fn INTR_DISABLE(self) -> crate::common::Reg<regs::INTR_DISABLE, crate::common::W> {
+    pub const fn INTR_DISABLE(
+        self,
+    ) -> crate::common::Reg<regs::INTR_DISABLE, crate::common::W> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x08usize) as _) }
     }
     ///Interrupt Clear.
     #[inline(always)]
-    pub const fn INTR_CLEAR(self) -> crate::common::Reg<regs::INTR_CLEAR, crate::common::W> {
+    pub const fn INTR_CLEAR(
+        self,
+    ) -> crate::common::Reg<regs::INTR_CLEAR, crate::common::W> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0cusize) as _) }
     }
     ///Start rotation processing.
@@ -41,17 +49,23 @@ impl ROT {
     }
     ///Set Rotation Angle.
     #[inline(always)]
-    pub const fn SET_DIRECTION(self) -> crate::common::Reg<regs::SET_DIRECTION, crate::common::RW> {
+    pub const fn SET_DIRECTION(
+        self,
+    ) -> crate::common::Reg<regs::SET_DIRECTION, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x14usize) as _) }
     }
     ///Source Image Horizontal Size (Actual size - 1).
     #[inline(always)]
-    pub const fn SET_SRC_HSIZE(self) -> crate::common::Reg<regs::SET_SRC_HSIZE, crate::common::RW> {
+    pub const fn SET_SRC_HSIZE(
+        self,
+    ) -> crate::common::Reg<regs::SET_SRC_HSIZE, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x18usize) as _) }
     }
     ///Source Image Vertical Size (Actual size - 1).
     #[inline(always)]
-    pub const fn SET_SRC_VSIZE(self) -> crate::common::Reg<regs::SET_SRC_VSIZE, crate::common::RW> {
+    pub const fn SET_SRC_VSIZE(
+        self,
+    ) -> crate::common::Reg<regs::SET_SRC_VSIZE, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x1cusize) as _) }
     }
     ///Source Image Address.
@@ -61,7 +75,9 @@ impl ROT {
     }
     ///Source Image Pitch (Actual size - 1).
     #[inline(always)]
-    pub const fn SET_SRC_PITCH(self) -> crate::common::Reg<regs::SET_SRC_PITCH, crate::common::RW> {
+    pub const fn SET_SRC_PITCH(
+        self,
+    ) -> crate::common::Reg<regs::SET_SRC_PITCH, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x24usize) as _) }
     }
     ///Destination Address.
@@ -71,7 +87,9 @@ impl ROT {
     }
     ///Destination Image Pitch (Actual size - 1).
     #[inline(always)]
-    pub const fn SET_DST_PITCH(self) -> crate::common::Reg<regs::SET_DST_PITCH, crate::common::RW> {
+    pub const fn SET_DST_PITCH(
+        self,
+    ) -> crate::common::Reg<regs::SET_DST_PITCH, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x2cusize) as _) }
     }
     ///Running Status.
@@ -81,12 +99,16 @@ impl ROT {
     }
     ///Color Convertion Control.
     #[inline(always)]
-    pub const fn CONV_CTRL(self) -> crate::common::Reg<regs::CONV_CTRL, crate::common::RW> {
+    pub const fn CONV_CTRL(
+        self,
+    ) -> crate::common::Reg<regs::CONV_CTRL, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x34usize) as _) }
     }
     ///RGB format selector.
     #[inline(always)]
-    pub const fn RGB_ALIGNMENT(self) -> crate::common::Reg<regs::RGB_ALIGNMENT, crate::common::RW> {
+    pub const fn RGB_ALIGNMENT(
+        self,
+    ) -> crate::common::Reg<regs::RGB_ALIGNMENT, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x38usize) as _) }
     }
 }

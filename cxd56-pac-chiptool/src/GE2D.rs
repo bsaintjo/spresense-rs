@@ -16,7 +16,9 @@ impl GE2D {
     }
     ///2D Graphics Engine Interrupt Control.
     #[inline(always)]
-    pub const fn INTR_ENABLE(self) -> crate::common::Reg<regs::INTR_ENABLE, crate::common::RW> {
+    pub const fn INTR_ENABLE(
+        self,
+    ) -> crate::common::Reg<regs::INTR_ENABLE, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0usize) as _) }
     }
     ///Descriptor Address Set Register.
@@ -40,7 +42,9 @@ impl GE2D {
     }
     ///Normal Descriptor Address Register.
     #[inline(always)]
-    pub const fn STAT_NORMAL_DESCRIPTOR_ADDRESS(self) -> crate::common::Reg<u32, crate::common::R> {
+    pub const fn STAT_NORMAL_DESCRIPTOR_ADDRESS(
+        self,
+    ) -> crate::common::Reg<u32, crate::common::R> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x10usize) as _) }
     }
     ///Current Descriptor Address Register.
