@@ -23,7 +23,9 @@ impl Delay {
 
     /// Create a `Delay` for an explicit core clock frequency.
     pub fn with_clock(syst: SYST, sysclk_hz: u32) -> Self {
-        Self { inner: SystDelay::new(syst, sysclk_hz) }
+        Self {
+            inner: SystDelay::new(syst, sysclk_hz),
+        }
     }
 
     /// Release the `SYST` peripheral.

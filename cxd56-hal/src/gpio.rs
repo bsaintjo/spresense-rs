@@ -7,7 +7,7 @@ pub enum Level {
 }
 
 // Bit positions — identical layout for every GPIO0 register.
-const IN_BIT: u32  = 1 << 0;
+const IN_BIT: u32 = 1 << 0;
 const OUT_BIT: u32 = 1 << 8;
 const DIR_BIT: u32 = 1 << 16; // active-low: 0 = drive output, 1 = high-Z input
 
@@ -61,7 +61,7 @@ impl<R: PinReg> GpioPin<R> {
         let raw = self.reg.read_bits() & !DIR_BIT; // DIR=0 → drive output
         let raw = match initial {
             Level::High => raw | OUT_BIT,
-            Level::Low  => raw & !OUT_BIT,
+            Level::Low => raw & !OUT_BIT,
         };
         self.reg.write_bits(raw);
         Output { reg: self.reg }
@@ -93,7 +93,7 @@ impl<R: PinReg> Output<R> {
     pub fn set_level(&mut self, level: Level) {
         match level {
             Level::High => self.set_high(),
-            Level::Low  => self.set_low(),
+            Level::Low => self.set_low(),
         }
     }
 
@@ -141,7 +141,11 @@ impl<R: PinReg> Input<R> {
     }
 
     pub fn get_level(&self) -> Level {
-        if self.is_high() { Level::High } else { Level::Low }
+        if self.is_high() {
+            Level::High
+        } else {
+            Level::Low
+        }
     }
 }
 
