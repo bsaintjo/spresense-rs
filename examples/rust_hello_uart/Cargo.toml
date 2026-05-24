@@ -16,4 +16,7 @@ panic-halt  = "1.0.0"
 panic = "abort"
 
 [profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
 panic = "abort"
