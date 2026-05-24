@@ -68,6 +68,20 @@ ROT:
         Right180degrees: [2, ""]
         Right270degrees: [4, ""]
 
+# Make RSR (offset 0x04) writable so the write side (ECR / error-clear) is
+# accessible via the PAC. PL011 spec: read=RSR status, write=ECR clears errors.
+# The existing ROE/RBE/RPE/RFE fields have None/Error enums; making the register
+# read-write lets svd2rust emit safe variant setters (.roe().error() etc.)
+# which the HAL uses to write 0xf (clear all four error stickies).
+UART1:
+  _modify:
+    RSR:
+      access: read-write
+UART2:
+  _modify:
+    RSR:
+      access: read-write
+
 _add:
   GPIO0:
     description: "GPIO Port 0 — GP_* output-enable/data registers"
@@ -162,15 +176,15 @@ _add:
 
   # TOPREG: top-of-chip clock / PMU / oscillator / PLL controller.
   # Base: CXD56_SYS_MIRROR(0x04000000) + 0x00100000 = 0x04100000.
-  # addressBlock covers clock-relevant registers (0x000–0x730) only.
-  # Pin-mux / GP_* registers start at 0x2000 and are in GPIO0 / future patches.
+  # addressBlock covers clock / PMU / IOCELL / IOMD registers (0x000–0x14a0).
+  # GP_* GPIO data registers start at 0x2000 and are in GPIO0.
   # Source: nuttx/arch/arm/src/cxd56xx/hardware/cxd5602_topreg.h
   TOPREG:
     description: "Top-of-chip clock / PMU / oscillator / PLL controller"
     baseAddress: 0x04100000
     addressBlock:
       offset: 0x0
-      size: 0x800
+      size: 0x1500
       usage: "registers"
     registers:
       PWD_CTL:
@@ -1406,6 +1420,184 @@ _add:
         access: read-write
         resetValue: 0x00000000
 
+      # PMU kick register. Write 1 to POWER_CTRL_ON to initiate a power-state
+      # transition; poll PWD_STAT / ANA_PW_STAT to confirm completion.
+      # CXD56_TOPREG_PMU_PW_CTL = CXD56_TOPREG_BASE + 0x0030.
+      # Manual: write-only, bit[0]=POWER_CTRL_ON, bits[31:1] reserved.
+      # SDK: cxd56_clock.c:261 "putreg32(1, CXD56_TOPREG_PMU_PW_CTL)".
+      PMU_PW_CTL:
+        description: "PMU power-supply control request (write-only kick register)"
+        addressOffset: 0x030
+        access: write-only
+        resetValue: 0x00000000
+        fields:
+          POWER_CTRL_ON:
+            description: "Write 1 to request a PMU power-state transition"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL mode-mux for the SYSIOP (COM-bus) pins.
+      # Bits [1:0] per group = mode (0=GPIO, 1=Func1, 2=Func2, 3=Func3).
+      # Group SPI0A [13:12] controls SPI0_CS_X and SPI0_SCK; mode 1 = UART1.
+      # CXD56_TOPREG_IOCSYS_IOMD0 = CXD56_TOPREG_BASE + 0x07c0.
+      # SDK: cxd56_pinconfig.c:53,141,172; GROUP_SPI0A=12.
+      IOCSYS_IOMD0:
+        description: "SYSIOP IO-cell mode-mux register 0"
+        addressOffset: 0x7c0
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          SPI0A:
+            description: "Mode select for SPI0_CS_X / SPI0_SCK (UART1 = Func1)"
+            bitOffset: 12
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (UART1 on SPI0A pins)"
+                value: 1
+              - name: Func2
+                description: "Function 2"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
+
+      # IOCELL pin register for SPI0_CS_X (UART1 TXD when SPI0A=Func1).
+      # CXD56_TOPREG_IO_SPI0_CS_X = CXD56_TOPREG_BASE + 0x0844.
+      # Fields from user manual §I/O-Config Table I/O Configuration-9
+      # (manual lines 3490-3502): LOWEMI[24], PDN[16], PUN[8], ENZI[0].
+      # Reset value 0x01010100 = LOWEMI=1(2mA), PDN=1(normal), PUN=1(normal),
+      # ENZI=0(input disabled).
+      IO_SPI0_CS_X:
+        description: "IOCELL control for SPI0_CS_X / UART1-TXD"
+        addressOffset: 0x844
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL pin register for SPI0_SCK (UART1 RXD when SPI0A=Func1).
+      # CXD56_TOPREG_IO_SPI0_SCK = CXD56_TOPREG_BASE + 0x0848.
+      # Same field layout as IO_SPI0_CS_X; reset 0x01010100.
+      IO_SPI0_SCK:
+        description: "IOCELL control for SPI0_SCK / UART1-RXD"
+        addressOffset: 0x848
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL pin register for UART2_TXD.
+      # CXD56_TOPREG_IO_UART2_TXD = CXD56_TOPREG_BASE + 0x090c.
+      IO_UART2_TXD:
+        description: "IOCELL control for UART2 TXD pin"
+        addressOffset: 0x90c
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL pin register for UART2_RXD.
+      # CXD56_TOPREG_IO_UART2_RXD = CXD56_TOPREG_BASE + 0x0910.
+      IO_UART2_RXD:
+        description: "IOCELL control for UART2 RXD pin"
+        addressOffset: 0x910
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL mode-mux for the APP-domain (IMG) pins.
+      # Group UART2 [3:2] controls the UART2_TXD/RXD pins; mode 1 = UART2.
+      # CXD56_TOPREG_IOCAPP_IOMD = CXD56_TOPREG_BASE + 0x14a0.
+      # SDK: cxd56_pinconfig.c:76,275; GROUP_UART2=2.
+      IOCAPP_IOMD:
+        description: "APP-domain IO-cell mode-mux register"
+        addressOffset: 0x14a0
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          UART2:
+            description: "Mode select for UART2 TXD/RXD pins (UART2 = Func1)"
+            bitOffset: 2
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (UART2)"
+                value: 1
+              - name: Func2
+                description: "Function 2"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
+
   # TOPREG_SUB: APP / GNSS sub-domain clock controller.
   # Base: CXD56_SYS_MIRROR(0x04000000) + 0x00103000 = 0x04103000.
   # Source: nuttx/arch/arm/src/cxd56xx/hardware/cxd5602_topreg.h
@@ -1414,7 +1606,7 @@ _add:
     baseAddress: 0x04103000
     addressBlock:
       offset: 0x0
-      size: 0x1000
+      size: 0x1500
       usage: "registers"
     registers:
       SWRESET_GNSDSP:
@@ -1656,6 +1848,21 @@ _add:
         addressOffset: 0xc28
         access: read-write
         resetValue: 0x00000000
+
+      # Read this register to flush the bus path — the SDK busy_wait() does
+      # getreg32(CXD56_TOPREG_CHIP_ID) for that purpose.
+      # CXD56_TOPREG_CHIP_ID = CXD56_TOPREG_SUB_BASE + 0x1490.
+      # SDK: hardware/cxd5602_topreg.h:397, cxd56_clock.c:246-252.
+      CHIP_ID:
+        description: "Chip identification register (read-only)"
+        addressOffset: 0x1490
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          ID:
+            description: "Chip ID value"
+            bitOffset: 0
+            bitWidth: 32
 
   # TIMER0/TIMER1: ARM PrimeCell SP804 dual-input timers.
   # Base: CXD56_TIMER_BASE = 0xE0043000 (TIMER0), +0x0020 (TIMER1).

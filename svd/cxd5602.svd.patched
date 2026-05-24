@@ -1814,7 +1814,7 @@
           <description>Receive Status and Clear Register</description>
           <addressOffset>0x4</addressOffset>
           <size>0x20</size>
-          <access>read-only</access>
+          <access>read-write</access>
           <fields>
             <field>
               <name>ROE</name>
@@ -2821,7 +2821,7 @@
           <description>Receive Status and Clear Register</description>
           <addressOffset>0x4</addressOffset>
           <size>0x20</size>
-          <access>read-only</access>
+          <access>read-write</access>
           <fields>
             <field>
               <name>ROE</name>
@@ -6405,7 +6405,7 @@
       <baseAddress>0x04100000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x800</size>
+        <size>0x1500</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
@@ -7520,6 +7520,183 @@
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
         </register>
+        <register>
+          <name>PMU_PW_CTL</name>
+          <description>PMU power-supply control request (write-only kick register)</description>
+          <addressOffset>0x30</addressOffset>
+          <access>write-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>POWER_CTRL_ON</name>
+              <description>Write 1 to request a PMU power-state transition</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IOCSYS_IOMD0</name>
+          <description>SYSIOP IO-cell mode-mux register 0</description>
+          <addressOffset>0x7C0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SPI0A</name>
+              <description>Mode select for SPI0_CS_X / SPI0_SCK (UART1 = Func1)</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_SPI0_CS_X</name>
+          <description>IOCELL control for SPI0_CS_X / UART1-TXD</description>
+          <addressOffset>0x844</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_SPI0_SCK</name>
+          <description>IOCELL control for SPI0_SCK / UART1-RXD</description>
+          <addressOffset>0x848</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_UART2_TXD</name>
+          <description>IOCELL control for UART2 TXD pin</description>
+          <addressOffset>0x90C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_UART2_RXD</name>
+          <description>IOCELL control for UART2 RXD pin</description>
+          <addressOffset>0x910</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IOCAPP_IOMD</name>
+          <description>APP-domain IO-cell mode-mux register</description>
+          <addressOffset>0x14A0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>UART2</name>
+              <description>Mode select for UART2 TXD/RXD pins (UART2 = Func1)</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
@@ -7594,7 +7771,7 @@
       <baseAddress>0x04103000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
-        <size>0x1000</size>
+        <size>0x1500</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
@@ -7770,6 +7947,21 @@
           <addressOffset>0xC28</addressOffset>
           <access>read-write</access>
           <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>CHIP_ID</name>
+          <description>Chip identification register (read-only)</description>
+          <addressOffset>0x1490</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ID</name>
+              <description>Chip ID value</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
         </register>
       </registers>
     </peripheral>
