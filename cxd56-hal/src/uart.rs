@@ -1,15 +1,16 @@
 use crate::clocks::{ClockError, Clocks, PeripheralId};
 use crate::pac;
-use core::fmt;
+use arm_pl011_uart::{DataBits, LineConfig, PL011Registers, Uart as Pl011Uart};
+use core::{fmt, ptr::NonNull};
 use embedded_hal_nb::nb;
-use embedded_hal_nb::serial::{ErrorKind, ErrorType};
+use safe_mmio::UniqueMmioPointer;
+
+pub use arm_pl011_uart::Error as Pl011Error;
 
 #[derive(Debug)]
 pub enum UartError {
-    /// Baud rate divisor would be zero or exceed the 16-bit IBRD register.
-    BadBaud,
-    /// IMG-UART clock could not be enabled.
     Clock(ClockError),
+    Init(Pl011Error),
 }
 
 impl From<ClockError> for UartError {
@@ -57,7 +58,9 @@ impl Default for UartConfig {
 /// Blocking driver for UART2 (the IMG-domain UART connected to the on-board
 /// CP2102N USB-to-serial bridge on the Spresense main board).
 pub struct Uart2 {
-    uart: pac::Uart2,
+    inner: Pl011Uart<'static>,
+    // Kept to enforce singleton ownership — pac::Uart2 cannot be obtained twice.
+    _pac: pac::Uart2,
 }
 
 impl Uart2 {
@@ -74,116 +77,121 @@ impl Uart2 {
 
         let f_uart = clocks.img_uart.to_Hz();
 
-        // PL011 baud-rate divisor: BRD = f_uart / (16 * baud)
-        // Compute as brd_x64 = f_uart * 4 / baud (avoids overflow for typical
-        // embedded clocks; f_uart ≤ 156 MHz fits in u64).
-        let brd_x64 = (f_uart as u64 * 4) / config.baud_rate as u64;
-        let ibrd = (brd_x64 >> 6) as u32;
-        let fbrd = (brd_x64 & 0x3F) as u32;
+        let line_config = LineConfig {
+            data_bits: match config.word_length {
+                WordLength::Eight => DataBits::Bits8,
+                WordLength::Seven => DataBits::Bits7,
+                WordLength::Six => DataBits::Bits6,
+                WordLength::Five => DataBits::Bits5,
+            },
+            parity: match config.parity {
+                Parity::None => arm_pl011_uart::Parity::None,
+                Parity::Even => arm_pl011_uart::Parity::Even,
+                Parity::Odd => arm_pl011_uart::Parity::Odd,
+            },
+            stop_bits: match config.stop_bits {
+                StopBits::One => arm_pl011_uart::StopBits::One,
+                StopBits::Two => arm_pl011_uart::StopBits::Two,
+            },
+        };
 
-        // IBRD must be non-zero (IBRD=0 disables the UART) and fit in 16 bits.
-        if ibrd == 0 || ibrd > 0xFFFF {
-            return Err(UartError::BadBaud);
-        }
+        // SAFETY: pac::Uart2 is the singleton ownership token for this register
+        // block; we consume it (_pac field) to prevent duplicate construction.
+        // pac::Uart2::ptr() is a const fn that returns the chip's fixed UART2
+        // base address (0x0210_3000). The CXD5602 UART register layout is
+        // PL011-compatible (confirmed by matching offsets and bitfield names in
+        // the svd2rust PAC).
+        let base: *mut PL011Registers = pac::Uart2::ptr().cast_mut().cast();
+        let mmio = unsafe { UniqueMmioPointer::new(NonNull::new_unchecked(base)) };
 
-        // Disable UART before reconfiguring (PL011 spec §3.3.4).
-        uart.cr().write(|w| unsafe { w.bits(0) });
+        let mut inner = Pl011Uart::new(mmio);
+        inner
+            .enable(line_config, config.baud_rate, f_uart)
+            .map_err(UartError::Init)?;
 
-        uart.ibrd()
-            .write(|w| unsafe { w.baud_divint().bits(ibrd as u16) });
-        uart.fbrd()
-            .write(|w| unsafe { w.baud_divfrac().bits(fbrd as u8) });
-
-        // LCR_H must be written after IBRD/FBRD; the write latches the
-        // divisors into the baud-rate generator (PL011 spec §3.3.4).
-        uart.lcr_h().write(|w| {
-            let w = w.fen().enabled(); // enable FIFOs
-            let w = match config.word_length {
-                WordLength::Eight => w.wlen()._8bits(),
-                WordLength::Seven => w.wlen()._7bits(),
-                WordLength::Six => w.wlen()._6bits(),
-                WordLength::Five => w.wlen()._5bits(),
-            };
-            let w = match config.stop_bits {
-                StopBits::One => w.stp2().not_selected(),
-                StopBits::Two => w.stp2().selected(),
-            };
-            match config.parity {
-                Parity::None => w.pen().disabled(),
-                Parity::Even => w.pen().enabled().eps().even_parity(),
-                Parity::Odd => w.pen().enabled().eps().odd_parity(),
-            }
-        });
-
-        uart.cr()
-            .write(|w| w.uarten().enabled().txe().enabled().rxe().enabled());
-
-        Ok(Self { uart })
+        Ok(Self { inner, _pac: uart })
     }
 
     /// Transmit one byte, blocking until the TX FIFO has room.
     #[inline]
     pub fn write_byte(&mut self, byte: u8) {
-        while self.uart.fr().read().txff().bit_is_set() {}
-        self.uart
-            .dr()
-            .write(|w| unsafe { w.bits(byte as u32) });
+        while self.inner.is_tx_fifo_full() {}
+        self.inner.write_word(byte);
     }
 
     /// Read one byte if the RX FIFO is non-empty, otherwise return `None`.
+    /// Silently discards receive errors; use the `embedded-hal-nb` or
+    /// `embedded-io` traits if error reporting is needed.
     #[inline]
     pub fn read_byte(&mut self) -> Option<u8> {
-        if self.uart.fr().read().rxfe().bit_is_set() {
-            None
-        } else {
-            Some(self.uart.dr().read().bits() as u8)
-        }
+        self.inner.read_word().ok().flatten()
     }
 
     /// Block until the TX FIFO and shift register are empty.
     #[inline]
     pub fn flush(&mut self) {
-        while self.uart.fr().read().busy().bit_is_set() {}
+        while self.inner.is_busy() {}
     }
 }
 
 impl fmt::Write for Uart2 {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        for byte in s.bytes() {
-            self.write_byte(byte);
-        }
-        Ok(())
+        self.inner.write_str(s)
     }
 }
 
-impl ErrorType for Uart2 {
-    type Error = ErrorKind;
+// embedded-hal-nb trait impls — forwarded to arm_pl011_uart::Uart.
+
+impl embedded_hal_nb::serial::ErrorType for Uart2 {
+    type Error = Pl011Error;
 }
 
 impl embedded_hal_nb::serial::Read<u8> for Uart2 {
     fn read(&mut self) -> nb::Result<u8, Self::Error> {
-        match self.read_byte() {
-            Some(b) => Ok(b),
-            None => Err(nb::Error::WouldBlock),
-        }
+        embedded_hal_nb::serial::Read::read(&mut self.inner)
     }
 }
 
 impl embedded_hal_nb::serial::Write<u8> for Uart2 {
     fn write(&mut self, word: u8) -> nb::Result<(), Self::Error> {
-        if self.uart.fr().read().txff().bit_is_set() {
-            Err(nb::Error::WouldBlock)
-        } else {
-            self.uart.dr().write(|w| unsafe { w.bits(word as u32) });
-            Ok(())
-        }
+        embedded_hal_nb::serial::Write::write(&mut self.inner, word)
     }
 
     fn flush(&mut self) -> nb::Result<(), Self::Error> {
-        if self.uart.fr().read().busy().bit_is_set() {
-            Err(nb::Error::WouldBlock)
-        } else {
-            Ok(())
-        }
+        embedded_hal_nb::serial::Write::flush(&mut self.inner)
+    }
+}
+
+// embedded-io trait impls — forwarded to arm_pl011_uart::Uart.
+
+impl embedded_io::ErrorType for Uart2 {
+    type Error = Pl011Error;
+}
+
+impl embedded_io::Read for Uart2 {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        embedded_io::Read::read(&mut self.inner, buf)
+    }
+}
+
+impl embedded_io::Write for Uart2 {
+    fn write(&mut self, buf: &[u8]) -> Result<usize, Self::Error> {
+        embedded_io::Write::write(&mut self.inner, buf)
+    }
+
+    fn flush(&mut self) -> Result<(), Self::Error> {
+        embedded_io::Write::flush(&mut self.inner)
+    }
+}
+
+impl embedded_io::ReadReady for Uart2 {
+    fn read_ready(&mut self) -> Result<bool, Self::Error> {
+        embedded_io::ReadReady::read_ready(&mut self.inner)
+    }
+}
+
+impl embedded_io::WriteReady for Uart2 {
+    fn write_ready(&mut self) -> Result<bool, Self::Error> {
+        embedded_io::WriteReady::write_ready(&mut self.inner)
     }
 }
