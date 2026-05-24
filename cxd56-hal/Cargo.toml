@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
+default = ["rt"]
 rt = ["cxd56-pac-svd2rust/rt"]
 critical-section = ["cxd56-pac-svd2rust/critical-section"]
 
