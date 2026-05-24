@@ -1,4 +1,4 @@
-use crate::clocks::{ClockError, Clocks, PeripheralId};
+use crate::clocks::{buses, ClockError, Clocks, PeripheralId};
 use crate::pac;
 use core::fmt;
 use embedded_hal_nb::nb;
@@ -54,6 +54,30 @@ impl Default for UartConfig {
     }
 }
 
+// TODO(iopad): factor into a dedicated iopad module once SPI4/SDIO/I2S need it.
+// Register details from CXD5602 user manual §3.1 (pp. 66, 71-74):
+//   IO_UART2_TXD  = 0x0410_090C  (P1n_00, pin 67)
+//   IO_UART2_RXD  = 0x0410_0910  (P1n_01, pin 68)
+//   IOCAPP_IOMD   = 0x0410_14A0  (bits [3:2] = UART2 mode field)
+//   IOCELL layout: ENZI[0]=input-en, PUN[8]=pullup(0=on), PDN[16]=pulldown(0=on), LOWEMI[24]=drive(1=2mA)
+fn uart2_pinmux() {
+    const IO_UART2_TXD: *mut u32 = 0x0410_090C as *mut u32;
+    const IO_UART2_RXD: *mut u32 = 0x0410_0910 as *mut u32;
+    const IOCAPP_IOMD:  *mut u32 = 0x0410_14A0 as *mut u32;
+    const UART2_FIELD_MASK: u32  = 0x3 << 2; // bits [3:2]
+    const UART2_MODE_ALT1: u32   = 0x1 << 2; // mode=1 → UART2 alt function
+
+    unsafe {
+        // TXD: 2mA drive, no pull, input disabled (0x01010100)
+        core::ptr::write_volatile(IO_UART2_TXD, 0x0101_0100);
+        // RXD: 2mA drive, no pull, input enabled  (0x01010101)
+        core::ptr::write_volatile(IO_UART2_RXD, 0x0101_0101);
+        // Switch both pads from GPIO (mode 0) to UART2 (mode 1)
+        let m = core::ptr::read_volatile(IOCAPP_IOMD);
+        core::ptr::write_volatile(IOCAPP_IOMD, (m & !UART2_FIELD_MASK) | UART2_MODE_ALT1);
+    }
+}
+
 /// Blocking driver for UART2 (the IMG-domain UART connected to the on-board
 /// CP2102N USB-to-serial bridge on the Spresense main board).
 pub struct Uart2 {
@@ -71,8 +95,12 @@ impl Uart2 {
         config: UartConfig,
     ) -> Result<Self, UartError> {
         PeripheralId::ImgUart.enable()?;
+        uart2_pinmux();
 
-        let f_uart = clocks.img_uart.to_Hz();
+        // img_uart_enable() just programmed GEAR_IMG_UART = 0x0001_0004.
+        // clocks.img_uart was snapshotted at freeze() time, before that write,
+        // so re-derive from the live gear register using the stable APPSMP value.
+        let f_uart = buses::img_uart_hz(clocks.appsmp.to_Hz());
 
         // PL011 baud-rate divisor: BRD = f_uart / (16 * baud)
         // Compute as brd_x64 = f_uart * 4 / baud (avoids overflow for typical
