@@ -82,29 +82,23 @@ fn delay_us(us: u32) {
     cortex_m::asm::delay(cycles.max(1));
 }
 
-/// Read the CHIP_ID once to flush the bus path — used by the SYSIOP_SUB
-/// enable-reset-enable dance (`cxd56_clock.c:246-252`). `CHIP_ID` lives in
-/// `topreg` at offset 0x00 (`CXD56_TOPREG_CHIP_ID`).
+/// Read `CHIP_ID` once per iteration to flush the bus path — used by the
+/// SYSIOP_SUB enable-reset-enable dance (`cxd56_clock.c:246-252`).
+/// `CXD56_TOPREG_CHIP_ID = CXD56_TOPREG_SUB_BASE + 0x1490`.
 pub(crate) fn busy_wait(cnt: u32) {
-    let p = pac::Topreg::PTR as *const u32;
+    let sub = unsafe { &*pac::TopregSub::PTR };
     for _ in 0..cnt {
-        unsafe { core::ptr::read_volatile(p) };
+        let _ = sub.chip_id().read().bits();
     }
 }
 
 /// Drive PMU_PW_CTL=1 in a loop until `(reg & mask) == want`. Returns
 /// [`ClockError::PmuTimeout`] after 20000 unproductive iterations.
 /// Mirrors `do_power_control` (`cxd56_clock.c:254`).
-///
-/// The kick register is `PMU_PW_CTL` at `CXD56_TOPREG_BASE + 0x0030`
-/// (`0x0410_0030`). The SVD/PAC omits this register (it falls inside
-/// `_reserved3`); use a direct volatile write instead.
 fn kick_and_poll(read: impl Fn() -> u32, mask: u32, want: u32) -> Result<(), ClockError> {
-    // CXD56_TOPREG_PMU_PW_CTL = CXD56_TOPREG_BASE + 0x0030 = 0x0410_0030
-    // NuttX cxd56_clock.c:261 — "putreg32(1, CXD56_TOPREG_PMU_PW_CTL)"
-    const PMU_PW_CTL: *mut u32 = 0x0410_0030 as *mut u32;
+    let topreg = unsafe { &*pac::Topreg::PTR };
     for _ in 0..POWER_CONTROL_RETRY {
-        unsafe { core::ptr::write_volatile(PMU_PW_CTL, 1) };
+        topreg.pmu_pw_ctl().write(|w| w.power_ctrl_on().set_bit());
         delay_us(KICK_DELAY_US);
         if read() & mask == want {
             delay_us(SETTLE_DELAY_US);
