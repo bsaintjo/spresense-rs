@@ -57,46 +57,44 @@ impl Default for UartConfig {
 // TODO(iopad): factor pin-mux helpers into a dedicated iopad module once SPI4/SDIO/I2S need it.
 
 // UART1 — debug console UART in the SYSIOP_SUB (COM) domain.
-// TXD = SPI0_CS_X (pin 17) at TOPREG+0x0844
-// RXD = SPI0_SCK  (pin 18) at TOPREG+0x0848
-// Mode mux: IOCSYS_IOMD0 (TOPREG+0x07c0), GROUP_SPI0A shift = 12.
+// TXD = SPI0_CS_X (pin 17): IO_SPI0_CS_X (TOPREG+0x844), IOCSYS_IOMD0 SPI0A=1.
+// RXD = SPI0_SCK  (pin 18): IO_SPI0_SCK  (TOPREG+0x848), input enabled.
 // Reference: cxd5602_pinconfig.h:510, cxd5602_topreg.h:149,159-160,
 //            cxd56_pinconfig.c:53,139-141,391.
 fn uart1_pinmux() {
-    const IO_SPI0_CS_X: *mut u32 = 0x0410_0844 as *mut u32; // UART1 TXD
-    const IO_SPI0_SCK:  *mut u32 = 0x0410_0848 as *mut u32; // UART1 RXD
-    const IOCSYS_IOMD0: *mut u32 = 0x0410_07c0 as *mut u32;
-    const SPI0A_FIELD_MASK: u32  = 0x3 << 12;
-    const SPI0A_MODE_UART1: u32  = 0x1 << 12;
-
-    unsafe {
-        // TXD: DRIVE_NORMAL(1<<24), FLOAT((1<<16)|(1<<8)), input disabled
-        core::ptr::write_volatile(IO_SPI0_CS_X, 0x0101_0100);
-        // RXD: same + input enabled
-        core::ptr::write_volatile(IO_SPI0_SCK, 0x0101_0101);
-        let m = core::ptr::read_volatile(IOCSYS_IOMD0);
-        core::ptr::write_volatile(IOCSYS_IOMD0, (m & !SPI0A_FIELD_MASK) | SPI0A_MODE_UART1);
-    }
+    let topreg = unsafe { &*pac::Topreg::PTR };
+    // TXD: 2mA drive (LOWEMI=1), float (PDN=1, PUN=1), input disabled (ENZI=0).
+    topreg
+        .io_spi0_cs_x()
+        .write(|w| w.lowemi().set_bit().pdn().set_bit().pun().set_bit().enzi().clear_bit());
+    // RXD: same but input enabled (ENZI=1).
+    topreg
+        .io_spi0_sck()
+        .write(|w| w.lowemi().set_bit().pdn().set_bit().pun().set_bit().enzi().set_bit());
+    // SPI0A[13:12] = Func1 → UART1.  FieldWriter<2> needs unsafe bits().
+    topreg
+        .iocsys_iomd0()
+        .modify(|_, w| unsafe { w.spi0a().bits(1) });
 }
 
 // UART2 — IMG-domain UART connected to the extension-board JP1 header (pins 2-5).
-// TXD = P1n_00 (pin 67) at TOPREG+0x090C
-// RXD = P1n_01 (pin 68) at TOPREG+0x0910
-// Mode mux: IOCAPP_IOMD (TOPREG+0x14a0), GROUP_UART2 shift = 2.
+// TXD = P1n_00 (pin 67): IO_UART2_TXD (TOPREG+0x90c), IOCAPP_IOMD UART2=1.
+// RXD = P1n_01 (pin 68): IO_UART2_RXD (TOPREG+0x910), input enabled.
 // Reference: CXD5602 user manual §3.1 pp.66,71-74; cxd5602_pinconfig.h:356-357,577.
 fn uart2_pinmux() {
-    const IO_UART2_TXD: *mut u32 = 0x0410_090C as *mut u32;
-    const IO_UART2_RXD: *mut u32 = 0x0410_0910 as *mut u32;
-    const IOCAPP_IOMD:  *mut u32 = 0x0410_14A0 as *mut u32;
-    const UART2_FIELD_MASK: u32  = 0x3 << 2;
-    const UART2_MODE_ALT1: u32   = 0x1 << 2;
-
-    unsafe {
-        core::ptr::write_volatile(IO_UART2_TXD, 0x0101_0100);
-        core::ptr::write_volatile(IO_UART2_RXD, 0x0101_0101);
-        let m = core::ptr::read_volatile(IOCAPP_IOMD);
-        core::ptr::write_volatile(IOCAPP_IOMD, (m & !UART2_FIELD_MASK) | UART2_MODE_ALT1);
-    }
+    let topreg = unsafe { &*pac::Topreg::PTR };
+    // TXD: 2mA drive (LOWEMI=1), float (PDN=1, PUN=1), input disabled (ENZI=0).
+    topreg
+        .io_uart2_txd()
+        .write(|w| w.lowemi().set_bit().pdn().set_bit().pun().set_bit().enzi().clear_bit());
+    // RXD: same but input enabled (ENZI=1).
+    topreg
+        .io_uart2_rxd()
+        .write(|w| w.lowemi().set_bit().pdn().set_bit().pun().set_bit().enzi().set_bit());
+    // UART2[3:2] = Func1 → UART2.  FieldWriter<2> needs unsafe bits().
+    topreg
+        .iocapp_iomd()
+        .modify(|_, w| unsafe { w.uart2().bits(1) });
 }
 
 /// Compute baud-rate divisors from a clock frequency. Returns `(ibrd, fbrd)` or
@@ -147,16 +145,13 @@ impl Uart1 {
         // Disable UART before reconfiguring (PL011 spec §3.3.4).
         uart.cr().write(|w| unsafe { w.bits(0) });
         uart.lcr_h().write(|w| unsafe { w.bits(0) });
-        // Clear DMA enables. ECR (error clear, write-only at offset 0x004) is
-        // the write side of the RSR register; PAC models RSR as read-only so use
-        // a raw write. Mirrors cxd56_serial.c:478-479.
+        // Clear DMA enables; write RSR/ECR (offset 0x004) to clear the four
+        // receive-error stickies (OE/BE/PE/FE). PL011 spec: offset 0x004 is
+        // RSR on read and ECR on write; writing all four error bits clears them.
+        // Mirrors cxd56_serial.c:478-479.
         uart.dmacr().write(|w| unsafe { w.bits(0) });
-        unsafe {
-            core::ptr::write_volatile(
-                (pac::Uart1::PTR as usize + 0x004) as *mut u32,
-                0xf,
-            );
-        }
+        uart.rsr()
+            .write(|w| w.roe().error().rbe().error().rpe().error().rfe().error());
 
         uart.ibrd()
             .write(|w| unsafe { w.baud_divint().bits(ibrd) });
@@ -289,16 +284,11 @@ impl Uart2 {
         // Disable UART before reconfiguring (PL011 spec §3.3.4).
         uart.cr().write(|w| unsafe { w.bits(0) });
         uart.lcr_h().write(|w| unsafe { w.bits(0) });
-        // Clear DMA enables. ECR (error clear, write-only at offset 0x004) is
-        // the write side of the RSR register; PAC models RSR as read-only so use
-        // a raw write. Mirrors cxd56_serial.c:478-479.
+        // Clear DMA enables; write RSR/ECR to clear receive-error stickies.
+        // Mirrors cxd56_serial.c:478-479.
         uart.dmacr().write(|w| unsafe { w.bits(0) });
-        unsafe {
-            core::ptr::write_volatile(
-                (pac::Uart2::PTR as usize + 0x004) as *mut u32,
-                0xf,
-            );
-        }
+        uart.rsr()
+            .write(|w| w.roe().error().rbe().error().rpe().error().rfe().error());
 
         uart.ibrd()
             .write(|w| unsafe { w.baud_divint().bits(ibrd) });
