@@ -276,6 +276,21 @@ impl embedded_io::Write for Uart1 {
     }
 }
 
+impl embedded_io::Read for Uart1 {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        while self.uart.fr().read().rxfe().bit_is_set() {}
+        let mut count = 0;
+        while count < buf.len() {
+            if self.uart.fr().read().rxfe().bit_is_set() {
+                break;
+            }
+            buf[count] = self.uart.dr().read().bits() as u8;
+            count += 1;
+        }
+        Ok(count)
+    }
+}
+
 /// Blocking driver for UART2 (the IMG-domain UART connected to JP1 pins 2-5 on
 /// the Spresense extension/Arduino header). Note: the on-board CP2102N USB-serial
 /// bridge is wired to UART1, not UART2.
@@ -432,5 +447,20 @@ impl embedded_io::Write for Uart2 {
             <Self as embedded_hal_nb::serial::Write<u8>>::flush(self)
         ).is_err() {}
         Ok(())
+    }
+}
+
+impl embedded_io::Read for Uart2 {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        while self.uart.fr().read().rxfe().bit_is_set() {}
+        let mut count = 0;
+        while count < buf.len() {
+            if self.uart.fr().read().rxfe().bit_is_set() {
+                break;
+            }
+            buf[count] = self.uart.dr().read().bits() as u8;
+            count += 1;
+        }
+        Ok(count)
     }
 }
