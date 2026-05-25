@@ -13,29 +13,9 @@ use cxd56_hal::pac;
 use cxd56_hal::uart::{Uart1, UartConfig};
 use cxd56_hal::{
     clocks::{Config, RccExt},
-    pac::gpio0::pin97::Pin97Spec,
+    delay::Delay,
 };
-use cxd56_hal::{delay::Delay, gpio::Output, pac::generic::Reg};
-
-fn sos(led: &mut Output<Reg<Pin97Spec>>, delay: &mut Delay) {
-    for _ in 0..3 {
-        led.set_high();
-        delay.delay_ms(150);
-        led.set_low();
-        delay.delay_ms(150);
-    }
-    delay.delay_ms(1000);
-}
-
-fn strobe(led: &mut Output<Reg<Pin97Spec>>, delay: &mut Delay) {
-    for _ in 0..10 {
-        led.set_high();
-        delay.delay_ms(50);
-        led.set_low();
-        delay.delay_ms(50);
-    }
-    delay.delay_ms(500);
-}
+use cxd56_blink_debug::{sos, strobe};
 
 #[entry]
 fn main() -> ! {
