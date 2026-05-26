@@ -156,12 +156,12 @@ For information about available fields see [`mod@intr_stat`] module*/
 pub type IntrStat = crate::Reg<intr_stat::IntrStatSpec>;
 ///Interrupt status register
 pub mod intr_stat;
-pub use IntrStat as IntrEnable;
 pub use intr_stat as intr_enable;
-pub use IntrStat as IntrDisable;
 pub use intr_stat as intr_disable;
-pub use IntrStat as IntrClear;
 pub use intr_stat as intr_clear;
+pub use IntrStat as IntrEnable;
+pub use IntrStat as IntrDisable;
+pub use IntrStat as IntrClear;
 /**DIN_ENABLE (rw) register accessor: Input data enable register
 
 You can [`read`](crate::Reg::read) this register and get [`din_enable::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`din_enable::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).
