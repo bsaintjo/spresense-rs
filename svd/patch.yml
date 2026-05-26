@@ -173,6 +173,123 @@ _add:
               - name: High
                 description: ""
                 value: 1
+      PIN98:
+        description: "GPIO APP pin 98 — I2S1_LRCK / LED1 on Spresense main board"
+        addressOffset: 0x16C
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      PIN99:
+        description: "GPIO APP pin 99 — I2S1_DATA_IN / LED2 on Spresense main board"
+        addressOffset: 0x170
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      PIN100:
+        description: "GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board"
+        addressOffset: 0x174
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
 
   # TOPREG: top-of-chip clock / PMU / oscillator / PLL controller.
   # Base: CXD56_SYS_MIRROR(0x04000000) + 0x00100000 = 0x04100000.

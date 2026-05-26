@@ -7763,6 +7763,87 @@
             </field>
           </fields>
         </register>
+        <register>
+          <name>PIN98</name>
+          <description>GPIO APP pin 98 — I2S1_LRCK / LED1 on Spresense main board</description>
+          <addressOffset>0x16C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIN99</name>
+          <description>GPIO APP pin 99 — I2S1_DATA_IN / LED2 on Spresense main board</description>
+          <addressOffset>0x170</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PIN100</name>
+          <description>GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board</description>
+          <addressOffset>0x174</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
       </registers>
     </peripheral>
     <peripheral>
