@@ -47,7 +47,7 @@ static S1: [u8; 256] = [
 // GF(2^8) multiply-by-2; reduction polynomial x^8 + x^4 + x^3 + x^2 + 1 (0x11d)
 fn mul2(x: u8) -> u8 {
     let x = if x & 0x80 != 0 { x ^ 0x0e } else { x };
-    (x << 1) | (x >> 7)
+    x.rotate_left(1)
 }
 
 fn mul4(x: u8) -> u8 {
@@ -278,7 +278,7 @@ impl Cipher {
 
     // data must be 16-byte aligned; returns None on misalignment
     pub fn calc_cmac(&mut self, data: &[u8]) -> Option<[u8; 16]> {
-        if data.len() % 16 != 0 {
+        if !data.len().is_multiple_of(16) {
             return None;
         }
         let rounds = 18;

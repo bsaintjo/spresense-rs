@@ -7,13 +7,13 @@ impl GP_I2C4_BCK {
     #[must_use]
     #[inline(always)]
     pub const fn IN(&self) -> bool {
-        let val = (self.0 >> 0usize) & 0x01;
+        let val = self.0 & 0x01;
         val != 0
     }
     ///Sampled pin level (read).
     #[inline(always)]
     pub const fn set_IN(&mut self, val: bool) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize)) | ((val as u32) & 0x01);
     }
     ///Output data.
     #[must_use]
@@ -76,13 +76,13 @@ impl PIN97 {
     #[must_use]
     #[inline(always)]
     pub const fn IN(&self) -> bool {
-        let val = (self.0 >> 0usize) & 0x01;
+        let val = self.0 & 0x01;
         val != 0
     }
     ///Sampled pin level (read).
     #[inline(always)]
     pub const fn set_IN(&mut self, val: bool) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+        self.0 = (self.0 & !(0x01 << 0usize)) | ((val as u32) & 0x01);
     }
     ///Output data.
     #[must_use]

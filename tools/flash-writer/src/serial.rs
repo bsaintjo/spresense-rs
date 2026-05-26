@@ -70,7 +70,7 @@ impl Serial {
     pub fn set_baud(&mut self, rate: u32) -> Result<(), FlashError> {
         self.port
             .set_baud_rate(rate)
-            .map_err(|e| FlashError::Io(io::Error::new(io::ErrorKind::Other, e.to_string())))
+            .map_err(|e| FlashError::Io(io::Error::other(e.to_string())))
     }
 }
 

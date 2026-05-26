@@ -180,8 +180,7 @@ fn build(cli: &Cli, artifact_name: &str) -> Result<PathBuf> {
     for message in Message::parse_stream(BufReader::new(stdout)) {
         match message.context("reading cargo JSON stream")? {
             Message::CompilerArtifact(art)
-                if art.target.name == artifact_name
-                    && art.target.kind.iter().any(|k| *k == expected_kind) =>
+                if art.target.name == artifact_name && art.target.kind.contains(&expected_kind) =>
             {
                 if let Some(exe) = art.executable {
                     elf_path = Some(exe.into_std_path_buf());
