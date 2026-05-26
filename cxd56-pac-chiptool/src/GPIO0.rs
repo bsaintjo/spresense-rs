@@ -24,5 +24,20 @@ impl GPIO0 {
     pub const fn PIN97(self) -> crate::common::Reg<regs::PIN97, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0168usize) as _) }
     }
+    ///GPIO APP pin 98 — I2S1_LRCK / LED1 on Spresense main board.
+    #[inline(always)]
+    pub const fn PIN98(self) -> crate::common::Reg<regs::PIN98, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x016cusize) as _) }
+    }
+    ///GPIO APP pin 99 — I2S1_DATA_IN / LED2 on Spresense main board.
+    #[inline(always)]
+    pub const fn PIN99(self) -> crate::common::Reg<regs::PIN99, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0170usize) as _) }
+    }
+    ///GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board.
+    #[inline(always)]
+    pub const fn PIN100(self) -> crate::common::Reg<regs::PIN100, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0174usize) as _) }
+    }
 }
 pub mod regs;

@@ -7,13 +7,13 @@ impl GP_I2C4_BCK {
     #[must_use]
     #[inline(always)]
     pub const fn IN(&self) -> bool {
-        let val = self.0 & 0x01;
+        let val = (self.0 >> 0usize) & 0x01;
         val != 0
     }
     ///Sampled pin level (read).
     #[inline(always)]
     pub const fn set_IN(&mut self, val: bool) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | ((val as u32) & 0x01);
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
     }
     ///Output data.
     #[must_use]
@@ -67,6 +67,75 @@ impl defmt::Format for GP_I2C4_BCK {
         )
     }
 }
+///GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PIN100(pub u32);
+impl PIN100 {
+    ///Sampled pin level (read).
+    #[must_use]
+    #[inline(always)]
+    pub const fn IN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Sampled pin level (read).
+    #[inline(always)]
+    pub const fn set_IN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Output data.
+    #[must_use]
+    #[inline(always)]
+    pub const fn OUT(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Output data.
+    #[inline(always)]
+    pub const fn set_OUT(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Output enable, active-low (0 = drive output, 1 = high-Z input).
+    #[must_use]
+    #[inline(always)]
+    pub const fn DIR(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Output enable, active-low (0 = drive output, 1 = high-Z input).
+    #[inline(always)]
+    pub const fn set_DIR(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+}
+impl Default for PIN100 {
+    #[inline(always)]
+    fn default() -> PIN100 {
+        PIN100(0)
+    }
+}
+impl core::fmt::Debug for PIN100 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PIN100")
+            .field("IN", &self.IN())
+            .field("OUT", &self.OUT())
+            .field("DIR", &self.DIR())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PIN100 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PIN100 {{ IN: {=bool:?}, OUT: {=bool:?}, DIR: {=bool:?} }}",
+            self.IN(),
+            self.OUT(),
+            self.DIR()
+        )
+    }
+}
 ///GPIO APP pin 97 — I2S1_BCK / LED0 on Spresense main board.
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -76,13 +145,13 @@ impl PIN97 {
     #[must_use]
     #[inline(always)]
     pub const fn IN(&self) -> bool {
-        let val = self.0 & 0x01;
+        let val = (self.0 >> 0usize) & 0x01;
         val != 0
     }
     ///Sampled pin level (read).
     #[inline(always)]
     pub const fn set_IN(&mut self, val: bool) {
-        self.0 = (self.0 & !(0x01 << 0usize)) | ((val as u32) & 0x01);
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
     }
     ///Output data.
     #[must_use]
@@ -130,6 +199,144 @@ impl defmt::Format for PIN97 {
         defmt::write!(
             f,
             "PIN97 {{ IN: {=bool:?}, OUT: {=bool:?}, DIR: {=bool:?} }}",
+            self.IN(),
+            self.OUT(),
+            self.DIR()
+        )
+    }
+}
+///GPIO APP pin 98 — I2S1_LRCK / LED1 on Spresense main board.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PIN98(pub u32);
+impl PIN98 {
+    ///Sampled pin level (read).
+    #[must_use]
+    #[inline(always)]
+    pub const fn IN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Sampled pin level (read).
+    #[inline(always)]
+    pub const fn set_IN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Output data.
+    #[must_use]
+    #[inline(always)]
+    pub const fn OUT(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Output data.
+    #[inline(always)]
+    pub const fn set_OUT(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Output enable, active-low (0 = drive output, 1 = high-Z input).
+    #[must_use]
+    #[inline(always)]
+    pub const fn DIR(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Output enable, active-low (0 = drive output, 1 = high-Z input).
+    #[inline(always)]
+    pub const fn set_DIR(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+}
+impl Default for PIN98 {
+    #[inline(always)]
+    fn default() -> PIN98 {
+        PIN98(0)
+    }
+}
+impl core::fmt::Debug for PIN98 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PIN98")
+            .field("IN", &self.IN())
+            .field("OUT", &self.OUT())
+            .field("DIR", &self.DIR())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PIN98 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PIN98 {{ IN: {=bool:?}, OUT: {=bool:?}, DIR: {=bool:?} }}",
+            self.IN(),
+            self.OUT(),
+            self.DIR()
+        )
+    }
+}
+///GPIO APP pin 99 — I2S1_DATA_IN / LED2 on Spresense main board.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PIN99(pub u32);
+impl PIN99 {
+    ///Sampled pin level (read).
+    #[must_use]
+    #[inline(always)]
+    pub const fn IN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Sampled pin level (read).
+    #[inline(always)]
+    pub const fn set_IN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Output data.
+    #[must_use]
+    #[inline(always)]
+    pub const fn OUT(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Output data.
+    #[inline(always)]
+    pub const fn set_OUT(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Output enable, active-low (0 = drive output, 1 = high-Z input).
+    #[must_use]
+    #[inline(always)]
+    pub const fn DIR(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Output enable, active-low (0 = drive output, 1 = high-Z input).
+    #[inline(always)]
+    pub const fn set_DIR(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+}
+impl Default for PIN99 {
+    #[inline(always)]
+    fn default() -> PIN99 {
+        PIN99(0)
+    }
+}
+impl core::fmt::Debug for PIN99 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PIN99")
+            .field("IN", &self.IN())
+            .field("OUT", &self.OUT())
+            .field("DIR", &self.DIR())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PIN99 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PIN99 {{ IN: {=bool:?}, OUT: {=bool:?}, DIR: {=bool:?} }}",
             self.IN(),
             self.OUT(),
             self.DIR()
