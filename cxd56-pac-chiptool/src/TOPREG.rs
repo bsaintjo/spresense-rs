@@ -29,6 +29,11 @@ impl TOPREG {
     pub const fn ANA_EN_CTL(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x08usize) as _) }
     }
+    ///PMU power-supply control request (write-only kick register).
+    #[inline(always)]
+    pub const fn PMU_PW_CTL(self) -> crate::common::Reg<regs::PMU_PW_CTL, crate::common::W> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x30usize) as _) }
+    }
     ///Per-domain power reset control.
     #[inline(always)]
     pub const fn PWD_RESET0(self) -> crate::common::Reg<u32, crate::common::RW> {
@@ -248,6 +253,36 @@ impl TOPREG {
     #[inline(always)]
     pub const fn RTC0_CTL(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0730usize) as _) }
+    }
+    ///SYSIOP IO-cell mode-mux register 0.
+    #[inline(always)]
+    pub const fn IOCSYS_IOMD0(self) -> crate::common::Reg<regs::IOCSYS_IOMD0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x07c0usize) as _) }
+    }
+    ///IOCELL control for SPI0_CS_X / UART1-TXD.
+    #[inline(always)]
+    pub const fn IO_SPI0_CS_X(self) -> crate::common::Reg<regs::IO_SPI0_CS_X, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0844usize) as _) }
+    }
+    ///IOCELL control for SPI0_SCK / UART1-RXD.
+    #[inline(always)]
+    pub const fn IO_SPI0_SCK(self) -> crate::common::Reg<regs::IO_SPI0_SCK, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0848usize) as _) }
+    }
+    ///IOCELL control for UART2 TXD pin.
+    #[inline(always)]
+    pub const fn IO_UART2_TXD(self) -> crate::common::Reg<regs::IO_UART2_TXD, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x090cusize) as _) }
+    }
+    ///IOCELL control for UART2 RXD pin.
+    #[inline(always)]
+    pub const fn IO_UART2_RXD(self) -> crate::common::Reg<regs::IO_UART2_RXD, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0910usize) as _) }
+    }
+    ///APP-domain IO-cell mode-mux register.
+    #[inline(always)]
+    pub const fn IOCAPP_IOMD(self) -> crate::common::Reg<regs::IOCAPP_IOMD, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x14a0usize) as _) }
     }
 }
 pub mod regs;

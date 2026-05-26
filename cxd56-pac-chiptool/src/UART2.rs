@@ -20,7 +20,7 @@ impl UART2 {
     }
     ///Receive Status and Clear Register.
     #[inline(always)]
-    pub const fn RSR(self) -> crate::common::Reg<regs::RSR, crate::common::R> {
+    pub const fn RSR(self) -> crate::common::Reg<regs::RSR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x04usize) as _) }
     }
     ///Flags Register.

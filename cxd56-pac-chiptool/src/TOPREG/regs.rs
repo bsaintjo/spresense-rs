@@ -959,6 +959,453 @@ impl defmt::Format for CRG_INT_CLR1 {
         )
     }
 }
+///APP-domain IO-cell mode-mux register.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IOCAPP_IOMD(pub u32);
+impl IOCAPP_IOMD {
+    ///Mode select for UART2 TXD/RXD pins (UART2 = Func1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn UART2(&self) -> u8 {
+        let val = (self.0 >> 2usize) & 0x03;
+        val as u8
+    }
+    ///Mode select for UART2 TXD/RXD pins (UART2 = Func1).
+    #[inline(always)]
+    pub const fn set_UART2(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x03 << 2usize)) | (((val as u32) & 0x03) << 2usize);
+    }
+}
+impl Default for IOCAPP_IOMD {
+    #[inline(always)]
+    fn default() -> IOCAPP_IOMD {
+        IOCAPP_IOMD(0)
+    }
+}
+impl core::fmt::Debug for IOCAPP_IOMD {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IOCAPP_IOMD")
+            .field("UART2", &self.UART2())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IOCAPP_IOMD {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "IOCAPP_IOMD {{ UART2: {=u8:?} }}", self.UART2())
+    }
+}
+///SYSIOP IO-cell mode-mux register 0.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IOCSYS_IOMD0(pub u32);
+impl IOCSYS_IOMD0 {
+    ///Mode select for SPI0_CS_X / SPI0_SCK (UART1 = Func1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SPI0A(&self) -> u8 {
+        let val = (self.0 >> 12usize) & 0x03;
+        val as u8
+    }
+    ///Mode select for SPI0_CS_X / SPI0_SCK (UART1 = Func1).
+    #[inline(always)]
+    pub const fn set_SPI0A(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x03 << 12usize)) | (((val as u32) & 0x03) << 12usize);
+    }
+}
+impl Default for IOCSYS_IOMD0 {
+    #[inline(always)]
+    fn default() -> IOCSYS_IOMD0 {
+        IOCSYS_IOMD0(0)
+    }
+}
+impl core::fmt::Debug for IOCSYS_IOMD0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IOCSYS_IOMD0")
+            .field("SPI0A", &self.SPI0A())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IOCSYS_IOMD0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "IOCSYS_IOMD0 {{ SPI0A: {=u8:?} }}", self.SPI0A())
+    }
+}
+///IOCELL control for SPI0_CS_X / UART1-TXD.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IO_SPI0_CS_X(pub u32);
+impl IO_SPI0_CS_X {
+    ///Input enable: 0=disabled, 1=enabled.
+    #[must_use]
+    #[inline(always)]
+    pub const fn ENZI(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Input enable: 0=disabled, 1=enabled.
+    #[inline(always)]
+    pub const fn set_ENZI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PUN(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PUN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PDN(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PDN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[must_use]
+    #[inline(always)]
+    pub const fn LOWEMI(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[inline(always)]
+    pub const fn set_LOWEMI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+}
+impl Default for IO_SPI0_CS_X {
+    #[inline(always)]
+    fn default() -> IO_SPI0_CS_X {
+        IO_SPI0_CS_X(0)
+    }
+}
+impl core::fmt::Debug for IO_SPI0_CS_X {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IO_SPI0_CS_X")
+            .field("ENZI", &self.ENZI())
+            .field("PUN", &self.PUN())
+            .field("PDN", &self.PDN())
+            .field("LOWEMI", &self.LOWEMI())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IO_SPI0_CS_X {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IO_SPI0_CS_X {{ ENZI: {=bool:?}, PUN: {=bool:?}, PDN: {=bool:?}, LOWEMI: {=bool:?} }}",
+            self.ENZI(),
+            self.PUN(),
+            self.PDN(),
+            self.LOWEMI()
+        )
+    }
+}
+///IOCELL control for SPI0_SCK / UART1-RXD.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IO_SPI0_SCK(pub u32);
+impl IO_SPI0_SCK {
+    ///Input enable: 0=disabled, 1=enabled.
+    #[must_use]
+    #[inline(always)]
+    pub const fn ENZI(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Input enable: 0=disabled, 1=enabled.
+    #[inline(always)]
+    pub const fn set_ENZI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PUN(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PUN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PDN(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PDN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[must_use]
+    #[inline(always)]
+    pub const fn LOWEMI(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[inline(always)]
+    pub const fn set_LOWEMI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+}
+impl Default for IO_SPI0_SCK {
+    #[inline(always)]
+    fn default() -> IO_SPI0_SCK {
+        IO_SPI0_SCK(0)
+    }
+}
+impl core::fmt::Debug for IO_SPI0_SCK {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IO_SPI0_SCK")
+            .field("ENZI", &self.ENZI())
+            .field("PUN", &self.PUN())
+            .field("PDN", &self.PDN())
+            .field("LOWEMI", &self.LOWEMI())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IO_SPI0_SCK {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IO_SPI0_SCK {{ ENZI: {=bool:?}, PUN: {=bool:?}, PDN: {=bool:?}, LOWEMI: {=bool:?} }}",
+            self.ENZI(),
+            self.PUN(),
+            self.PDN(),
+            self.LOWEMI()
+        )
+    }
+}
+///IOCELL control for UART2 RXD pin.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IO_UART2_RXD(pub u32);
+impl IO_UART2_RXD {
+    ///Input enable: 0=disabled, 1=enabled.
+    #[must_use]
+    #[inline(always)]
+    pub const fn ENZI(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Input enable: 0=disabled, 1=enabled.
+    #[inline(always)]
+    pub const fn set_ENZI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PUN(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PUN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PDN(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PDN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[must_use]
+    #[inline(always)]
+    pub const fn LOWEMI(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[inline(always)]
+    pub const fn set_LOWEMI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+}
+impl Default for IO_UART2_RXD {
+    #[inline(always)]
+    fn default() -> IO_UART2_RXD {
+        IO_UART2_RXD(0)
+    }
+}
+impl core::fmt::Debug for IO_UART2_RXD {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IO_UART2_RXD")
+            .field("ENZI", &self.ENZI())
+            .field("PUN", &self.PUN())
+            .field("PDN", &self.PDN())
+            .field("LOWEMI", &self.LOWEMI())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IO_UART2_RXD {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IO_UART2_RXD {{ ENZI: {=bool:?}, PUN: {=bool:?}, PDN: {=bool:?}, LOWEMI: {=bool:?} }}",
+            self.ENZI(),
+            self.PUN(),
+            self.PDN(),
+            self.LOWEMI()
+        )
+    }
+}
+///IOCELL control for UART2 TXD pin.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IO_UART2_TXD(pub u32);
+impl IO_UART2_TXD {
+    ///Input enable: 0=disabled, 1=enabled.
+    #[must_use]
+    #[inline(always)]
+    pub const fn ENZI(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Input enable: 0=disabled, 1=enabled.
+    #[inline(always)]
+    pub const fn set_ENZI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PUN(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    ///Pullup: 0=pullup enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PUN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[must_use]
+    #[inline(always)]
+    pub const fn PDN(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Pulldown: 0=pulldown enabled, 1=normal (off).
+    #[inline(always)]
+    pub const fn set_PDN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[must_use]
+    #[inline(always)]
+    pub const fn LOWEMI(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz).
+    #[inline(always)]
+    pub const fn set_LOWEMI(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+}
+impl Default for IO_UART2_TXD {
+    #[inline(always)]
+    fn default() -> IO_UART2_TXD {
+        IO_UART2_TXD(0)
+    }
+}
+impl core::fmt::Debug for IO_UART2_TXD {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IO_UART2_TXD")
+            .field("ENZI", &self.ENZI())
+            .field("PUN", &self.PUN())
+            .field("PDN", &self.PDN())
+            .field("LOWEMI", &self.LOWEMI())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IO_UART2_TXD {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IO_UART2_TXD {{ ENZI: {=bool:?}, PUN: {=bool:?}, PDN: {=bool:?}, LOWEMI: {=bool:?} }}",
+            self.ENZI(),
+            self.PUN(),
+            self.PDN(),
+            self.LOWEMI()
+        )
+    }
+}
+///PMU power-supply control request (write-only kick register).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_PW_CTL(pub u32);
+impl PMU_PW_CTL {
+    ///Write 1 to request a PMU power-state transition.
+    #[must_use]
+    #[inline(always)]
+    pub const fn POWER_CTRL_ON(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    ///Write 1 to request a PMU power-state transition.
+    #[inline(always)]
+    pub const fn set_POWER_CTRL_ON(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+}
+impl Default for PMU_PW_CTL {
+    #[inline(always)]
+    fn default() -> PMU_PW_CTL {
+        PMU_PW_CTL(0)
+    }
+}
+impl core::fmt::Debug for PMU_PW_CTL {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_PW_CTL")
+            .field("POWER_CTRL_ON", &self.POWER_CTRL_ON())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_PW_CTL {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_PW_CTL {{ POWER_CTRL_ON: {=bool:?} }}",
+            self.POWER_CTRL_ON()
+        )
+    }
+}
 ///Power-domain control (1 = powered on).
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq)]

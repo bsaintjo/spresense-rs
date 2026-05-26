@@ -104,6 +104,41 @@ impl defmt::Format for APP_CKSEL {
         defmt::write!(f, "APP_CKSEL {{ AUD_MCLK: {=u8:?} }}", self.AUD_MCLK())
     }
 }
+///Chip identification register (read-only).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct CHIP_ID(pub u32);
+impl CHIP_ID {
+    ///Chip ID value.
+    #[must_use]
+    #[inline(always)]
+    pub const fn ID(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    ///Chip ID value.
+    #[inline(always)]
+    pub const fn set_ID(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for CHIP_ID {
+    #[inline(always)]
+    fn default() -> CHIP_ID {
+        CHIP_ID(0)
+    }
+}
+impl core::fmt::Debug for CHIP_ID {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("CHIP_ID").field("ID", &self.ID()).finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for CHIP_ID {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "CHIP_ID {{ ID: {=u32:?} }}", self.ID())
+    }
+}
 ///GNSS DSP clock enables.
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq)]

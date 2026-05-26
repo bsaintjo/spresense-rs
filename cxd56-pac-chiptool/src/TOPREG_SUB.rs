@@ -61,5 +61,10 @@ impl TOPREG_SUB {
     pub const fn GNSS_DIV(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0c28usize) as _) }
     }
+    ///Chip identification register (read-only).
+    #[inline(always)]
+    pub const fn CHIP_ID(self) -> crate::common::Reg<regs::CHIP_ID, crate::common::R> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x1490usize) as _) }
+    }
 }
 pub mod regs;
