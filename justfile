@@ -1,13 +1,28 @@
 default:
     @just --list
 
-chiptool:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    mkdir out
-    cd out
-    chiptool generate --svd ../cxd5602.svd.patched --transform ../transform.chiptool.yaml
-    rustfmt lib.rs
-    sed -i '/#!\[no_std]/d' lib.rs
-    form -f -i lib.rs -o src/
-    cp -r src/ ../cxd56-pac-chiptool/
+chiptool: svdtools
+    mkdir -p svd-out
+    chiptool generate \
+        --svd svd/cxd5602.svd.patched \
+        --transform svd/transform.chiptool.yaml \
+        --output svd-out
+    rustfmt svd-out/lib.rs
+    sed -i '/#!\[no_std]/d' svd-out/lib.rs
+    form -f -i svd-out/lib.rs -o svd-out/src/
+    rm -rf cxd56-pac-chiptool/src
+    cp -r svd-out/src/ cxd56-pac-chiptool/
+    rm -rf svd-out
+    cargo fmt
+
+svd2rust: svdtools
+    mkdir -p svd-out
+    svd2rust -i svd/cxd5602.svd.patched -o svd-out
+    form -f -i svd-out/lib.rs -o svd-out/src/
+    rm -rf cxd56-pac-svd2rust/src
+    cp -r svd-out/src/ cxd56-pac-svd2rust/
+    rm -rf svd-out
+    cargo fmt
+
+svdtools:
+    svdtools patch svd/patch.yml svd/cxd5602.svd.patched
