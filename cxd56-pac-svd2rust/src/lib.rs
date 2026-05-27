@@ -22,6 +22,7 @@ extern "C" {
     fn CRG();
     fn UART1();
     fn SPI3();
+    fn I2C0();
     fn SPI0();
     fn _2D();
     fn ROT();
@@ -76,7 +77,7 @@ pub static __INTERRUPTS: [Vector; 135] = [
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
     Vector { _handler: SPI3 },
-    Vector { _reserved: 0 },
+    Vector { _handler: I2C0 },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
@@ -189,6 +190,8 @@ pub enum Interrupt {
     UART1 = 27,
     ///32 - SPI3 interrupt
     SPI3 = 32,
+    ///33 - I2C0 (SCU_I2C0) interrupt
+    I2C0 = 33,
     ///90 - SPI0 interrupt
     SPI0 = 90,
     ///106 - 2D interrupt
@@ -349,6 +352,15 @@ impl core::fmt::Debug for Spi3 {
 }
 ///Synchronous Serial Port Controller (SCU SPI)
 pub use self::spi0 as spi3;
+///DesignWare DW_apb_i2c master controller (SCU_I2C0 / sensor I2C bus)
+pub type I2c0 = crate::Periph<i2c0::RegisterBlock, 0x0418_d400>;
+impl core::fmt::Debug for I2c0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("I2c0").finish()
+    }
+}
+///DesignWare DW_apb_i2c master controller (SCU_I2C0 / sensor I2C bus)
+pub mod i2c0;
 ///Synchronous Serial Port Controller (IMG SPI)
 pub type Spi4 = crate::Periph<spi4::RegisterBlock, 0x0210_3400>;
 impl core::fmt::Debug for Spi4 {
@@ -447,6 +459,8 @@ pub struct Peripherals {
     pub spi0: Spi0,
     ///SPI3
     pub spi3: Spi3,
+    ///I2C0
+    pub i2c0: I2c0,
     ///SPI4
     pub spi4: Spi4,
     ///SPI5
@@ -498,6 +512,7 @@ impl Peripherals {
             dmac3: Dmac3::steal(),
             spi0: Spi0::steal(),
             spi3: Spi3::steal(),
+            i2c0: I2c0::steal(),
             spi4: Spi4::steal(),
             spi5: Spi5::steal(),
             topreg: Topreg::steal(),
