@@ -284,5 +284,34 @@ impl TOPREG {
     pub const fn IOCAPP_IOMD(self) -> crate::common::Reg<regs::IOCAPP_IOMD, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x14a0usize) as _) }
     }
+    ///GPIO SYS pin 1 — I2C4 clock / Arduino D14.
+    #[inline(always)]
+    pub const fn GP_I2C4_BCK(self) -> crate::common::Reg<regs::GP_I2C4_BCK, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x2000usize) as _) }
+    }
+    ///GPIO APP pin 97 — I2S1_BCK / LED0 on Spresense main board.
+    #[inline(always)]
+    pub const fn GP_I2S1_BCK(self) -> crate::common::Reg<regs::GP_I2S1_BCK, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x2168usize) as _) }
+    }
+    ///GPIO APP pin 98 — I2S1_LRCK / LED1 on Spresense main board.
+    #[inline(always)]
+    pub const fn GP_I2S1_LRCK(self) -> crate::common::Reg<regs::GP_I2S1_LRCK, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x216cusize) as _) }
+    }
+    ///GPIO APP pin 99 — I2S1_DATA_IN / LED2 on Spresense main board.
+    #[inline(always)]
+    pub const fn GP_I2S1_DATA_IN(
+        self,
+    ) -> crate::common::Reg<regs::GP_I2S1_DATA_IN, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x2170usize) as _) }
+    }
+    ///GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board.
+    #[inline(always)]
+    pub const fn GP_I2S1_DATA_OUT(
+        self,
+    ) -> crate::common::Reg<regs::GP_I2S1_DATA_OUT, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x2174usize) as _) }
+    }
 }
 pub mod regs;

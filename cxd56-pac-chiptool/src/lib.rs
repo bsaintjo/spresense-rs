@@ -2,6 +2,7 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 //!Peripheral access API (generated using chiptool v0.1.0 (bcf538a 2026-05-18))
+#![no_std]
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Interrupt {
@@ -64,8 +65,6 @@ pub const SPI4: SPI4::SPI4 = unsafe { SPI4::SPI4::from_ptr(0x0210_3400usize as _
 pub const SPI5: SPI4::SPI4 = unsafe { SPI4::SPI4::from_ptr(0x0210_3c00usize as _) };
 ///Top-of-chip clock / PMU / oscillator / PLL controller
 pub const TOPREG: TOPREG::TOPREG = unsafe { TOPREG::TOPREG::from_ptr(0x0410_0000usize as _) };
-///GPIO Port 0 — GP_* output-enable/data registers
-pub const GPIO0: GPIO0::GPIO0 = unsafe { GPIO0::GPIO0::from_ptr(0x0410_2000usize as _) };
 ///APP / GNSS sub-domain clock and reset controller
 pub const TOPREG_SUB: TOPREG_SUB::TOPREG_SUB =
     unsafe { TOPREG_SUB::TOPREG_SUB::from_ptr(0x0410_3000usize as _) };
@@ -102,7 +101,6 @@ pub mod CRG;
 pub mod DMAC1;
 pub mod DMAC3;
 pub mod GE2D;
-pub mod GPIO0;
 pub mod ROT;
 pub mod RTC0;
 pub mod SMP_RAM_CTRL;
