@@ -5757,6 +5757,874 @@
       </interrupt>
     </peripheral>
     <peripheral>
+      <name>I2C0</name>
+      <description>DesignWare DW_apb_i2c master controller (SCU_I2C0 / sensor I2C bus)</description>
+      <baseAddress>0x0418D400</baseAddress>
+      <addressBlock>
+        <offset>0x0</offset>
+        <size>0x100</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <interrupt>
+        <name>I2C0</name>
+        <description>I2C0 (SCU_I2C0) interrupt</description>
+        <value>33</value>
+      </interrupt>
+      <registers>
+        <register>
+          <name>IC_CON</name>
+          <description>I2C control register</description>
+          <addressOffset>0x0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x0000007F</resetValue>
+          <fields>
+            <field>
+              <name>RX_FIFO_FULL_HLD_CTRL</name>
+              <description>Hold bus when RX FIFO is full</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_EMPTY_CTRL</name>
+              <description>Controlled TX_EMPTY interrupt generation</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>STOP_DET_IFADDRESSED</name>
+              <description>Issue STOP_DET only when addressed as slave</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SLAVE_DISABLE</name>
+              <description>Slave mode disable (1 = master only)</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTART_EN</name>
+              <description>Master restart enable</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IC_10BITADDR_MASTER</name>
+              <description>10-bit addressing for master transfers</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IC_10BITADDR_SLAVE</name>
+              <description>10-bit addressing for slave</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SPEED</name>
+              <description>I2C speed mode (1=SS 100k, 2=FS 400k, 3=HS 3.4M)</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>MASTER_MODE</name>
+              <description>Master mode enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TAR</name>
+          <description>I2C target address register</description>
+          <addressOffset>0x4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00001055</resetValue>
+        </register>
+        <register>
+          <name>IC_SAR</name>
+          <description>I2C slave address register</description>
+          <addressOffset>0x8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000055</resetValue>
+        </register>
+        <register>
+          <name>IC_HS_MADDR</name>
+          <description>I2C high speed master mode code address register</description>
+          <addressOffset>0xC</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+        </register>
+        <register>
+          <name>IC_DATA_CMD</name>
+          <description>I2C Rx/Tx data buffer and command register</description>
+          <addressOffset>0x10</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>FIRST_DATA_BYTE</name>
+              <description>First data byte after address phase (read-only)</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTART</name>
+              <description>Issue RESTART before this byte</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>STOP</name>
+              <description>Issue STOP after this byte</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>CMD</name>
+              <description>Transfer direction (0=write, 1=read)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>DAT</name>
+              <description>Data byte for TX, or received byte in RX</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SS_SCL_HCNT</name>
+          <description>Standard speed SCL high period count</description>
+          <addressOffset>0x14</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000190</resetValue>
+        </register>
+        <register>
+          <name>IC_SS_SCL_LCNT</name>
+          <description>Standard speed SCL low period count</description>
+          <addressOffset>0x18</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x000001D6</resetValue>
+        </register>
+        <register>
+          <name>IC_FS_SCL_HCNT</name>
+          <description>Fast speed SCL high period count</description>
+          <addressOffset>0x1C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x0000003C</resetValue>
+        </register>
+        <register>
+          <name>IC_FS_SCL_LCNT</name>
+          <description>Fast speed SCL low period count</description>
+          <addressOffset>0x20</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000082</resetValue>
+        </register>
+        <register>
+          <name>IC_HS_SCL_HCNT</name>
+          <description>High speed SCL high period count</description>
+          <addressOffset>0x24</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000006</resetValue>
+        </register>
+        <register>
+          <name>IC_HS_SCL_LCNT</name>
+          <description>High speed SCL low period count</description>
+          <addressOffset>0x28</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000010</resetValue>
+        </register>
+        <register>
+          <name>IC_INTR_STAT</name>
+          <description>I2C interrupt status register (read-only, masked)</description>
+          <addressOffset>0x2C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MST_ON_HOLD</name>
+              <description>Master on hold</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTART_DET</name>
+              <description>RESTART condition detected</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GEN_CALL</name>
+              <description>General call received</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>START_DET</name>
+              <description>START or RESTART condition detected</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>STOP_DET</name>
+              <description>STOP condition detected</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ACTIVITY</name>
+              <description>I2C activity</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_DONE</name>
+              <description>RX done (slave transmitter finished)</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_ABRT</name>
+              <description>Transmit abort</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RD_REQ</name>
+              <description>Read request (slave mode)</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_EMPTY</name>
+              <description>TX FIFO at or below threshold</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_OVER</name>
+              <description>TX FIFO overflow</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_FULL</name>
+              <description>RX FIFO at or above threshold</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_OVER</name>
+              <description>RX FIFO overflow</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_UNDER</name>
+              <description>RX FIFO underflow</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_INTR_MASK</name>
+          <description>I2C interrupt mask register (1 = unmasked)</description>
+          <addressOffset>0x30</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x000008FF</resetValue>
+          <fields>
+            <field>
+              <name>MST_ON_HOLD</name>
+              <description>Mask MST_ON_HOLD interrupt</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTART_DET</name>
+              <description>Mask RESTART_DET interrupt</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GEN_CALL</name>
+              <description>Mask GEN_CALL interrupt</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>START_DET</name>
+              <description>Mask START_DET interrupt</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>STOP_DET</name>
+              <description>Mask STOP_DET interrupt</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ACTIVITY</name>
+              <description>Mask ACTIVITY interrupt</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_DONE</name>
+              <description>Mask RX_DONE interrupt</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_ABRT</name>
+              <description>Mask TX_ABRT interrupt</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RD_REQ</name>
+              <description>Mask RD_REQ interrupt</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_EMPTY</name>
+              <description>Mask TX_EMPTY interrupt</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_OVER</name>
+              <description>Mask TX_OVER interrupt</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_FULL</name>
+              <description>Mask RX_FULL interrupt</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_OVER</name>
+              <description>Mask RX_OVER interrupt</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_UNDER</name>
+              <description>Mask RX_UNDER interrupt</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_RAW_INTR_STAT</name>
+          <description>I2C raw interrupt status register (read-only, unmasked)</description>
+          <addressOffset>0x34</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MST_ON_HOLD</name>
+              <description>Master on hold (raw)</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RESTART_DET</name>
+              <description>RESTART detected (raw)</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>GEN_CALL</name>
+              <description>General call received (raw)</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>START_DET</name>
+              <description>START detected (raw)</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>STOP_DET</name>
+              <description>STOP detected (raw)</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ACTIVITY</name>
+              <description>I2C activity (raw)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_DONE</name>
+              <description>RX done (raw)</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_ABRT</name>
+              <description>Transmit abort (raw)</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RD_REQ</name>
+              <description>Read request (raw)</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_EMPTY</name>
+              <description>TX FIFO empty (raw)</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TX_OVER</name>
+              <description>TX FIFO overflow (raw)</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_FULL</name>
+              <description>RX FIFO at threshold (raw)</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_OVER</name>
+              <description>RX FIFO overflow (raw)</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RX_UNDER</name>
+              <description>RX FIFO underflow (raw)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_RX_TL</name>
+          <description>I2C receive FIFO threshold register</description>
+          <addressOffset>0x38</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_TX_TL</name>
+          <description>I2C transmit FIFO threshold register</description>
+          <addressOffset>0x3C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_INTR</name>
+          <description>Clear combined interrupt (read-to-clear)</description>
+          <addressOffset>0x40</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_RX_UNDER</name>
+          <description>Clear RX_UNDER interrupt (read-to-clear)</description>
+          <addressOffset>0x44</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_RX_OVER</name>
+          <description>Clear RX_OVER interrupt (read-to-clear)</description>
+          <addressOffset>0x48</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_TX_OVER</name>
+          <description>Clear TX_OVER interrupt (read-to-clear)</description>
+          <addressOffset>0x4C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_RD_REQ</name>
+          <description>Clear RD_REQ interrupt (read-to-clear)</description>
+          <addressOffset>0x50</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_TX_ABRT</name>
+          <description>Clear TX_ABRT interrupt (read-to-clear)</description>
+          <addressOffset>0x54</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_RX_DONE</name>
+          <description>Clear RX_DONE interrupt (read-to-clear)</description>
+          <addressOffset>0x58</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_ACTIVITY</name>
+          <description>Clear ACTIVITY interrupt (read-to-clear)</description>
+          <addressOffset>0x5C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_STOP_DET</name>
+          <description>Clear STOP_DET interrupt (read-to-clear)</description>
+          <addressOffset>0x60</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_START_DET</name>
+          <description>Clear START_DET interrupt (read-to-clear)</description>
+          <addressOffset>0x64</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_CLR_GEN_CALL</name>
+          <description>Clear GEN_CALL interrupt (read-to-clear)</description>
+          <addressOffset>0x68</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_ENABLE</name>
+          <description>I2C enable register</description>
+          <addressOffset>0x6C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ENABLE</name>
+              <description>I2C controller enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_STATUS</name>
+          <description>I2C status register (read-only)</description>
+          <addressOffset>0x70</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000006</resetValue>
+          <fields>
+            <field>
+              <name>SLV_ACTIVITY</name>
+              <description>Slave FSM activity</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>MST_ACTIVITY</name>
+              <description>Master FSM activity</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RFF</name>
+              <description>RX FIFO full</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RFNE</name>
+              <description>RX FIFO not empty</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TFE</name>
+              <description>TX FIFO empty</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>TFNF</name>
+              <description>TX FIFO not full</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ACTIVITY</name>
+              <description>I2C activity</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_TXFLR</name>
+          <description>I2C transmit FIFO level (read-only)</description>
+          <addressOffset>0x74</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_RXFLR</name>
+          <description>I2C receive FIFO level (read-only)</description>
+          <addressOffset>0x78</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_SDA_HOLD</name>
+          <description>I2C SDA hold time length register</description>
+          <addressOffset>0x7C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+        </register>
+        <register>
+          <name>IC_TX_ABRT_SOURCE</name>
+          <description>I2C transmit abort source register (read-only)</description>
+          <addressOffset>0x80</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ABRT_USER_ABRT</name>
+              <description>User abort</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_SLVRD_INTX</name>
+              <description>Slave read request in TX mode</description>
+              <bitOffset>15</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_SLV_ARBLOST</name>
+              <description>Slave arbitration lost</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_SLVFLUSH_TXFIFO</name>
+              <description>Slave flush TX FIFO on read command</description>
+              <bitOffset>13</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_ARB_LOST</name>
+              <description>Arbitration lost</description>
+              <bitOffset>12</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_MASTER_DIS</name>
+              <description>Master disabled during transfer</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_10B_RD_NORSTRT</name>
+              <description>10-bit read without RESTART</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_SBYTE_NORSTRT</name>
+              <description>START byte without RESTART</description>
+              <bitOffset>9</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_HS_NORSTRT</name>
+              <description>HS mode without RESTART</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_SBYTE_ACKDET</name>
+              <description>START byte ACK detected</description>
+              <bitOffset>7</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_HS_ACKDET</name>
+              <description>HS master code ACK detected</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_GCALL_READ</name>
+              <description>General call with read bit set</description>
+              <bitOffset>5</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_GCALL_NOACK</name>
+              <description>General call not ACK'd by any slave</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_TXDATA_NOACK</name>
+              <description>TX data byte not ACK'd</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_10ADDR2_NOACK</name>
+              <description>10-bit address byte 2 not ACK'd</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_10ADDR1_NOACK</name>
+              <description>10-bit address byte 1 not ACK'd</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ABRT_7B_ADDR_NOACK</name>
+              <description>7-bit address not ACK'd</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_SLV_DATA_NACK_ONLY</name>
+          <description>Generate NACK for data bytes in slave mode</description>
+          <addressOffset>0x84</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_DMA_CR</name>
+          <description>I2C DMA control register</description>
+          <addressOffset>0x88</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>TDMAE</name>
+              <description>TX DMA enable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>RDMAE</name>
+              <description>RX DMA enable</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_DMA_TDLR</name>
+          <description>I2C DMA transmit data level register</description>
+          <addressOffset>0x8C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_DMA_RDLR</name>
+          <description>I2C DMA receive data level register</description>
+          <addressOffset>0x90</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_SDA_SETUP</name>
+          <description>I2C SDA setup time register</description>
+          <addressOffset>0x94</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000064</resetValue>
+        </register>
+        <register>
+          <name>IC_ACK_GENERAL_CALL</name>
+          <description>I2C ACK general call register</description>
+          <addressOffset>0x98</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+        </register>
+        <register>
+          <name>IC_ENABLE_STATUS</name>
+          <description>I2C enable status register (read-only)</description>
+          <addressOffset>0x9C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SLV_FIFO_FLUSHED</name>
+              <description>Slave FIFO flushed after controller was disabled</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>SLV_RX_ABORTED</name>
+              <description>Slave RX aborted during disable</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IC_EN</name>
+              <description>I2C enabled (clock-synced reflection of IC_ENABLE.ENABLE)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IC_FS_SPKLEN</name>
+          <description>I2C SS/FS spike suppression limit register</description>
+          <addressOffset>0xA0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+        </register>
+        <register>
+          <name>IC_HS_SPKLEN</name>
+          <description>I2C HS spike suppression limit register</description>
+          <addressOffset>0xA4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000001</resetValue>
+        </register>
+        <register>
+          <name>IC_COMP_PARAM_1</name>
+          <description>Component parameter 1 (read-only, configuration encoded at synthesis)</description>
+          <addressOffset>0xF4</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+        </register>
+        <register>
+          <name>IC_COMP_VERSION</name>
+          <description>Component version register (read-only)</description>
+          <addressOffset>0xF8</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x3230302A</resetValue>
+        </register>
+        <register>
+          <name>IC_COMP_TYPE</name>
+          <description>Component type register (read-only, 0x44570140 = DW_apb_i2c)</description>
+          <addressOffset>0xFC</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x44570140</resetValue>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>SPI4</name>
       <version>1.0</version>
       <description>Synchronous Serial Port Controller (IMG SPI)</description>
@@ -7551,6 +8419,21 @@
           </fields>
         </register>
         <register>
+          <name>IOCSYS_IOMD1</name>
+          <description>SYSIOP IO-cell mode-mux register 1</description>
+          <addressOffset>0x7C4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>I2C0</name>
+              <description>Mode select for I2C0_BCK / I2C0_BDT (I2C0 = Func1)</description>
+              <bitOffset>18</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>IO_SPI0_CS_X</name>
           <description>IOCELL control for SPI0_CS_X / UART1-TXD</description>
           <addressOffset>0x844</addressOffset>
@@ -7587,6 +8470,72 @@
           <name>IO_SPI0_SCK</name>
           <description>IOCELL control for SPI0_SCK / UART1-RXD</description>
           <addressOffset>0x848</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_I2C0_BCK</name>
+          <description>IOCELL control for I2C0_BCK pad</description>
+          <addressOffset>0x8B0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_I2C0_BDT</name>
+          <description>IOCELL control for I2C0_BDT pad</description>
+          <addressOffset>0x8B4</addressOffset>
           <access>read-write</access>
           <resetValue>0x01010100</resetValue>
           <fields>

@@ -82,6 +82,15 @@ UART2:
     RSR:
       access: read-write
 
+# SPI3 (SCU_SPI) inherits addressBlock size 0x1000 from SPI0 via derivedFrom, but the
+# SCU APB sub-blocks are packed on a 0x400 stride (§3.9.3 Figure SCU-80). The 0x1000
+# window swallows SCU_I2C0 (0x0418D400), SCU_I2C1 (0x0418D800), and SCU_ADCIF
+# (0x0418DC00). Trim it to 0x400 — registers end at 0x98 (SLAVETYPE), well within that.
+SPI3:
+  _modify:
+    addressBlock:
+      size: "0x400"
+
 _add:
   # TOPREG: top-of-chip clock / PMU / oscillator / PLL controller.
   # Base: CXD56_SYS_MIRROR(0x04000000) + 0x00100000 = 0x04100000.
@@ -1374,6 +1383,34 @@ _add:
                 description: "Function 3"
                 value: 3
 
+      # IOCELL mode-mux for the SYSIOP I2C0 (sensor bus) pins.
+      # Bits [19:18] = mode for I2C0_BCK / I2C0_BDT; mode 1 = I2C0 function.
+      # CXD56_TOPREG_IOCSYS_IOMD1 = CXD56_TOPREG_BASE + 0x07c4.
+      # User manual §3.1.4; GROUP_I2C0 = bit offset 18.
+      IOCSYS_IOMD1:
+        description: "SYSIOP IO-cell mode-mux register 1"
+        addressOffset: 0x7c4
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          I2C0:
+            description: "Mode select for I2C0_BCK / I2C0_BDT (I2C0 = Func1)"
+            bitOffset: 18
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (I2C0)"
+                value: 1
+              - name: Func2
+                description: "Function 2"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
+
       # IOCELL pin register for SPI0_CS_X (UART1 TXD when SPI0A=Func1).
       # CXD56_TOPREG_IO_SPI0_CS_X = CXD56_TOPREG_BASE + 0x0844.
       # Fields from user manual §I/O-Config Table I/O Configuration-9
@@ -1409,6 +1446,59 @@ _add:
       IO_SPI0_SCK:
         description: "IOCELL control for SPI0_SCK / UART1-RXD"
         addressOffset: 0x848
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL pin register for I2C0_BCK (I2C0 clock pad, sensor bus).
+      # CXD56_TOPREG_IO_I2C0_BCK = CXD56_TOPREG_BASE + 0x08b0.
+      # Reset 0x01010100 = LOWEMI=1(2mA), PDN=1(normal), PUN=1(normal), ENZI=0(disabled).
+      # User manual §3.1.4 Table I/O Configuration.
+      IO_I2C0_BCK:
+        description: "IOCELL control for I2C0_BCK pad"
+        addressOffset: 0x8b0
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+
+      # IOCELL pin register for I2C0_BDT (I2C0 data pad, sensor bus).
+      # CXD56_TOPREG_IO_I2C0_BDT = CXD56_TOPREG_BASE + 0x08b4.
+      # Same field layout as IO_I2C0_BCK; reset 0x01010100.
+      IO_I2C0_BDT:
+        description: "IOCELL control for I2C0_BDT pad"
+        addressOffset: 0x8b4
         access: read-write
         resetValue: 0x01010100
         fields:
@@ -2508,3 +2598,634 @@ _add:
     description: "Real-time clock 1 (SYSIOP-gated, 32.768 kHz, 47-bit dual counter, 3 alarms)"
     baseAddress: 0x04109000
     derivedFrom: RTC0
+
+  # I2C0: DesignWare DW_apb_i2c master controller (SCU_I2C0, the sensor I2C bus).
+  # Base: CXD56_SCU_I2C0_BASE = SYS_MIRROR(0x04000000) + 0x18D400 = 0x0418D400.
+  # SCU APB sub-blocks (§3.9.3 Figure SCU-80): SPI@0xD000, I2C0@0xD400, I2C1@0xD800.
+  # Each sub-block owns a 0x400 decode window; registers end at 0xFC (IC_COMP_TYPE).
+  # Interrupt: SCU INT1 = I2C0 (§3.9.6 Table SCU-133) → SYSIOP source 17
+  #            → NuttX full-vector value = CXD56_IRQ_EXTINT(16) + 17 = 33.
+  # Sources: nuttx/arch/arm/src/cxd56xx/hardware/cxd56_i2c.h (offsets + bit defs),
+  #          cxd56_i2c.c (CXD56_SCU_I2C0_BASE, CXD56_IRQ_SCU_I2C0).
+  I2C0:
+    description: "DesignWare DW_apb_i2c master controller (SCU_I2C0 / sensor I2C bus)"
+    baseAddress: 0x0418D400
+    addressBlock:
+      offset: 0x0
+      size: 0x100
+      usage: "registers"
+    interrupts:
+      I2C0:
+        description: "I2C0 (SCU_I2C0) interrupt"
+        value: 33
+    registers:
+      IC_CON:
+        description: "I2C control register"
+        addressOffset: 0x00
+        access: read-write
+        resetValue: 0x0000007F
+        fields:
+          RX_FIFO_FULL_HLD_CTRL:
+            description: "Hold bus when RX FIFO is full"
+            bitOffset: 9
+            bitWidth: 1
+          TX_EMPTY_CTRL:
+            description: "Controlled TX_EMPTY interrupt generation"
+            bitOffset: 8
+            bitWidth: 1
+          STOP_DET_IFADDRESSED:
+            description: "Issue STOP_DET only when addressed as slave"
+            bitOffset: 7
+            bitWidth: 1
+          SLAVE_DISABLE:
+            description: "Slave mode disable (1 = master only)"
+            bitOffset: 6
+            bitWidth: 1
+          RESTART_EN:
+            description: "Master restart enable"
+            bitOffset: 5
+            bitWidth: 1
+          IC_10BITADDR_MASTER:
+            description: "10-bit addressing for master transfers"
+            bitOffset: 4
+            bitWidth: 1
+          IC_10BITADDR_SLAVE:
+            description: "10-bit addressing for slave"
+            bitOffset: 3
+            bitWidth: 1
+          SPEED:
+            description: "I2C speed mode (1=SS 100k, 2=FS 400k, 3=HS 3.4M)"
+            bitOffset: 1
+            bitWidth: 2
+            enumeratedValues:
+              - name: StandardMode
+                description: "Standard speed (100 kbps)"
+                value: 1
+              - name: FastMode
+                description: "Fast speed (400 kbps)"
+                value: 2
+              - name: HighSpeedMode
+                description: "High speed (3.4 Mbps)"
+                value: 3
+          MASTER_MODE:
+            description: "Master mode enable"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Slave
+                description: "Slave mode"
+                value: 0
+              - name: Master
+                description: "Master mode"
+                value: 1
+      IC_TAR:
+        description: "I2C target address register"
+        addressOffset: 0x04
+        access: read-write
+        resetValue: 0x00001055
+      IC_SAR:
+        description: "I2C slave address register"
+        addressOffset: 0x08
+        access: read-write
+        resetValue: 0x00000055
+      IC_HS_MADDR:
+        description: "I2C high speed master mode code address register"
+        addressOffset: 0x0C
+        access: read-write
+        resetValue: 0x00000001
+      IC_DATA_CMD:
+        description: "I2C Rx/Tx data buffer and command register"
+        addressOffset: 0x10
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          FIRST_DATA_BYTE:
+            description: "First data byte after address phase (read-only)"
+            bitOffset: 11
+            bitWidth: 1
+          RESTART:
+            description: "Issue RESTART before this byte"
+            bitOffset: 10
+            bitWidth: 1
+          STOP:
+            description: "Issue STOP after this byte"
+            bitOffset: 9
+            bitWidth: 1
+          CMD:
+            description: "Transfer direction (0=write, 1=read)"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Write
+                description: "Write byte to bus"
+                value: 0
+              - name: Read
+                description: "Read byte from bus"
+                value: 1
+          DAT:
+            description: "Data byte for TX, or received byte in RX"
+            bitOffset: 0
+            bitWidth: 8
+      IC_SS_SCL_HCNT:
+        description: "Standard speed SCL high period count"
+        addressOffset: 0x14
+        access: read-write
+        resetValue: 0x00000190
+      IC_SS_SCL_LCNT:
+        description: "Standard speed SCL low period count"
+        addressOffset: 0x18
+        access: read-write
+        resetValue: 0x000001D6
+      IC_FS_SCL_HCNT:
+        description: "Fast speed SCL high period count"
+        addressOffset: 0x1C
+        access: read-write
+        resetValue: 0x0000003C
+      IC_FS_SCL_LCNT:
+        description: "Fast speed SCL low period count"
+        addressOffset: 0x20
+        access: read-write
+        resetValue: 0x00000082
+      IC_HS_SCL_HCNT:
+        description: "High speed SCL high period count"
+        addressOffset: 0x24
+        access: read-write
+        resetValue: 0x00000006
+      IC_HS_SCL_LCNT:
+        description: "High speed SCL low period count"
+        addressOffset: 0x28
+        access: read-write
+        resetValue: 0x00000010
+      IC_INTR_STAT:
+        description: "I2C interrupt status register (read-only, masked)"
+        addressOffset: 0x2C
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          MST_ON_HOLD:
+            description: "Master on hold"
+            bitOffset: 13
+            bitWidth: 1
+          RESTART_DET:
+            description: "RESTART condition detected"
+            bitOffset: 12
+            bitWidth: 1
+          GEN_CALL:
+            description: "General call received"
+            bitOffset: 11
+            bitWidth: 1
+          START_DET:
+            description: "START or RESTART condition detected"
+            bitOffset: 10
+            bitWidth: 1
+          STOP_DET:
+            description: "STOP condition detected"
+            bitOffset: 9
+            bitWidth: 1
+          ACTIVITY:
+            description: "I2C activity"
+            bitOffset: 8
+            bitWidth: 1
+          RX_DONE:
+            description: "RX done (slave transmitter finished)"
+            bitOffset: 7
+            bitWidth: 1
+          TX_ABRT:
+            description: "Transmit abort"
+            bitOffset: 6
+            bitWidth: 1
+          RD_REQ:
+            description: "Read request (slave mode)"
+            bitOffset: 5
+            bitWidth: 1
+          TX_EMPTY:
+            description: "TX FIFO at or below threshold"
+            bitOffset: 4
+            bitWidth: 1
+          TX_OVER:
+            description: "TX FIFO overflow"
+            bitOffset: 3
+            bitWidth: 1
+          RX_FULL:
+            description: "RX FIFO at or above threshold"
+            bitOffset: 2
+            bitWidth: 1
+          RX_OVER:
+            description: "RX FIFO overflow"
+            bitOffset: 1
+            bitWidth: 1
+          RX_UNDER:
+            description: "RX FIFO underflow"
+            bitOffset: 0
+            bitWidth: 1
+      IC_INTR_MASK:
+        description: "I2C interrupt mask register (1 = unmasked)"
+        addressOffset: 0x30
+        access: read-write
+        resetValue: 0x000008FF
+        fields:
+          MST_ON_HOLD:
+            description: "Mask MST_ON_HOLD interrupt"
+            bitOffset: 13
+            bitWidth: 1
+          RESTART_DET:
+            description: "Mask RESTART_DET interrupt"
+            bitOffset: 12
+            bitWidth: 1
+          GEN_CALL:
+            description: "Mask GEN_CALL interrupt"
+            bitOffset: 11
+            bitWidth: 1
+          START_DET:
+            description: "Mask START_DET interrupt"
+            bitOffset: 10
+            bitWidth: 1
+          STOP_DET:
+            description: "Mask STOP_DET interrupt"
+            bitOffset: 9
+            bitWidth: 1
+          ACTIVITY:
+            description: "Mask ACTIVITY interrupt"
+            bitOffset: 8
+            bitWidth: 1
+          RX_DONE:
+            description: "Mask RX_DONE interrupt"
+            bitOffset: 7
+            bitWidth: 1
+          TX_ABRT:
+            description: "Mask TX_ABRT interrupt"
+            bitOffset: 6
+            bitWidth: 1
+          RD_REQ:
+            description: "Mask RD_REQ interrupt"
+            bitOffset: 5
+            bitWidth: 1
+          TX_EMPTY:
+            description: "Mask TX_EMPTY interrupt"
+            bitOffset: 4
+            bitWidth: 1
+          TX_OVER:
+            description: "Mask TX_OVER interrupt"
+            bitOffset: 3
+            bitWidth: 1
+          RX_FULL:
+            description: "Mask RX_FULL interrupt"
+            bitOffset: 2
+            bitWidth: 1
+          RX_OVER:
+            description: "Mask RX_OVER interrupt"
+            bitOffset: 1
+            bitWidth: 1
+          RX_UNDER:
+            description: "Mask RX_UNDER interrupt"
+            bitOffset: 0
+            bitWidth: 1
+      IC_RAW_INTR_STAT:
+        description: "I2C raw interrupt status register (read-only, unmasked)"
+        addressOffset: 0x34
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          MST_ON_HOLD:
+            description: "Master on hold (raw)"
+            bitOffset: 13
+            bitWidth: 1
+          RESTART_DET:
+            description: "RESTART detected (raw)"
+            bitOffset: 12
+            bitWidth: 1
+          GEN_CALL:
+            description: "General call received (raw)"
+            bitOffset: 11
+            bitWidth: 1
+          START_DET:
+            description: "START detected (raw)"
+            bitOffset: 10
+            bitWidth: 1
+          STOP_DET:
+            description: "STOP detected (raw)"
+            bitOffset: 9
+            bitWidth: 1
+          ACTIVITY:
+            description: "I2C activity (raw)"
+            bitOffset: 8
+            bitWidth: 1
+          RX_DONE:
+            description: "RX done (raw)"
+            bitOffset: 7
+            bitWidth: 1
+          TX_ABRT:
+            description: "Transmit abort (raw)"
+            bitOffset: 6
+            bitWidth: 1
+          RD_REQ:
+            description: "Read request (raw)"
+            bitOffset: 5
+            bitWidth: 1
+          TX_EMPTY:
+            description: "TX FIFO empty (raw)"
+            bitOffset: 4
+            bitWidth: 1
+          TX_OVER:
+            description: "TX FIFO overflow (raw)"
+            bitOffset: 3
+            bitWidth: 1
+          RX_FULL:
+            description: "RX FIFO at threshold (raw)"
+            bitOffset: 2
+            bitWidth: 1
+          RX_OVER:
+            description: "RX FIFO overflow (raw)"
+            bitOffset: 1
+            bitWidth: 1
+          RX_UNDER:
+            description: "RX FIFO underflow (raw)"
+            bitOffset: 0
+            bitWidth: 1
+      IC_RX_TL:
+        description: "I2C receive FIFO threshold register"
+        addressOffset: 0x38
+        access: read-write
+        resetValue: 0x00000000
+      IC_TX_TL:
+        description: "I2C transmit FIFO threshold register"
+        addressOffset: 0x3C
+        access: read-write
+        resetValue: 0x00000000
+      IC_CLR_INTR:
+        description: "Clear combined interrupt (read-to-clear)"
+        addressOffset: 0x40
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_RX_UNDER:
+        description: "Clear RX_UNDER interrupt (read-to-clear)"
+        addressOffset: 0x44
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_RX_OVER:
+        description: "Clear RX_OVER interrupt (read-to-clear)"
+        addressOffset: 0x48
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_TX_OVER:
+        description: "Clear TX_OVER interrupt (read-to-clear)"
+        addressOffset: 0x4C
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_RD_REQ:
+        description: "Clear RD_REQ interrupt (read-to-clear)"
+        addressOffset: 0x50
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_TX_ABRT:
+        description: "Clear TX_ABRT interrupt (read-to-clear)"
+        addressOffset: 0x54
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_RX_DONE:
+        description: "Clear RX_DONE interrupt (read-to-clear)"
+        addressOffset: 0x58
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_ACTIVITY:
+        description: "Clear ACTIVITY interrupt (read-to-clear)"
+        addressOffset: 0x5C
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_STOP_DET:
+        description: "Clear STOP_DET interrupt (read-to-clear)"
+        addressOffset: 0x60
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_START_DET:
+        description: "Clear START_DET interrupt (read-to-clear)"
+        addressOffset: 0x64
+        access: read-only
+        resetValue: 0x00000000
+      IC_CLR_GEN_CALL:
+        description: "Clear GEN_CALL interrupt (read-to-clear)"
+        addressOffset: 0x68
+        access: read-only
+        resetValue: 0x00000000
+      IC_ENABLE:
+        description: "I2C enable register"
+        addressOffset: 0x6C
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          ENABLE:
+            description: "I2C controller enable"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Disabled
+                description: "I2C disabled"
+                value: 0
+              - name: Enabled
+                description: "I2C enabled"
+                value: 1
+      IC_STATUS:
+        description: "I2C status register (read-only)"
+        addressOffset: 0x70
+        access: read-only
+        resetValue: 0x00000006
+        fields:
+          SLV_ACTIVITY:
+            description: "Slave FSM activity"
+            bitOffset: 6
+            bitWidth: 1
+          MST_ACTIVITY:
+            description: "Master FSM activity"
+            bitOffset: 5
+            bitWidth: 1
+          RFF:
+            description: "RX FIFO full"
+            bitOffset: 4
+            bitWidth: 1
+          RFNE:
+            description: "RX FIFO not empty"
+            bitOffset: 3
+            bitWidth: 1
+          TFE:
+            description: "TX FIFO empty"
+            bitOffset: 2
+            bitWidth: 1
+          TFNF:
+            description: "TX FIFO not full"
+            bitOffset: 1
+            bitWidth: 1
+          ACTIVITY:
+            description: "I2C activity"
+            bitOffset: 0
+            bitWidth: 1
+      IC_TXFLR:
+        description: "I2C transmit FIFO level (read-only)"
+        addressOffset: 0x74
+        access: read-only
+        resetValue: 0x00000000
+      IC_RXFLR:
+        description: "I2C receive FIFO level (read-only)"
+        addressOffset: 0x78
+        access: read-only
+        resetValue: 0x00000000
+      IC_SDA_HOLD:
+        description: "I2C SDA hold time length register"
+        addressOffset: 0x7C
+        access: read-write
+        resetValue: 0x00000001
+      IC_TX_ABRT_SOURCE:
+        description: "I2C transmit abort source register (read-only)"
+        addressOffset: 0x80
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          ABRT_USER_ABRT:
+            description: "User abort"
+            bitOffset: 16
+            bitWidth: 1
+          ABRT_SLVRD_INTX:
+            description: "Slave read request in TX mode"
+            bitOffset: 15
+            bitWidth: 1
+          ABRT_SLV_ARBLOST:
+            description: "Slave arbitration lost"
+            bitOffset: 14
+            bitWidth: 1
+          ABRT_SLVFLUSH_TXFIFO:
+            description: "Slave flush TX FIFO on read command"
+            bitOffset: 13
+            bitWidth: 1
+          ABRT_ARB_LOST:
+            description: "Arbitration lost"
+            bitOffset: 12
+            bitWidth: 1
+          ABRT_MASTER_DIS:
+            description: "Master disabled during transfer"
+            bitOffset: 11
+            bitWidth: 1
+          ABRT_10B_RD_NORSTRT:
+            description: "10-bit read without RESTART"
+            bitOffset: 10
+            bitWidth: 1
+          ABRT_SBYTE_NORSTRT:
+            description: "START byte without RESTART"
+            bitOffset: 9
+            bitWidth: 1
+          ABRT_HS_NORSTRT:
+            description: "HS mode without RESTART"
+            bitOffset: 8
+            bitWidth: 1
+          ABRT_SBYTE_ACKDET:
+            description: "START byte ACK detected"
+            bitOffset: 7
+            bitWidth: 1
+          ABRT_HS_ACKDET:
+            description: "HS master code ACK detected"
+            bitOffset: 6
+            bitWidth: 1
+          ABRT_GCALL_READ:
+            description: "General call with read bit set"
+            bitOffset: 5
+            bitWidth: 1
+          ABRT_GCALL_NOACK:
+            description: "General call not ACK'd by any slave"
+            bitOffset: 4
+            bitWidth: 1
+          ABRT_TXDATA_NOACK:
+            description: "TX data byte not ACK'd"
+            bitOffset: 3
+            bitWidth: 1
+          ABRT_10ADDR2_NOACK:
+            description: "10-bit address byte 2 not ACK'd"
+            bitOffset: 2
+            bitWidth: 1
+          ABRT_10ADDR1_NOACK:
+            description: "10-bit address byte 1 not ACK'd"
+            bitOffset: 1
+            bitWidth: 1
+          ABRT_7B_ADDR_NOACK:
+            description: "7-bit address not ACK'd"
+            bitOffset: 0
+            bitWidth: 1
+      IC_SLV_DATA_NACK_ONLY:
+        description: "Generate NACK for data bytes in slave mode"
+        addressOffset: 0x84
+        access: read-write
+        resetValue: 0x00000000
+      IC_DMA_CR:
+        description: "I2C DMA control register"
+        addressOffset: 0x88
+        access: read-write
+        resetValue: 0x00000000
+        fields:
+          TDMAE:
+            description: "TX DMA enable"
+            bitOffset: 1
+            bitWidth: 1
+          RDMAE:
+            description: "RX DMA enable"
+            bitOffset: 0
+            bitWidth: 1
+      IC_DMA_TDLR:
+        description: "I2C DMA transmit data level register"
+        addressOffset: 0x8C
+        access: read-write
+        resetValue: 0x00000000
+      IC_DMA_RDLR:
+        description: "I2C DMA receive data level register"
+        addressOffset: 0x90
+        access: read-write
+        resetValue: 0x00000000
+      IC_SDA_SETUP:
+        description: "I2C SDA setup time register"
+        addressOffset: 0x94
+        access: read-write
+        resetValue: 0x00000064
+      IC_ACK_GENERAL_CALL:
+        description: "I2C ACK general call register"
+        addressOffset: 0x98
+        access: read-write
+        resetValue: 0x00000001
+      IC_ENABLE_STATUS:
+        description: "I2C enable status register (read-only)"
+        addressOffset: 0x9C
+        access: read-only
+        resetValue: 0x00000000
+        fields:
+          SLV_FIFO_FLUSHED:
+            description: "Slave FIFO flushed after controller was disabled"
+            bitOffset: 2
+            bitWidth: 1
+          SLV_RX_ABORTED:
+            description: "Slave RX aborted during disable"
+            bitOffset: 1
+            bitWidth: 1
+          IC_EN:
+            description: "I2C enabled (clock-synced reflection of IC_ENABLE.ENABLE)"
+            bitOffset: 0
+            bitWidth: 1
+      IC_FS_SPKLEN:
+        description: "I2C SS/FS spike suppression limit register"
+        addressOffset: 0xA0
+        access: read-write
+        resetValue: 0x00000001
+      IC_HS_SPKLEN:
+        description: "I2C HS spike suppression limit register"
+        addressOffset: 0xA4
+        access: read-write
+        resetValue: 0x00000001
+      IC_COMP_PARAM_1:
+        description: "Component parameter 1 (read-only, configuration encoded at synthesis)"
+        addressOffset: 0xF4
+        access: read-only
+        resetValue: 0x00000000
+      IC_COMP_VERSION:
+        description: "Component version register (read-only)"
+        addressOffset: 0xF8
+        access: read-only
+        resetValue: 0x3230302A
+      IC_COMP_TYPE:
+        description: "Component type register (read-only, 0x44570140 = DW_apb_i2c)"
+        addressOffset: 0xFC
+        access: read-only
+        resetValue: 0x44570140
