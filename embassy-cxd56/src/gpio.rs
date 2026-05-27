@@ -20,21 +20,21 @@ mod sealed {
 
 pub trait Pin: sealed::Sealed + embassy_hal_internal::PeripheralType + 'static {}
 
-// Bit positions — identical layout for every GPIO0 register.
+// Bit positions — identical layout for every TOPREG GP_* register.
 const IN_BIT: u32 = 1 << 0;
 const OUT_BIT: u32 = 1 << 8;
 const DIR_BIT: u32 = 1 << 16; // active-low: 0 = output drive, 1 = high-Z input
 
-impl sealed::Sealed for crate::peripherals::PIN97 {
+impl sealed::Sealed for crate::peripherals::GP_I2S1_BCK {
     fn read_raw(&self) -> u32 {
-        pac::GPIO0.PIN97().read().0
+        pac::TOPREG.GP_I2S1_BCK().read().0
     }
     fn write_raw(&self, val: u32) {
-        pac::GPIO0.PIN97().modify(|r| r.0 = val);
+        pac::TOPREG.GP_I2S1_BCK().modify(|r| r.0 = val);
     }
 }
 
-impl Pin for crate::peripherals::PIN97 {}
+impl Pin for crate::peripherals::GP_I2S1_BCK {}
 
 /// Push-pull output.
 pub struct Output<'d, T: Pin> {
