@@ -1,28 +1,30 @@
-default:
+_default:
     @just --list
 
-chiptool: svdtools
+# Common work for PAC generation and updating
+_generate_pac pac-dir:
+    rustfmt svd-out/lib.rs
+    form -f -i svd-out/lib.rs -o svd-out/src/
+    rm -rf {{ pac-dir }}/src
+    cp -r svd-out/src/ {{ pac-dir }}
+    cp svd-out/device.x {{ pac-dir }}
+    rm -rf svd-out
+    cargo fmt -p {{ pac-dir }}
+
+# Regenerate and update chiptool PAC
+chiptool: _svdtools
     mkdir -p svd-out
     chiptool generate \
         --svd svd/cxd5602.svd.patched \
         --transform svd/transform.chiptool.yaml \
         --output svd-out
-    rustfmt svd-out/lib.rs
-    sed -i '/#!\[no_std]/d' svd-out/lib.rs
-    form -f -i svd-out/lib.rs -o svd-out/src/
-    rm -rf cxd56-pac-chiptool/src
-    cp -r svd-out/src/ cxd56-pac-chiptool/
-    rm -rf svd-out
-    cargo fmt -p cxd56-pac-chiptool
+    just _generate_pac cxd56-pac-chiptool
 
-svd2rust: svdtools
+# Regenerate and update svd2rust PAC
+svd2rust: _svdtools
     mkdir -p svd-out
     svd2rust -i svd/cxd5602.svd.patched -o svd-out
-    form -f -i svd-out/lib.rs -o svd-out/src/
-    rm -rf cxd56-pac-svd2rust/src
-    cp -r svd-out/src/ cxd56-pac-svd2rust/
-    rm -rf svd-out
-    cargo fmt -p cxd56-pac-svd2rust
+    just _generate_pac cxd56-pac-svd2rust
 
-svdtools:
+_svdtools:
     svdtools patch svd/patch.yml svd/cxd5602.svd.patched
