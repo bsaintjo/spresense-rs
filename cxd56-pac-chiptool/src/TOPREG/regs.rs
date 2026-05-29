@@ -1304,6 +1304,144 @@ impl defmt::Format for GP_I2S1_LRCK {
         )
     }
 }
+///APP-domain GPIO interrupt slot mux, slots 6–9 (1 byte per slot, pin index 0–63).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IOCAPP_INTSEL0(pub u32);
+impl IOCAPP_INTSEL0 {
+    ///Pin index for APP slot 6 → EXDEVICE_6 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT6(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for APP slot 6 → EXDEVICE_6 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT6(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 0usize)) | (((val as u32) & 0x3f) << 0usize);
+    }
+    ///Pin index for APP slot 7 → EXDEVICE_7 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT7(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for APP slot 7 → EXDEVICE_7 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT7(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 8usize)) | (((val as u32) & 0x3f) << 8usize);
+    }
+    ///Pin index for APP slot 8 → EXDEVICE_8 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT8(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for APP slot 8 → EXDEVICE_8 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT8(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 16usize)) | (((val as u32) & 0x3f) << 16usize);
+    }
+    ///Pin index for APP slot 9 → EXDEVICE_9 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT9(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for APP slot 9 → EXDEVICE_9 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT9(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 24usize)) | (((val as u32) & 0x3f) << 24usize);
+    }
+}
+impl Default for IOCAPP_INTSEL0 {
+    #[inline(always)]
+    fn default() -> IOCAPP_INTSEL0 {
+        IOCAPP_INTSEL0(0)
+    }
+}
+impl core::fmt::Debug for IOCAPP_INTSEL0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IOCAPP_INTSEL0")
+            .field("SLOT6", &self.SLOT6())
+            .field("SLOT7", &self.SLOT7())
+            .field("SLOT8", &self.SLOT8())
+            .field("SLOT9", &self.SLOT9())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IOCAPP_INTSEL0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IOCAPP_INTSEL0 {{ SLOT6: {=u8:?}, SLOT7: {=u8:?}, SLOT8: {=u8:?}, SLOT9: {=u8:?} }}",
+            self.SLOT6(),
+            self.SLOT7(),
+            self.SLOT8(),
+            self.SLOT9()
+        )
+    }
+}
+///APP-domain GPIO interrupt slot mux, slots 10–11.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IOCAPP_INTSEL1(pub u32);
+impl IOCAPP_INTSEL1 {
+    ///Pin index for APP slot 10 → EXDEVICE_10 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT10(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for APP slot 10 → EXDEVICE_10 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT10(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 0usize)) | (((val as u32) & 0x3f) << 0usize);
+    }
+    ///Pin index for APP slot 11 → EXDEVICE_11 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT11(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for APP slot 11 → EXDEVICE_11 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT11(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 8usize)) | (((val as u32) & 0x3f) << 8usize);
+    }
+}
+impl Default for IOCAPP_INTSEL1 {
+    #[inline(always)]
+    fn default() -> IOCAPP_INTSEL1 {
+        IOCAPP_INTSEL1(0)
+    }
+}
+impl core::fmt::Debug for IOCAPP_INTSEL1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IOCAPP_INTSEL1")
+            .field("SLOT10", &self.SLOT10())
+            .field("SLOT11", &self.SLOT11())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IOCAPP_INTSEL1 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IOCAPP_INTSEL1 {{ SLOT10: {=u8:?}, SLOT11: {=u8:?} }}",
+            self.SLOT10(),
+            self.SLOT11()
+        )
+    }
+}
 ///APP-domain IO-cell mode-mux register.
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -1339,6 +1477,144 @@ impl core::fmt::Debug for IOCAPP_IOMD {
 impl defmt::Format for IOCAPP_IOMD {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(f, "IOCAPP_IOMD {{ UART2: {=u8:?} }}", self.UART2())
+    }
+}
+///SYS-domain GPIO interrupt slot mux, slots 0–3 (1 byte per slot, pin index 0–63).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IOCSYS_INTSEL0(pub u32);
+impl IOCSYS_INTSEL0 {
+    ///Pin index for SYS slot 0 → EXDEVICE_0 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT0(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for SYS slot 0 → EXDEVICE_0 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT0(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 0usize)) | (((val as u32) & 0x3f) << 0usize);
+    }
+    ///Pin index for SYS slot 1 → EXDEVICE_1 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT1(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for SYS slot 1 → EXDEVICE_1 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT1(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 8usize)) | (((val as u32) & 0x3f) << 8usize);
+    }
+    ///Pin index for SYS slot 2 → EXDEVICE_2 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT2(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for SYS slot 2 → EXDEVICE_2 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT2(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 16usize)) | (((val as u32) & 0x3f) << 16usize);
+    }
+    ///Pin index for SYS slot 3 → EXDEVICE_3 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT3(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for SYS slot 3 → EXDEVICE_3 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT3(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 24usize)) | (((val as u32) & 0x3f) << 24usize);
+    }
+}
+impl Default for IOCSYS_INTSEL0 {
+    #[inline(always)]
+    fn default() -> IOCSYS_INTSEL0 {
+        IOCSYS_INTSEL0(0)
+    }
+}
+impl core::fmt::Debug for IOCSYS_INTSEL0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IOCSYS_INTSEL0")
+            .field("SLOT0", &self.SLOT0())
+            .field("SLOT1", &self.SLOT1())
+            .field("SLOT2", &self.SLOT2())
+            .field("SLOT3", &self.SLOT3())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IOCSYS_INTSEL0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IOCSYS_INTSEL0 {{ SLOT0: {=u8:?}, SLOT1: {=u8:?}, SLOT2: {=u8:?}, SLOT3: {=u8:?} }}",
+            self.SLOT0(),
+            self.SLOT1(),
+            self.SLOT2(),
+            self.SLOT3()
+        )
+    }
+}
+///SYS-domain GPIO interrupt slot mux, slots 4–5.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct IOCSYS_INTSEL1(pub u32);
+impl IOCSYS_INTSEL1 {
+    ///Pin index for SYS slot 4 → EXDEVICE_4 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT4(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for SYS slot 4 → EXDEVICE_4 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT4(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 0usize)) | (((val as u32) & 0x3f) << 0usize);
+    }
+    ///Pin index for SYS slot 5 → EXDEVICE_5 (0x3f = unused).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT5(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x3f;
+        val as u8
+    }
+    ///Pin index for SYS slot 5 → EXDEVICE_5 (0x3f = unused).
+    #[inline(always)]
+    pub const fn set_SLOT5(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x3f << 8usize)) | (((val as u32) & 0x3f) << 8usize);
+    }
+}
+impl Default for IOCSYS_INTSEL1 {
+    #[inline(always)]
+    fn default() -> IOCSYS_INTSEL1 {
+        IOCSYS_INTSEL1(0)
+    }
+}
+impl core::fmt::Debug for IOCSYS_INTSEL1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("IOCSYS_INTSEL1")
+            .field("SLOT4", &self.SLOT4())
+            .field("SLOT5", &self.SLOT5())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for IOCSYS_INTSEL1 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "IOCSYS_INTSEL1 {{ SLOT4: {=u8:?}, SLOT5: {=u8:?} }}",
+            self.SLOT4(),
+            self.SLOT5()
+        )
     }
 }
 ///SYSIOP IO-cell mode-mux register 0.
@@ -1951,6 +2227,1035 @@ impl defmt::Format for PMU_PW_CTL {
             f,
             "PMU_PW_CTL {{ POWER_CTRL_ON: {=bool:?} }}",
             self.POWER_CTRL_ON()
+        )
+    }
+}
+///CPU interrupt route select, slots 0–3 (3-bit field per slot at 16+slot*4).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_CPUINTSEL0(pub u32);
+impl PMU_WAKE_TRIG_CPUINTSEL0 {
+    ///Slot 0 route (EXDEVICE_0).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT0(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x07;
+        val as u8
+    }
+    ///Slot 0 route (EXDEVICE_0).
+    #[inline(always)]
+    pub const fn set_SLOT0(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+    }
+    ///Slot 1 route (EXDEVICE_1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT1(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x07;
+        val as u8
+    }
+    ///Slot 1 route (EXDEVICE_1).
+    #[inline(always)]
+    pub const fn set_SLOT1(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 20usize)) | (((val as u32) & 0x07) << 20usize);
+    }
+    ///Slot 2 route (EXDEVICE_2).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT2(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x07;
+        val as u8
+    }
+    ///Slot 2 route (EXDEVICE_2).
+    #[inline(always)]
+    pub const fn set_SLOT2(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 24usize)) | (((val as u32) & 0x07) << 24usize);
+    }
+    ///Slot 3 route (EXDEVICE_3).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT3(&self) -> u8 {
+        let val = (self.0 >> 28usize) & 0x07;
+        val as u8
+    }
+    ///Slot 3 route (EXDEVICE_3).
+    #[inline(always)]
+    pub const fn set_SLOT3(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 28usize)) | (((val as u32) & 0x07) << 28usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_CPUINTSEL0 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_CPUINTSEL0 {
+        PMU_WAKE_TRIG_CPUINTSEL0(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_CPUINTSEL0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_CPUINTSEL0")
+            .field("SLOT0", &self.SLOT0())
+            .field("SLOT1", &self.SLOT1())
+            .field("SLOT2", &self.SLOT2())
+            .field("SLOT3", &self.SLOT3())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_CPUINTSEL0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_CPUINTSEL0 {{ SLOT0: {=u8:?}, SLOT1: {=u8:?}, SLOT2: {=u8:?}, SLOT3: {=u8:?} }}",
+            self.SLOT0(),
+            self.SLOT1(),
+            self.SLOT2(),
+            self.SLOT3()
+        )
+    }
+}
+///CPU interrupt route select, slots 4–11 (3-bit field per slot at slot*4).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_CPUINTSEL1(pub u32);
+impl PMU_WAKE_TRIG_CPUINTSEL1 {
+    ///Slot 4 route (EXDEVICE_4).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT4(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x07;
+        val as u8
+    }
+    ///Slot 4 route (EXDEVICE_4).
+    #[inline(always)]
+    pub const fn set_SLOT4(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 0usize)) | (((val as u32) & 0x07) << 0usize);
+    }
+    ///Slot 5 route (EXDEVICE_5).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT5(&self) -> u8 {
+        let val = (self.0 >> 4usize) & 0x07;
+        val as u8
+    }
+    ///Slot 5 route (EXDEVICE_5).
+    #[inline(always)]
+    pub const fn set_SLOT5(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 4usize)) | (((val as u32) & 0x07) << 4usize);
+    }
+    ///Slot 6 route (EXDEVICE_6).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT6(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x07;
+        val as u8
+    }
+    ///Slot 6 route (EXDEVICE_6).
+    #[inline(always)]
+    pub const fn set_SLOT6(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 8usize)) | (((val as u32) & 0x07) << 8usize);
+    }
+    ///Slot 7 route (EXDEVICE_7).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT7(&self) -> u8 {
+        let val = (self.0 >> 12usize) & 0x07;
+        val as u8
+    }
+    ///Slot 7 route (EXDEVICE_7).
+    #[inline(always)]
+    pub const fn set_SLOT7(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 12usize)) | (((val as u32) & 0x07) << 12usize);
+    }
+    ///Slot 8 route (EXDEVICE_8).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT8(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x07;
+        val as u8
+    }
+    ///Slot 8 route (EXDEVICE_8).
+    #[inline(always)]
+    pub const fn set_SLOT8(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+    }
+    ///Slot 9 route (EXDEVICE_9).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT9(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x07;
+        val as u8
+    }
+    ///Slot 9 route (EXDEVICE_9).
+    #[inline(always)]
+    pub const fn set_SLOT9(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 20usize)) | (((val as u32) & 0x07) << 20usize);
+    }
+    ///Slot 10 route (EXDEVICE_10).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT10(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x07;
+        val as u8
+    }
+    ///Slot 10 route (EXDEVICE_10).
+    #[inline(always)]
+    pub const fn set_SLOT10(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 24usize)) | (((val as u32) & 0x07) << 24usize);
+    }
+    ///Slot 11 route (EXDEVICE_11).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT11(&self) -> u8 {
+        let val = (self.0 >> 28usize) & 0x07;
+        val as u8
+    }
+    ///Slot 11 route (EXDEVICE_11).
+    #[inline(always)]
+    pub const fn set_SLOT11(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 28usize)) | (((val as u32) & 0x07) << 28usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_CPUINTSEL1 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_CPUINTSEL1 {
+        PMU_WAKE_TRIG_CPUINTSEL1(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_CPUINTSEL1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_CPUINTSEL1")
+            .field("SLOT4", &self.SLOT4())
+            .field("SLOT5", &self.SLOT5())
+            .field("SLOT6", &self.SLOT6())
+            .field("SLOT7", &self.SLOT7())
+            .field("SLOT8", &self.SLOT8())
+            .field("SLOT9", &self.SLOT9())
+            .field("SLOT10", &self.SLOT10())
+            .field("SLOT11", &self.SLOT11())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_CPUINTSEL1 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_CPUINTSEL1 {{ SLOT4: {=u8:?}, SLOT5: {=u8:?}, SLOT6: {=u8:?}, SLOT7: {=u8:?}, SLOT8: {=u8:?}, SLOT9: {=u8:?}, SLOT10: {=u8:?}, SLOT11: {=u8:?} }}",
+            self.SLOT4(),
+            self.SLOT5(),
+            self.SLOT6(),
+            self.SLOT7(),
+            self.SLOT8(),
+            self.SLOT9(),
+            self.SLOT10(),
+            self.SLOT11()
+        )
+    }
+}
+///Positive wake-trigger enable, slots 0–11.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_EN0(pub u32);
+impl PMU_WAKE_TRIG_EN0 {
+    ///Slot 0 positive-trigger enable (EXDEVICE_0).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT0(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Slot 0 positive-trigger enable (EXDEVICE_0).
+    #[inline(always)]
+    pub const fn set_SLOT0(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Slot 1 positive-trigger enable (EXDEVICE_1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT1(&self) -> bool {
+        let val = (self.0 >> 17usize) & 0x01;
+        val != 0
+    }
+    ///Slot 1 positive-trigger enable (EXDEVICE_1).
+    #[inline(always)]
+    pub const fn set_SLOT1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 17usize)) | (((val as u32) & 0x01) << 17usize);
+    }
+    ///Slot 2 positive-trigger enable (EXDEVICE_2).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT2(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    ///Slot 2 positive-trigger enable (EXDEVICE_2).
+    #[inline(always)]
+    pub const fn set_SLOT2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+    ///Slot 3 positive-trigger enable (EXDEVICE_3).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT3(&self) -> bool {
+        let val = (self.0 >> 19usize) & 0x01;
+        val != 0
+    }
+    ///Slot 3 positive-trigger enable (EXDEVICE_3).
+    #[inline(always)]
+    pub const fn set_SLOT3(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 19usize)) | (((val as u32) & 0x01) << 19usize);
+    }
+    ///Slot 4 positive-trigger enable (EXDEVICE_4).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT4(&self) -> bool {
+        let val = (self.0 >> 20usize) & 0x01;
+        val != 0
+    }
+    ///Slot 4 positive-trigger enable (EXDEVICE_4).
+    #[inline(always)]
+    pub const fn set_SLOT4(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 20usize)) | (((val as u32) & 0x01) << 20usize);
+    }
+    ///Slot 5 positive-trigger enable (EXDEVICE_5).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT5(&self) -> bool {
+        let val = (self.0 >> 21usize) & 0x01;
+        val != 0
+    }
+    ///Slot 5 positive-trigger enable (EXDEVICE_5).
+    #[inline(always)]
+    pub const fn set_SLOT5(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 21usize)) | (((val as u32) & 0x01) << 21usize);
+    }
+    ///Slot 6 positive-trigger enable (EXDEVICE_6).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT6(&self) -> bool {
+        let val = (self.0 >> 22usize) & 0x01;
+        val != 0
+    }
+    ///Slot 6 positive-trigger enable (EXDEVICE_6).
+    #[inline(always)]
+    pub const fn set_SLOT6(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 22usize)) | (((val as u32) & 0x01) << 22usize);
+    }
+    ///Slot 7 positive-trigger enable (EXDEVICE_7).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT7(&self) -> bool {
+        let val = (self.0 >> 23usize) & 0x01;
+        val != 0
+    }
+    ///Slot 7 positive-trigger enable (EXDEVICE_7).
+    #[inline(always)]
+    pub const fn set_SLOT7(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 23usize)) | (((val as u32) & 0x01) << 23usize);
+    }
+    ///Slot 8 positive-trigger enable (EXDEVICE_8).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT8(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Slot 8 positive-trigger enable (EXDEVICE_8).
+    #[inline(always)]
+    pub const fn set_SLOT8(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+    ///Slot 9 positive-trigger enable (EXDEVICE_9).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT9(&self) -> bool {
+        let val = (self.0 >> 25usize) & 0x01;
+        val != 0
+    }
+    ///Slot 9 positive-trigger enable (EXDEVICE_9).
+    #[inline(always)]
+    pub const fn set_SLOT9(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 25usize)) | (((val as u32) & 0x01) << 25usize);
+    }
+    ///Slot 10 positive-trigger enable (EXDEVICE_10).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT10(&self) -> bool {
+        let val = (self.0 >> 26usize) & 0x01;
+        val != 0
+    }
+    ///Slot 10 positive-trigger enable (EXDEVICE_10).
+    #[inline(always)]
+    pub const fn set_SLOT10(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
+    }
+    ///Slot 11 positive-trigger enable (EXDEVICE_11).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT11(&self) -> bool {
+        let val = (self.0 >> 27usize) & 0x01;
+        val != 0
+    }
+    ///Slot 11 positive-trigger enable (EXDEVICE_11).
+    #[inline(always)]
+    pub const fn set_SLOT11(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 27usize)) | (((val as u32) & 0x01) << 27usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_EN0 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_EN0 {
+        PMU_WAKE_TRIG_EN0(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_EN0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_EN0")
+            .field("SLOT0", &self.SLOT0())
+            .field("SLOT1", &self.SLOT1())
+            .field("SLOT2", &self.SLOT2())
+            .field("SLOT3", &self.SLOT3())
+            .field("SLOT4", &self.SLOT4())
+            .field("SLOT5", &self.SLOT5())
+            .field("SLOT6", &self.SLOT6())
+            .field("SLOT7", &self.SLOT7())
+            .field("SLOT8", &self.SLOT8())
+            .field("SLOT9", &self.SLOT9())
+            .field("SLOT10", &self.SLOT10())
+            .field("SLOT11", &self.SLOT11())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_EN0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_EN0 {{ SLOT0: {=bool:?}, SLOT1: {=bool:?}, SLOT2: {=bool:?}, SLOT3: {=bool:?}, SLOT4: {=bool:?}, SLOT5: {=bool:?}, SLOT6: {=bool:?}, SLOT7: {=bool:?}, SLOT8: {=bool:?}, SLOT9: {=bool:?}, SLOT10: {=bool:?}, SLOT11: {=bool:?} }}",
+            self.SLOT0(),
+            self.SLOT1(),
+            self.SLOT2(),
+            self.SLOT3(),
+            self.SLOT4(),
+            self.SLOT5(),
+            self.SLOT6(),
+            self.SLOT7(),
+            self.SLOT8(),
+            self.SLOT9(),
+            self.SLOT10(),
+            self.SLOT11()
+        )
+    }
+}
+///Interrupt detect polarity, slots 0–3 (3-bit field per slot at 16+slot*4).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_INTDET0(pub u32);
+impl PMU_WAKE_TRIG_INTDET0 {
+    ///Slot 0 polarity (EXDEVICE_0).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT0(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x07;
+        val as u8
+    }
+    ///Slot 0 polarity (EXDEVICE_0).
+    #[inline(always)]
+    pub const fn set_SLOT0(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+    }
+    ///Slot 1 polarity (EXDEVICE_1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT1(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x07;
+        val as u8
+    }
+    ///Slot 1 polarity (EXDEVICE_1).
+    #[inline(always)]
+    pub const fn set_SLOT1(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 20usize)) | (((val as u32) & 0x07) << 20usize);
+    }
+    ///Slot 2 polarity (EXDEVICE_2).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT2(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x07;
+        val as u8
+    }
+    ///Slot 2 polarity (EXDEVICE_2).
+    #[inline(always)]
+    pub const fn set_SLOT2(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 24usize)) | (((val as u32) & 0x07) << 24usize);
+    }
+    ///Slot 3 polarity (EXDEVICE_3).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT3(&self) -> u8 {
+        let val = (self.0 >> 28usize) & 0x07;
+        val as u8
+    }
+    ///Slot 3 polarity (EXDEVICE_3).
+    #[inline(always)]
+    pub const fn set_SLOT3(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 28usize)) | (((val as u32) & 0x07) << 28usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_INTDET0 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_INTDET0 {
+        PMU_WAKE_TRIG_INTDET0(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_INTDET0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_INTDET0")
+            .field("SLOT0", &self.SLOT0())
+            .field("SLOT1", &self.SLOT1())
+            .field("SLOT2", &self.SLOT2())
+            .field("SLOT3", &self.SLOT3())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_INTDET0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_INTDET0 {{ SLOT0: {=u8:?}, SLOT1: {=u8:?}, SLOT2: {=u8:?}, SLOT3: {=u8:?} }}",
+            self.SLOT0(),
+            self.SLOT1(),
+            self.SLOT2(),
+            self.SLOT3()
+        )
+    }
+}
+///Interrupt detect polarity, slots 4–11 (3-bit field per slot at slot*4).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_INTDET1(pub u32);
+impl PMU_WAKE_TRIG_INTDET1 {
+    ///Slot 4 polarity (EXDEVICE_4).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT4(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x07;
+        val as u8
+    }
+    ///Slot 4 polarity (EXDEVICE_4).
+    #[inline(always)]
+    pub const fn set_SLOT4(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 0usize)) | (((val as u32) & 0x07) << 0usize);
+    }
+    ///Slot 5 polarity (EXDEVICE_5).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT5(&self) -> u8 {
+        let val = (self.0 >> 4usize) & 0x07;
+        val as u8
+    }
+    ///Slot 5 polarity (EXDEVICE_5).
+    #[inline(always)]
+    pub const fn set_SLOT5(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 4usize)) | (((val as u32) & 0x07) << 4usize);
+    }
+    ///Slot 6 polarity (EXDEVICE_6).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT6(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x07;
+        val as u8
+    }
+    ///Slot 6 polarity (EXDEVICE_6).
+    #[inline(always)]
+    pub const fn set_SLOT6(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 8usize)) | (((val as u32) & 0x07) << 8usize);
+    }
+    ///Slot 7 polarity (EXDEVICE_7).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT7(&self) -> u8 {
+        let val = (self.0 >> 12usize) & 0x07;
+        val as u8
+    }
+    ///Slot 7 polarity (EXDEVICE_7).
+    #[inline(always)]
+    pub const fn set_SLOT7(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 12usize)) | (((val as u32) & 0x07) << 12usize);
+    }
+    ///Slot 8 polarity (EXDEVICE_8).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT8(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x07;
+        val as u8
+    }
+    ///Slot 8 polarity (EXDEVICE_8).
+    #[inline(always)]
+    pub const fn set_SLOT8(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+    }
+    ///Slot 9 polarity (EXDEVICE_9).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT9(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x07;
+        val as u8
+    }
+    ///Slot 9 polarity (EXDEVICE_9).
+    #[inline(always)]
+    pub const fn set_SLOT9(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 20usize)) | (((val as u32) & 0x07) << 20usize);
+    }
+    ///Slot 10 polarity (EXDEVICE_10).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT10(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x07;
+        val as u8
+    }
+    ///Slot 10 polarity (EXDEVICE_10).
+    #[inline(always)]
+    pub const fn set_SLOT10(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 24usize)) | (((val as u32) & 0x07) << 24usize);
+    }
+    ///Slot 11 polarity (EXDEVICE_11).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT11(&self) -> u8 {
+        let val = (self.0 >> 28usize) & 0x07;
+        val as u8
+    }
+    ///Slot 11 polarity (EXDEVICE_11).
+    #[inline(always)]
+    pub const fn set_SLOT11(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x07 << 28usize)) | (((val as u32) & 0x07) << 28usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_INTDET1 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_INTDET1 {
+        PMU_WAKE_TRIG_INTDET1(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_INTDET1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_INTDET1")
+            .field("SLOT4", &self.SLOT4())
+            .field("SLOT5", &self.SLOT5())
+            .field("SLOT6", &self.SLOT6())
+            .field("SLOT7", &self.SLOT7())
+            .field("SLOT8", &self.SLOT8())
+            .field("SLOT9", &self.SLOT9())
+            .field("SLOT10", &self.SLOT10())
+            .field("SLOT11", &self.SLOT11())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_INTDET1 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_INTDET1 {{ SLOT4: {=u8:?}, SLOT5: {=u8:?}, SLOT6: {=u8:?}, SLOT7: {=u8:?}, SLOT8: {=u8:?}, SLOT9: {=u8:?}, SLOT10: {=u8:?}, SLOT11: {=u8:?} }}",
+            self.SLOT4(),
+            self.SLOT5(),
+            self.SLOT6(),
+            self.SLOT7(),
+            self.SLOT8(),
+            self.SLOT9(),
+            self.SLOT10(),
+            self.SLOT11()
+        )
+    }
+}
+///Negative wake-trigger enable, slots 0–11.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_NEGEN0(pub u32);
+impl PMU_WAKE_TRIG_NEGEN0 {
+    ///Slot 0 negative-trigger enable (EXDEVICE_0).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT0(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Slot 0 negative-trigger enable (EXDEVICE_0).
+    #[inline(always)]
+    pub const fn set_SLOT0(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Slot 1 negative-trigger enable (EXDEVICE_1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT1(&self) -> bool {
+        let val = (self.0 >> 17usize) & 0x01;
+        val != 0
+    }
+    ///Slot 1 negative-trigger enable (EXDEVICE_1).
+    #[inline(always)]
+    pub const fn set_SLOT1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 17usize)) | (((val as u32) & 0x01) << 17usize);
+    }
+    ///Slot 2 negative-trigger enable (EXDEVICE_2).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT2(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    ///Slot 2 negative-trigger enable (EXDEVICE_2).
+    #[inline(always)]
+    pub const fn set_SLOT2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+    ///Slot 3 negative-trigger enable (EXDEVICE_3).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT3(&self) -> bool {
+        let val = (self.0 >> 19usize) & 0x01;
+        val != 0
+    }
+    ///Slot 3 negative-trigger enable (EXDEVICE_3).
+    #[inline(always)]
+    pub const fn set_SLOT3(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 19usize)) | (((val as u32) & 0x01) << 19usize);
+    }
+    ///Slot 4 negative-trigger enable (EXDEVICE_4).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT4(&self) -> bool {
+        let val = (self.0 >> 20usize) & 0x01;
+        val != 0
+    }
+    ///Slot 4 negative-trigger enable (EXDEVICE_4).
+    #[inline(always)]
+    pub const fn set_SLOT4(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 20usize)) | (((val as u32) & 0x01) << 20usize);
+    }
+    ///Slot 5 negative-trigger enable (EXDEVICE_5).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT5(&self) -> bool {
+        let val = (self.0 >> 21usize) & 0x01;
+        val != 0
+    }
+    ///Slot 5 negative-trigger enable (EXDEVICE_5).
+    #[inline(always)]
+    pub const fn set_SLOT5(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 21usize)) | (((val as u32) & 0x01) << 21usize);
+    }
+    ///Slot 6 negative-trigger enable (EXDEVICE_6).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT6(&self) -> bool {
+        let val = (self.0 >> 22usize) & 0x01;
+        val != 0
+    }
+    ///Slot 6 negative-trigger enable (EXDEVICE_6).
+    #[inline(always)]
+    pub const fn set_SLOT6(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 22usize)) | (((val as u32) & 0x01) << 22usize);
+    }
+    ///Slot 7 negative-trigger enable (EXDEVICE_7).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT7(&self) -> bool {
+        let val = (self.0 >> 23usize) & 0x01;
+        val != 0
+    }
+    ///Slot 7 negative-trigger enable (EXDEVICE_7).
+    #[inline(always)]
+    pub const fn set_SLOT7(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 23usize)) | (((val as u32) & 0x01) << 23usize);
+    }
+    ///Slot 8 negative-trigger enable (EXDEVICE_8).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT8(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Slot 8 negative-trigger enable (EXDEVICE_8).
+    #[inline(always)]
+    pub const fn set_SLOT8(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+    ///Slot 9 negative-trigger enable (EXDEVICE_9).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT9(&self) -> bool {
+        let val = (self.0 >> 25usize) & 0x01;
+        val != 0
+    }
+    ///Slot 9 negative-trigger enable (EXDEVICE_9).
+    #[inline(always)]
+    pub const fn set_SLOT9(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 25usize)) | (((val as u32) & 0x01) << 25usize);
+    }
+    ///Slot 10 negative-trigger enable (EXDEVICE_10).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT10(&self) -> bool {
+        let val = (self.0 >> 26usize) & 0x01;
+        val != 0
+    }
+    ///Slot 10 negative-trigger enable (EXDEVICE_10).
+    #[inline(always)]
+    pub const fn set_SLOT10(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
+    }
+    ///Slot 11 negative-trigger enable (EXDEVICE_11).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT11(&self) -> bool {
+        let val = (self.0 >> 27usize) & 0x01;
+        val != 0
+    }
+    ///Slot 11 negative-trigger enable (EXDEVICE_11).
+    #[inline(always)]
+    pub const fn set_SLOT11(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 27usize)) | (((val as u32) & 0x01) << 27usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_NEGEN0 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_NEGEN0 {
+        PMU_WAKE_TRIG_NEGEN0(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_NEGEN0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_NEGEN0")
+            .field("SLOT0", &self.SLOT0())
+            .field("SLOT1", &self.SLOT1())
+            .field("SLOT2", &self.SLOT2())
+            .field("SLOT3", &self.SLOT3())
+            .field("SLOT4", &self.SLOT4())
+            .field("SLOT5", &self.SLOT5())
+            .field("SLOT6", &self.SLOT6())
+            .field("SLOT7", &self.SLOT7())
+            .field("SLOT8", &self.SLOT8())
+            .field("SLOT9", &self.SLOT9())
+            .field("SLOT10", &self.SLOT10())
+            .field("SLOT11", &self.SLOT11())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_NEGEN0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_NEGEN0 {{ SLOT0: {=bool:?}, SLOT1: {=bool:?}, SLOT2: {=bool:?}, SLOT3: {=bool:?}, SLOT4: {=bool:?}, SLOT5: {=bool:?}, SLOT6: {=bool:?}, SLOT7: {=bool:?}, SLOT8: {=bool:?}, SLOT9: {=bool:?}, SLOT10: {=bool:?}, SLOT11: {=bool:?} }}",
+            self.SLOT0(),
+            self.SLOT1(),
+            self.SLOT2(),
+            self.SLOT3(),
+            self.SLOT4(),
+            self.SLOT5(),
+            self.SLOT6(),
+            self.SLOT7(),
+            self.SLOT8(),
+            self.SLOT9(),
+            self.SLOT10(),
+            self.SLOT11()
+        )
+    }
+}
+///Noise filter enable for interrupt slots 0–11.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct PMU_WAKE_TRIG_NOISECUTEN0(pub u32);
+impl PMU_WAKE_TRIG_NOISECUTEN0 {
+    ///Slot 0 noise filter enable (EXDEVICE_0).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT0(&self) -> bool {
+        let val = (self.0 >> 16usize) & 0x01;
+        val != 0
+    }
+    ///Slot 0 noise filter enable (EXDEVICE_0).
+    #[inline(always)]
+    pub const fn set_SLOT0(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 16usize)) | (((val as u32) & 0x01) << 16usize);
+    }
+    ///Slot 1 noise filter enable (EXDEVICE_1).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT1(&self) -> bool {
+        let val = (self.0 >> 17usize) & 0x01;
+        val != 0
+    }
+    ///Slot 1 noise filter enable (EXDEVICE_1).
+    #[inline(always)]
+    pub const fn set_SLOT1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 17usize)) | (((val as u32) & 0x01) << 17usize);
+    }
+    ///Slot 2 noise filter enable (EXDEVICE_2).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT2(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    ///Slot 2 noise filter enable (EXDEVICE_2).
+    #[inline(always)]
+    pub const fn set_SLOT2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+    ///Slot 3 noise filter enable (EXDEVICE_3).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT3(&self) -> bool {
+        let val = (self.0 >> 19usize) & 0x01;
+        val != 0
+    }
+    ///Slot 3 noise filter enable (EXDEVICE_3).
+    #[inline(always)]
+    pub const fn set_SLOT3(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 19usize)) | (((val as u32) & 0x01) << 19usize);
+    }
+    ///Slot 4 noise filter enable (EXDEVICE_4).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT4(&self) -> bool {
+        let val = (self.0 >> 20usize) & 0x01;
+        val != 0
+    }
+    ///Slot 4 noise filter enable (EXDEVICE_4).
+    #[inline(always)]
+    pub const fn set_SLOT4(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 20usize)) | (((val as u32) & 0x01) << 20usize);
+    }
+    ///Slot 5 noise filter enable (EXDEVICE_5).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT5(&self) -> bool {
+        let val = (self.0 >> 21usize) & 0x01;
+        val != 0
+    }
+    ///Slot 5 noise filter enable (EXDEVICE_5).
+    #[inline(always)]
+    pub const fn set_SLOT5(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 21usize)) | (((val as u32) & 0x01) << 21usize);
+    }
+    ///Slot 6 noise filter enable (EXDEVICE_6).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT6(&self) -> bool {
+        let val = (self.0 >> 22usize) & 0x01;
+        val != 0
+    }
+    ///Slot 6 noise filter enable (EXDEVICE_6).
+    #[inline(always)]
+    pub const fn set_SLOT6(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 22usize)) | (((val as u32) & 0x01) << 22usize);
+    }
+    ///Slot 7 noise filter enable (EXDEVICE_7).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT7(&self) -> bool {
+        let val = (self.0 >> 23usize) & 0x01;
+        val != 0
+    }
+    ///Slot 7 noise filter enable (EXDEVICE_7).
+    #[inline(always)]
+    pub const fn set_SLOT7(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 23usize)) | (((val as u32) & 0x01) << 23usize);
+    }
+    ///Slot 8 noise filter enable (EXDEVICE_8).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT8(&self) -> bool {
+        let val = (self.0 >> 24usize) & 0x01;
+        val != 0
+    }
+    ///Slot 8 noise filter enable (EXDEVICE_8).
+    #[inline(always)]
+    pub const fn set_SLOT8(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 24usize)) | (((val as u32) & 0x01) << 24usize);
+    }
+    ///Slot 9 noise filter enable (EXDEVICE_9).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT9(&self) -> bool {
+        let val = (self.0 >> 25usize) & 0x01;
+        val != 0
+    }
+    ///Slot 9 noise filter enable (EXDEVICE_9).
+    #[inline(always)]
+    pub const fn set_SLOT9(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 25usize)) | (((val as u32) & 0x01) << 25usize);
+    }
+    ///Slot 10 noise filter enable (EXDEVICE_10).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT10(&self) -> bool {
+        let val = (self.0 >> 26usize) & 0x01;
+        val != 0
+    }
+    ///Slot 10 noise filter enable (EXDEVICE_10).
+    #[inline(always)]
+    pub const fn set_SLOT10(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
+    }
+    ///Slot 11 noise filter enable (EXDEVICE_11).
+    #[must_use]
+    #[inline(always)]
+    pub const fn SLOT11(&self) -> bool {
+        let val = (self.0 >> 27usize) & 0x01;
+        val != 0
+    }
+    ///Slot 11 noise filter enable (EXDEVICE_11).
+    #[inline(always)]
+    pub const fn set_SLOT11(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 27usize)) | (((val as u32) & 0x01) << 27usize);
+    }
+}
+impl Default for PMU_WAKE_TRIG_NOISECUTEN0 {
+    #[inline(always)]
+    fn default() -> PMU_WAKE_TRIG_NOISECUTEN0 {
+        PMU_WAKE_TRIG_NOISECUTEN0(0)
+    }
+}
+impl core::fmt::Debug for PMU_WAKE_TRIG_NOISECUTEN0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("PMU_WAKE_TRIG_NOISECUTEN0")
+            .field("SLOT0", &self.SLOT0())
+            .field("SLOT1", &self.SLOT1())
+            .field("SLOT2", &self.SLOT2())
+            .field("SLOT3", &self.SLOT3())
+            .field("SLOT4", &self.SLOT4())
+            .field("SLOT5", &self.SLOT5())
+            .field("SLOT6", &self.SLOT6())
+            .field("SLOT7", &self.SLOT7())
+            .field("SLOT8", &self.SLOT8())
+            .field("SLOT9", &self.SLOT9())
+            .field("SLOT10", &self.SLOT10())
+            .field("SLOT11", &self.SLOT11())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for PMU_WAKE_TRIG_NOISECUTEN0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PMU_WAKE_TRIG_NOISECUTEN0 {{ SLOT0: {=bool:?}, SLOT1: {=bool:?}, SLOT2: {=bool:?}, SLOT3: {=bool:?}, SLOT4: {=bool:?}, SLOT5: {=bool:?}, SLOT6: {=bool:?}, SLOT7: {=bool:?}, SLOT8: {=bool:?}, SLOT9: {=bool:?}, SLOT10: {=bool:?}, SLOT11: {=bool:?} }}",
+            self.SLOT0(),
+            self.SLOT1(),
+            self.SLOT2(),
+            self.SLOT3(),
+            self.SLOT4(),
+            self.SLOT5(),
+            self.SLOT6(),
+            self.SLOT7(),
+            self.SLOT8(),
+            self.SLOT9(),
+            self.SLOT10(),
+            self.SLOT11()
         )
     }
 }

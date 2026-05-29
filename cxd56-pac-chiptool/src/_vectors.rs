@@ -3,6 +3,18 @@ unsafe extern "C" {
     fn UART1();
     fn SPI3();
     fn I2C0();
+    fn EXDEVICE_0();
+    fn EXDEVICE_1();
+    fn EXDEVICE_2();
+    fn EXDEVICE_3();
+    fn EXDEVICE_4();
+    fn EXDEVICE_5();
+    fn EXDEVICE_6();
+    fn EXDEVICE_7();
+    fn EXDEVICE_8();
+    fn EXDEVICE_9();
+    fn EXDEVICE_10();
+    fn EXDEVICE_11();
     fn SPI0();
     fn GE2D();
     fn ROT();
@@ -56,18 +68,42 @@ pub static __INTERRUPTS: [Vector; 135] = [
     Vector { _handler: I2C0 },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
+    Vector {
+        _handler: EXDEVICE_0,
+    },
+    Vector {
+        _handler: EXDEVICE_1,
+    },
+    Vector {
+        _handler: EXDEVICE_2,
+    },
+    Vector {
+        _handler: EXDEVICE_3,
+    },
+    Vector {
+        _handler: EXDEVICE_4,
+    },
+    Vector {
+        _handler: EXDEVICE_5,
+    },
+    Vector {
+        _handler: EXDEVICE_6,
+    },
+    Vector {
+        _handler: EXDEVICE_7,
+    },
+    Vector {
+        _handler: EXDEVICE_8,
+    },
+    Vector {
+        _handler: EXDEVICE_9,
+    },
+    Vector {
+        _handler: EXDEVICE_10,
+    },
+    Vector {
+        _handler: EXDEVICE_11,
+    },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },

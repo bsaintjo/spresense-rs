@@ -14,6 +14,30 @@ pub enum Interrupt {
     SPI3 = 32,
     ///33 - I2C0 (SCU_I2C0) interrupt
     I2C0 = 33,
+    ///36 - GPIO external interrupt slot 0
+    EXDEVICE_0 = 36,
+    ///37 - GPIO external interrupt slot 1
+    EXDEVICE_1 = 37,
+    ///38 - GPIO external interrupt slot 2
+    EXDEVICE_2 = 38,
+    ///39 - GPIO external interrupt slot 3
+    EXDEVICE_3 = 39,
+    ///40 - GPIO external interrupt slot 4
+    EXDEVICE_4 = 40,
+    ///41 - GPIO external interrupt slot 5
+    EXDEVICE_5 = 41,
+    ///42 - GPIO external interrupt slot 6
+    EXDEVICE_6 = 42,
+    ///43 - GPIO external interrupt slot 7
+    EXDEVICE_7 = 43,
+    ///44 - GPIO external interrupt slot 8
+    EXDEVICE_8 = 44,
+    ///45 - GPIO external interrupt slot 9
+    EXDEVICE_9 = 45,
+    ///46 - GPIO external interrupt slot 10
+    EXDEVICE_10 = 46,
+    ///47 - GPIO external interrupt slot 11
+    EXDEVICE_11 = 47,
     ///90 - SPI0 interrupt
     SPI0 = 90,
     ///106 - 2D interrupt

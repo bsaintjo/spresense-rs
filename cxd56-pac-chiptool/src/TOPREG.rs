@@ -64,6 +64,75 @@ impl TOPREG {
     pub const fn CKSEL_ROOT_WAKE(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x041cusize) as _) }
     }
+    ///Positive wake-trigger enable, slots 0–11.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_EN0(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_EN0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0454usize) as _) }
+    }
+    ///Positive wake-trigger enable, second bank.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_EN1(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0458usize) as _) }
+    }
+    ///Negative wake-trigger enable, slots 0–11.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_NEGEN0(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_NEGEN0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x045cusize) as _) }
+    }
+    ///Negative wake-trigger enable, second bank.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_NEGEN1(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0460usize) as _) }
+    }
+    ///Noise filter enable for interrupt slots 0–11.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_NOISECUTEN0(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_NOISECUTEN0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0464usize) as _) }
+    }
+    ///CPU interrupt route select, slots 0–3 (3-bit field per slot at 16+slot*4).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_CPUINTSEL0(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_CPUINTSEL0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0468usize) as _) }
+    }
+    ///CPU interrupt route select, slots 4–11 (3-bit field per slot at slot*4).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_CPUINTSEL1(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_CPUINTSEL1, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x046cusize) as _) }
+    }
+    ///CPU interrupt route select, second bank (unused by GPIO driver).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_CPUINTSEL2(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0470usize) as _) }
+    }
+    ///Interrupt detect polarity, slots 0–3 (3-bit field per slot at 16+slot*4).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_INTDET0(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_INTDET0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0474usize) as _) }
+    }
+    ///Interrupt detect polarity, slots 4–11 (3-bit field per slot at slot*4).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_INTDET1(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG_INTDET1, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0478usize) as _) }
+    }
+    ///Interrupt detect polarity, second bank (unused by GPIO driver).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG_INTDET2(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x047cusize) as _) }
+    }
     ///PMU core clock enable.
     #[inline(always)]
     pub const fn PMU_CORE_CKEN(self) -> crate::common::Reg<u32, crate::common::RW> {
@@ -254,6 +323,20 @@ impl TOPREG {
     pub const fn RTC0_CTL(self) -> crate::common::Reg<u32, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0730usize) as _) }
     }
+    ///SYS-domain GPIO interrupt slot mux, slots 0–3 (1 byte per slot, pin index 0–63).
+    #[inline(always)]
+    pub const fn IOCSYS_INTSEL0(
+        self,
+    ) -> crate::common::Reg<regs::IOCSYS_INTSEL0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x07b0usize) as _) }
+    }
+    ///SYS-domain GPIO interrupt slot mux, slots 4–5.
+    #[inline(always)]
+    pub const fn IOCSYS_INTSEL1(
+        self,
+    ) -> crate::common::Reg<regs::IOCSYS_INTSEL1, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x07b4usize) as _) }
+    }
     ///SYSIOP IO-cell mode-mux register 0.
     #[inline(always)]
     pub const fn IOCSYS_IOMD0(self) -> crate::common::Reg<regs::IOCSYS_IOMD0, crate::common::RW> {
@@ -293,6 +376,20 @@ impl TOPREG {
     #[inline(always)]
     pub const fn IO_UART2_RXD(self) -> crate::common::Reg<regs::IO_UART2_RXD, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0910usize) as _) }
+    }
+    ///APP-domain GPIO interrupt slot mux, slots 6–9 (1 byte per slot, pin index 0–63).
+    #[inline(always)]
+    pub const fn IOCAPP_INTSEL0(
+        self,
+    ) -> crate::common::Reg<regs::IOCAPP_INTSEL0, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x1490usize) as _) }
+    }
+    ///APP-domain GPIO interrupt slot mux, slots 10–11.
+    #[inline(always)]
+    pub const fn IOCAPP_INTSEL1(
+        self,
+    ) -> crate::common::Reg<regs::IOCAPP_INTSEL1, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x1494usize) as _) }
     }
     ///APP-domain IO-cell mode-mux register.
     #[inline(always)]

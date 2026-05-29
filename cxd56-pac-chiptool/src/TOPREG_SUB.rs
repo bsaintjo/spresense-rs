@@ -51,6 +51,42 @@ impl TOPREG_SUB {
     ) -> crate::common::Reg<regs::SYSIOP_SUB_CKEN, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0420usize) as _) }
     }
+    ///GPIO interrupt clear register, slots 0–11 (write 1<<(16+slot) to clear).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG0_CLR(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG0_CLR, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0430usize) as _) }
+    }
+    ///GPIO interrupt clear register, second bank.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG1_CLR(self) -> crate::common::Reg<u32, crate::common::RW> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0434usize) as _) }
+    }
+    ///GPIO interrupt raw (pre-mask) status, slots 0–11.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG0_RAW(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG0_RAW, crate::common::R> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0438usize) as _) }
+    }
+    ///GPIO interrupt raw status, second bank.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG1_RAW(self) -> crate::common::Reg<u32, crate::common::R> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x043cusize) as _) }
+    }
+    ///GPIO interrupt masked status, slots 0–11 (ISR reads this).
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG0(
+        self,
+    ) -> crate::common::Reg<regs::PMU_WAKE_TRIG0, crate::common::R> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0440usize) as _) }
+    }
+    ///GPIO interrupt masked status, second bank.
+    #[inline(always)]
+    pub const fn PMU_WAKE_TRIG1(self) -> crate::common::Reg<u32, crate::common::R> {
+        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0444usize) as _) }
+    }
     ///GNSS DSP clock enables.
     #[inline(always)]
     pub const fn GNSDSP_CKEN(self) -> crate::common::Reg<regs::GNSDSP_CKEN, crate::common::RW> {
