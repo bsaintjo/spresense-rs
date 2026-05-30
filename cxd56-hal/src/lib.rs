@@ -6,4 +6,5 @@ pub mod clocks;
 pub mod delay;
 pub mod gpio;
 pub mod i2c;
+pub mod multicore;
 pub mod uart;
