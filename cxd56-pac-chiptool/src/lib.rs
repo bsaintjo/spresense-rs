@@ -40,10 +40,46 @@ pub enum Interrupt {
     EXDEVICE_11 = 47,
     ///90 - SPI0 interrupt
     SPI0 = 90,
-    ///106 - 2D interrupt
-    GE2D = 106,
-    ///107 - Rotation interrupt
-    ROT = 107,
+    ///94 - CPU FIFO transmit ready (PUSH FIFO not full)
+    FIFO_TO = 94,
+    ///95 - CPU FIFO message received (PULL FIFO not empty)
+    FIFO_FROM = 95,
+    ///96 - Hardware semaphore 0 released-to-reserver wake
+    SPH0 = 96,
+    ///97 - Hardware semaphore 1 released-to-reserver wake
+    SPH1 = 97,
+    ///98 - Hardware semaphore 2 released-to-reserver wake
+    SPH2 = 98,
+    ///99 - Hardware semaphore 3 released-to-reserver wake
+    SPH3 = 99,
+    ///100 - Hardware semaphore 4 released-to-reserver wake
+    SPH4 = 100,
+    ///101 - Hardware semaphore 5 released-to-reserver wake
+    SPH5 = 101,
+    ///102 - Hardware semaphore 6 released-to-reserver wake
+    SPH6 = 102,
+    ///103 - Hardware semaphore 7 released-to-reserver wake
+    SPH7 = 103,
+    ///104 - Hardware semaphore 8 released-to-reserver wake
+    SPH8 = 104,
+    ///105 - Hardware semaphore 9 released-to-reserver wake
+    SPH9 = 105,
+    ///106 - Hardware semaphore 10 released-to-reserver wake
+    SPH10 = 106,
+    ///107 - Hardware semaphore 11 released-to-reserver wake
+    SPH11 = 107,
+    ///108 - Hardware semaphore 12 released-to-reserver wake
+    SPH12 = 108,
+    ///109 - Hardware semaphore 13 released-to-reserver wake
+    SPH13 = 109,
+    ///110 - Hardware semaphore 14 released-to-reserver wake
+    SPH14 = 110,
+    ///111 - Hardware semaphore 15 released-to-reserver wake
+    SPH15 = 111,
+    ///122 - 2D interrupt
+    GE2D = 122,
+    ///123 - Rotation interrupt
+    ROT = 123,
     ///124 - CISIF interrupt
     CISIF = 124,
     ///125 - SPI5 interrupt
@@ -109,6 +145,8 @@ pub const UART1: UART1::UART1 = unsafe { UART1::UART1::from_ptr(0x041a_c000usize
 ///CPU FIFO Control
 pub const CPU_FIFO: CPU_FIFO::CPU_FIFO =
     unsafe { CPU_FIFO::CPU_FIFO::from_ptr(0x4600_c400usize as _) };
+///Hardware semaphores (16) for inter-CPU mutual exclusion
+pub const SPH: SPH::SPH = unsafe { SPH::SPH::from_ptr(0x4600_c800usize as _) };
 ///ARM PrimeCell SP804 dual-input timer 0
 pub const TIMER0: TIMER0::TIMER0 = unsafe { TIMER0::TIMER0::from_ptr(0xe004_3000usize as _) };
 ///ARM PrimeCell SP804 dual-input timer 1
@@ -133,6 +171,7 @@ pub mod I2C0;
 pub mod ROT;
 pub mod RTC0;
 pub mod SMP_RAM_CTRL;
+pub mod SPH;
 pub mod SPI0;
 pub mod SPI4;
 pub mod TIMER0;
