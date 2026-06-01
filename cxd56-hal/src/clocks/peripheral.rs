@@ -417,7 +417,9 @@ fn scu_clock_enable() {
     // Default SCU clock source: RCOSC (sel = 0).
     topreg.cksel_scu().write(|w| unsafe { w.bits(0) });
 
-    topreg.crg_int_clr0().write(|w| unsafe { w.bits(0xffff_ffff) });
+    topreg
+        .crg_int_clr0()
+        .write(|w| unsafe { w.bits(0xffff_ffff) });
 
     // Enable SCU bridge.
     let v = topreg.sysiop_cken().read().bits();
@@ -432,7 +434,8 @@ fn scu_clock_enable() {
         .write(|w| unsafe { w.bits(v | SCU_SCU | SCU_SC | SCU_32K | SCU_SEQ) });
 
     // Poll for all blocks ready.
-    const INTR_MASK: u32 = CRG_CK_SCU | CRG_CK_SCU_SC | CRG_CK_BRG_SCU | CRG_CK_32K | CRG_CK_SCU_SEQ;
+    const INTR_MASK: u32 =
+        CRG_CK_SCU | CRG_CK_SCU_SC | CRG_CK_BRG_SCU | CRG_CK_32K | CRG_CK_SCU_SEQ;
     let mut retry = 1000i32;
     loop {
         if topreg.crg_int_stat_raw0().read().bits() & INTR_MASK == INTR_MASK {
@@ -445,7 +448,9 @@ fn scu_clock_enable() {
         }
     }
 
-    topreg.crg_int_clr0().write(|w| unsafe { w.bits(0xffff_ffff) });
+    topreg
+        .crg_int_clr0()
+        .write(|w| unsafe { w.bits(0xffff_ffff) });
 }
 
 /// Set or clear `block` bits in SCU_CKEN, polling `intr` in CRG_INT_STAT_RAW0.
@@ -453,7 +458,9 @@ fn scu_clock_enable() {
 fn scu_clock_ctrl(block: u32, intr: u32, on: bool) {
     let topreg = unsafe { &*pac::Topreg::PTR };
 
-    topreg.crg_int_clr0().write(|w| unsafe { w.bits(0xffff_ffff) });
+    topreg
+        .crg_int_clr0()
+        .write(|w| unsafe { w.bits(0xffff_ffff) });
 
     let val = topreg.scu_cken().read().bits();
     if on {
@@ -480,7 +487,9 @@ fn scu_clock_ctrl(block: u32, intr: u32, on: bool) {
         }
     }
 
-    topreg.crg_int_clr0().write(|w| unsafe { w.bits(0xffff_ffff) });
+    topreg
+        .crg_int_clr0()
+        .write(|w| unsafe { w.bits(0xffff_ffff) });
 }
 
 /// Enable I2C0 in the SCU domain. Mirrors `cxd56_scu_peri_clock_enable(&g_scui2c0)`.

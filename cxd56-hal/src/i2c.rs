@@ -24,7 +24,9 @@ impl From<ClockError> for I2cError {
 impl embedded_hal::i2c::Error for I2cError {
     fn kind(&self) -> ErrorKind {
         match self {
-            I2cError::NoAck => ErrorKind::NoAcknowledge(embedded_hal::i2c::NoAcknowledgeSource::Unknown),
+            I2cError::NoAck => {
+                ErrorKind::NoAcknowledge(embedded_hal::i2c::NoAcknowledgeSource::Unknown)
+            }
             I2cError::Arbitration => ErrorKind::ArbitrationLoss,
             I2cError::Timeout => ErrorKind::Other,
             I2cError::Clock(_) => ErrorKind::Other,
@@ -59,8 +61,7 @@ fn i2c0_pinmux() {
         .write(|w| w.lowemi().set_bit().pun().set_bit().enzi().set_bit());
     t.io_i2c0_bdt()
         .write(|w| w.lowemi().set_bit().pun().set_bit().enzi().set_bit());
-    t.iocsys_iomd1()
-        .modify(|_, w| unsafe { w.i2c0().bits(1) });
+    t.iocsys_iomd1().modify(|_, w| unsafe { w.i2c0().bits(1) });
 }
 
 // Disable the controller and wait for IC_ENABLE_STATUS.IC_EN to clear.
@@ -85,19 +86,17 @@ fn set_frequency(i2c: &pac::I2c0, base_hz: u32, target: Hertz<u32>) {
     };
 
     let base_khz = base_hz as u64 / 1_000;
-    let hcnt = ((base_khz * t_high).div_ceil(1_000_000)).saturating_sub(spklen + 7).max(1) as u32;
+    let hcnt = ((base_khz * t_high).div_ceil(1_000_000))
+        .saturating_sub(spklen + 7)
+        .max(1) as u32;
     let lcnt = ((base_khz * t_low).div_ceil(1_000_000)).max(1) as u32;
 
     if use_fs_regs {
-        i2c.ic_fs_scl_hcnt()
-            .write(|w| unsafe { w.bits(hcnt) });
-        i2c.ic_fs_scl_lcnt()
-            .write(|w| unsafe { w.bits(lcnt) });
+        i2c.ic_fs_scl_hcnt().write(|w| unsafe { w.bits(hcnt) });
+        i2c.ic_fs_scl_lcnt().write(|w| unsafe { w.bits(lcnt) });
     } else {
-        i2c.ic_ss_scl_hcnt()
-            .write(|w| unsafe { w.bits(hcnt) });
-        i2c.ic_ss_scl_lcnt()
-            .write(|w| unsafe { w.bits(lcnt) });
+        i2c.ic_ss_scl_hcnt().write(|w| unsafe { w.bits(hcnt) });
+        i2c.ic_ss_scl_lcnt().write(|w| unsafe { w.bits(lcnt) });
     }
 }
 
@@ -130,14 +129,17 @@ impl I2c0 {
         // TX_EMPTY_CTRL, RX_FIFO_FULL_HLD_CTRL. SPEED field value 2 is used
         // for both SS and FS — the actual timing comes from the hcnt/lcnt
         // registers, not this field. Mirrors NuttX cxd56_i2c.c init.
-        i2c.ic_con().write(|w| unsafe {
-            w.bits(1 | (2 << 1) | (1 << 5) | (1 << 6) | (1 << 8) | (1 << 9))
-        });
+        i2c.ic_con()
+            .write(|w| unsafe { w.bits(1 | (2 << 1) | (1 << 5) | (1 << 6) | (1 << 8) | (1 << 9)) });
 
         let scu_hz = clocks.scu.to_Hz();
         set_frequency(&i2c, scu_hz, config.freq);
 
-        Ok(Self { i2c, scu_hz, config })
+        Ok(Self {
+            i2c,
+            scu_hz,
+            config,
+        })
     }
 
     // Prepare the controller for a transaction: disable, re-apply frequency
@@ -227,11 +229,7 @@ impl ErrorType for I2c0 {
 }
 
 impl I2c for I2c0 {
-    fn transaction(
-        &mut self,
-        addr: u8,
-        ops: &mut [Operation<'_>],
-    ) -> Result<(), Self::Error> {
+    fn transaction(&mut self, addr: u8, ops: &mut [Operation<'_>]) -> Result<(), Self::Error> {
         self.begin_transfer(addr)?;
         for op in ops {
             match op {
