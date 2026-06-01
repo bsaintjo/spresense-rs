@@ -49,25 +49,9 @@ pub union Vector {
 }
 #[unsafe(link_section = ".vector_table.interrupts")]
 #[unsafe(no_mangle)]
-pub static __INTERRUPTS: [Vector; 135] = [
+pub static __INTERRUPTS: [Vector; 119] = [
     Vector { _reserved: 0 },
     Vector { _handler: CRG },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
-    Vector { _reserved: 0 },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
     Vector { _reserved: 0 },
