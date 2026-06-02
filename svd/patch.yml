@@ -2291,6 +2291,23 @@ _add:
               - name: Func3
                 description: "Function 3"
                 value: 3
+          SEN_IRQ_IN:
+            description: "Mode select for SEN_IRQ_IN pin (SEN_IRQ_IN = Func1)"
+            bitOffset: 8
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (SEN_IRQ_IN)"
+                value: 1
+              - name: Func2
+                description: "Function 2"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
 
       # IOCELL pin register for SPI0_CS_X (UART1 TXD when SPI0A=Func1).
       # CXD56_TOPREG_IO_SPI0_CS_X = CXD56_TOPREG_BASE + 0x0844.
@@ -2449,6 +2466,305 @@ _add:
             description: "Input enable: 0=disabled, 1=enabled"
             bitOffset: 0
             bitWidth: 1
+      # CXD56_TOPREG_IO_UART2_RTS = CXD56_TOPREG_BASE + 0x0918.
+      IO_UART2_RTS:
+        description: "IOCELL control for UART2 RTS pin"
+        addressOffset: 0x918
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_UART2_CTS = CXD56_TOPREG_BASE + 0x0914.
+      IO_UART2_CTS:
+        description: "IOCELL control for UART2 CTS pin"
+        addressOffset: 0x914
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_I2S0_BCK = CXD56_TOPREG_BASE + 0x0974.
+      IO_I2S0_BCK:
+        description: "IOCELL control for I2S0_BCK pin"
+        addressOffset: 0x974
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_I2S0_LRCK = CXD56_TOPREG_BASE + 0x0978.
+      IO_I2S0_LRCK:
+        description: "IOCELL control for I2S0_LRCK pin"
+        addressOffset: 0x978
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_I2S0_DATA_IN = CXD56_TOPREG_BASE + 0x097c.
+      IO_I2S0_DATA_IN:
+        description: "IOCELL control for I2S0_DATA_IN pin"
+        addressOffset: 0x97c
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_I2S0_DATA_OUT = CXD56_TOPREG_BASE + 0x0980.
+      IO_I2S0_DATA_OUT:
+        description: "IOCELL control for I2S0_DATA_OUT pin"
+        addressOffset: 0x980
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_EMMC_CLK = CXD56_TOPREG_BASE + 0x092c.
+      IO_EMMC_CLK:
+        description: "IOCELL control for EMMC_CLK / SPI5_SCK pin"
+        addressOffset: 0x92c
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_EMMC_CMD = CXD56_TOPREG_BASE + 0x0930.
+      IO_EMMC_CMD:
+        description: "IOCELL control for EMMC_CMD / SPI5_CS_X pin"
+        addressOffset: 0x930
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_EMMC_DATA0 = CXD56_TOPREG_BASE + 0x0934.
+      IO_EMMC_DATA0:
+        description: "IOCELL control for EMMC_DATA0 / SPI5_MOSI pin"
+        addressOffset: 0x934
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_EMMC_DATA1 = CXD56_TOPREG_BASE + 0x0938.
+      IO_EMMC_DATA1:
+        description: "IOCELL control for EMMC_DATA1 / SPI5_MISO pin"
+        addressOffset: 0x938
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_EMMC_DATA2 = CXD56_TOPREG_BASE + 0x093c.
+      IO_EMMC_DATA2:
+        description: "IOCELL control for EMMC_DATA2 pin"
+        addressOffset: 0x93c
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_EMMC_DATA3 = CXD56_TOPREG_BASE + 0x0940.
+      IO_EMMC_DATA3:
+        description: "IOCELL control for EMMC_DATA3 pin"
+        addressOffset: 0x940
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
+      # CXD56_TOPREG_IO_SEN_IRQ_IN = CXD56_TOPREG_BASE + 0x0894.
+      IO_SEN_IRQ_IN:
+        description: "IOCELL control for SEN_IRQ_IN pin"
+        addressOffset: 0x894
+        access: read-write
+        resetValue: 0x01010100
+        fields:
+          LOWEMI:
+            description: "Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)"
+            bitOffset: 24
+            bitWidth: 1
+          PDN:
+            description: "Pulldown: 0=pulldown enabled, 1=normal (off)"
+            bitOffset: 16
+            bitWidth: 1
+          PUN:
+            description: "Pullup: 0=pullup enabled, 1=normal (off)"
+            bitOffset: 8
+            bitWidth: 1
+          ENZI:
+            description: "Input enable: 0=disabled, 1=enabled"
+            bitOffset: 0
+            bitWidth: 1
 
       # GPIO interrupt slot mux — APP domain (IMG pins, slots 6–11 → EXDEVICE_6..11).
       # Same byte-per-slot layout as IOCSYS_INTSEL; APP slot local index 0 = global slot 6.
@@ -2510,6 +2826,57 @@ _add:
                 value: 0
               - name: Func1
                 description: "Function 1 (UART2)"
+                value: 1
+              - name: Func2
+                description: "Function 2"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
+          EMMCA:
+            description: "Mode select for EMMC_CLK/CMD/DATA0/DATA1 pins (Func1=eMMC, Func2=SPI5)"
+            bitOffset: 6
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (eMMC)"
+                value: 1
+              - name: Func2
+                description: "Function 2 (SPI5)"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
+          EMMCB:
+            description: "Mode select for EMMC_DATA2/DATA3 pins (Func1=eMMC)"
+            bitOffset: 8
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (eMMC)"
+                value: 1
+              - name: Func2
+                description: "Function 2"
+                value: 2
+              - name: Func3
+                description: "Function 3"
+                value: 3
+          I2S0:
+            description: "Mode select for I2S0 BCK/LRCK/DATA_IN/DATA_OUT pins (I2S0 = Func1)"
+            bitOffset: 18
+            bitWidth: 2
+            enumeratedValues:
+              - name: Gpio
+                description: "GPIO mode"
+                value: 0
+              - name: Func1
+                description: "Function 1 (I2S0)"
                 value: 1
               - name: Func2
                 description: "Function 2"
@@ -2679,6 +3046,669 @@ _add:
       GP_I2S1_DATA_OUT:
         description: "GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board"
         addressOffset: 0x2174
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_UART2_TXD:
+        description: "GPIO APP pin 67 — UART2_TX / Arduino D01 (JP1)"
+        addressOffset: 0x20f0
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_UART2_RXD:
+        description: "GPIO APP pin 68 — UART2_RX / Arduino D00 (JP1)"
+        addressOffset: 0x20f4
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_UART2_RTS:
+        description: "GPIO APP pin 70 — UART2_RTS / Arduino D28 (JP1)"
+        addressOffset: 0x20fc
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_UART2_CTS:
+        description: "GPIO APP pin 69 — UART2_CTS / Arduino D27 (JP1)"
+        addressOffset: 0x20f8
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_I2S0_BCK:
+        description: "GPIO APP pin 93 — I2S0_BCK / Arduino D26 (JP1)"
+        addressOffset: 0x2158
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_I2S0_LRCK:
+        description: "GPIO APP pin 94 — I2S0_LRCK / Arduino D25 (JP1)"
+        addressOffset: 0x215c
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_EMMC_CMD:
+        description: "GPIO APP pin 76 — SPI5_CS_X / Arduino D24 (JP1)"
+        addressOffset: 0x2114
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_EMMC_CLK:
+        description: "GPIO APP pin 75 — SPI5_SCK / Arduino D23 (JP1)"
+        addressOffset: 0x2110
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_SEN_IRQ_IN:
+        description: "GPIO SYS pin 37 — SEN_IRQ / Arduino D22 (JP1)"
+        addressOffset: 0x2090
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_EMMC_DATA3:
+        description: "GPIO APP pin 80 — GPIO / Arduino D21 (JP2)"
+        addressOffset: 0x2124
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_EMMC_DATA2:
+        description: "GPIO APP pin 79 — GPIO / Arduino D20 (JP2)"
+        addressOffset: 0x2120
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_I2S0_DATA_IN:
+        description: "GPIO APP pin 95 — I2S0_DATA_IN / Arduino D19 (JP2)"
+        addressOffset: 0x2160
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_I2S0_DATA_OUT:
+        description: "GPIO APP pin 96 — I2S0_DATA_OUT / Arduino D18 (JP2)"
+        addressOffset: 0x2164
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_EMMC_DATA1:
+        description: "GPIO APP pin 78 — SPI5_MISO / Arduino D17 (JP2)"
+        addressOffset: 0x211c
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_EMMC_DATA0:
+        description: "GPIO APP pin 77 — SPI5_MOSI / Arduino D16 (JP2)"
+        addressOffset: 0x2118
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_I2C0_BCK:
+        description: "GPIO SYS pin 44 — I2C0_SCL / Arduino D15 (JP2)"
+        addressOffset: 0x20ac
+        access: read-write
+        resetValue: 0x00010000
+        fields:
+          DIR:
+            description: "Output enable, active-low (0 = drive output, 1 = high-Z input)"
+            bitOffset: 16
+            bitWidth: 1
+            enumeratedValues:
+              - name: Enable
+                description: "Drive output"
+                value: 0
+              - name: Disable
+                description: "High-impedance input"
+                value: 1
+          OUT:
+            description: "Output data"
+            bitOffset: 8
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+          IN:
+            description: "Sampled pin level (read)"
+            bitOffset: 0
+            bitWidth: 1
+            enumeratedValues:
+              - name: Low
+                description: ""
+                value: 0
+              - name: High
+                description: ""
+                value: 1
+      GP_I2C0_BDT:
+        description: "GPIO SYS pin 45 — I2C0_SDA / Arduino D14 (JP2)"
+        addressOffset: 0x20b0
         access: read-write
         resetValue: 0x00010000
         fields:

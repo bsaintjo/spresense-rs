@@ -9144,6 +9144,12 @@
               <bitOffset>18</bitOffset>
               <bitWidth>2</bitWidth>
             </field>
+            <field>
+              <name>SEN_IRQ_IN</name>
+              <description>Mode select for SEN_IRQ_IN pin (SEN_IRQ_IN = Func1)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
           </fields>
         </register>
         <register>
@@ -9345,6 +9351,435 @@
           </fields>
         </register>
         <register>
+          <name>IO_UART2_RTS</name>
+          <description>IOCELL control for UART2 RTS pin</description>
+          <addressOffset>0x918</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_UART2_CTS</name>
+          <description>IOCELL control for UART2 CTS pin</description>
+          <addressOffset>0x914</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_I2S0_BCK</name>
+          <description>IOCELL control for I2S0_BCK pin</description>
+          <addressOffset>0x974</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_I2S0_LRCK</name>
+          <description>IOCELL control for I2S0_LRCK pin</description>
+          <addressOffset>0x978</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_I2S0_DATA_IN</name>
+          <description>IOCELL control for I2S0_DATA_IN pin</description>
+          <addressOffset>0x97C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_I2S0_DATA_OUT</name>
+          <description>IOCELL control for I2S0_DATA_OUT pin</description>
+          <addressOffset>0x980</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_EMMC_CLK</name>
+          <description>IOCELL control for EMMC_CLK / SPI5_SCK pin</description>
+          <addressOffset>0x92C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_EMMC_CMD</name>
+          <description>IOCELL control for EMMC_CMD / SPI5_CS_X pin</description>
+          <addressOffset>0x930</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_EMMC_DATA0</name>
+          <description>IOCELL control for EMMC_DATA0 / SPI5_MOSI pin</description>
+          <addressOffset>0x934</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_EMMC_DATA1</name>
+          <description>IOCELL control for EMMC_DATA1 / SPI5_MISO pin</description>
+          <addressOffset>0x938</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_EMMC_DATA2</name>
+          <description>IOCELL control for EMMC_DATA2 pin</description>
+          <addressOffset>0x93C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_EMMC_DATA3</name>
+          <description>IOCELL control for EMMC_DATA3 pin</description>
+          <addressOffset>0x940</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>IO_SEN_IRQ_IN</name>
+          <description>IOCELL control for SEN_IRQ_IN pin</description>
+          <addressOffset>0x894</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x01010100</resetValue>
+          <fields>
+            <field>
+              <name>LOWEMI</name>
+              <description>Output current: 0=4mA(max 64MHz), 1=2mA(max 32MHz)</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PDN</name>
+              <description>Pulldown: 0=pulldown enabled, 1=normal (off)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>PUN</name>
+              <description>Pullup: 0=pullup enabled, 1=normal (off)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>ENZI</name>
+              <description>Input enable: 0=disabled, 1=enabled</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
           <name>IOCAPP_INTSEL0</name>
           <description>APP-domain GPIO interrupt slot mux, slots 6–9 (1 byte per slot, pin index 0–63)</description>
           <addressOffset>0x1490</addressOffset>
@@ -9409,6 +9844,24 @@
               <name>UART2</name>
               <description>Mode select for UART2 TXD/RXD pins (UART2 = Func1)</description>
               <bitOffset>2</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>EMMCA</name>
+              <description>Mode select for EMMC_CLK/CMD/DATA0/DATA1 pins (Func1=eMMC, Func2=SPI5)</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>EMMCB</name>
+              <description>Mode select for EMMC_DATA2/DATA3 pins (Func1=eMMC)</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>2</bitWidth>
+            </field>
+            <field>
+              <name>I2S0</name>
+              <description>Mode select for I2S0 BCK/LRCK/DATA_IN/DATA_OUT pins (I2S0 = Func1)</description>
+              <bitOffset>18</bitOffset>
               <bitWidth>2</bitWidth>
             </field>
           </fields>
@@ -9525,6 +9978,465 @@
           <name>GP_I2S1_DATA_OUT</name>
           <description>GPIO APP pin 100 — I2S1_DATA_OUT / LED3 on Spresense main board</description>
           <addressOffset>0x2174</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_UART2_TXD</name>
+          <description>GPIO APP pin 67 — UART2_TX / Arduino D01 (JP1)</description>
+          <addressOffset>0x20F0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_UART2_RXD</name>
+          <description>GPIO APP pin 68 — UART2_RX / Arduino D00 (JP1)</description>
+          <addressOffset>0x20F4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_UART2_RTS</name>
+          <description>GPIO APP pin 70 — UART2_RTS / Arduino D28 (JP1)</description>
+          <addressOffset>0x20FC</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_UART2_CTS</name>
+          <description>GPIO APP pin 69 — UART2_CTS / Arduino D27 (JP1)</description>
+          <addressOffset>0x20F8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_I2S0_BCK</name>
+          <description>GPIO APP pin 93 — I2S0_BCK / Arduino D26 (JP1)</description>
+          <addressOffset>0x2158</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_I2S0_LRCK</name>
+          <description>GPIO APP pin 94 — I2S0_LRCK / Arduino D25 (JP1)</description>
+          <addressOffset>0x215C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_EMMC_CMD</name>
+          <description>GPIO APP pin 76 — SPI5_CS_X / Arduino D24 (JP1)</description>
+          <addressOffset>0x2114</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_EMMC_CLK</name>
+          <description>GPIO APP pin 75 — SPI5_SCK / Arduino D23 (JP1)</description>
+          <addressOffset>0x2110</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_SEN_IRQ_IN</name>
+          <description>GPIO SYS pin 37 — SEN_IRQ / Arduino D22 (JP1)</description>
+          <addressOffset>0x2090</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_EMMC_DATA3</name>
+          <description>GPIO APP pin 80 — GPIO / Arduino D21 (JP2)</description>
+          <addressOffset>0x2124</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_EMMC_DATA2</name>
+          <description>GPIO APP pin 79 — GPIO / Arduino D20 (JP2)</description>
+          <addressOffset>0x2120</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_I2S0_DATA_IN</name>
+          <description>GPIO APP pin 95 — I2S0_DATA_IN / Arduino D19 (JP2)</description>
+          <addressOffset>0x2160</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_I2S0_DATA_OUT</name>
+          <description>GPIO APP pin 96 — I2S0_DATA_OUT / Arduino D18 (JP2)</description>
+          <addressOffset>0x2164</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_EMMC_DATA1</name>
+          <description>GPIO APP pin 78 — SPI5_MISO / Arduino D17 (JP2)</description>
+          <addressOffset>0x211C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_EMMC_DATA0</name>
+          <description>GPIO APP pin 77 — SPI5_MOSI / Arduino D16 (JP2)</description>
+          <addressOffset>0x2118</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_I2C0_BCK</name>
+          <description>GPIO SYS pin 44 — I2C0_SCL / Arduino D15 (JP2)</description>
+          <addressOffset>0x20AC</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00010000</resetValue>
+          <fields>
+            <field>
+              <name>DIR</name>
+              <description>Output enable, active-low (0 = drive output, 1 = high-Z input)</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUT</name>
+              <description>Output data</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IN</name>
+              <description>Sampled pin level (read)</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>GP_I2C0_BDT</name>
+          <description>GPIO SYS pin 45 — I2C0_SDA / Arduino D14 (JP2)</description>
+          <addressOffset>0x20B0</addressOffset>
           <access>read-write</access>
           <resetValue>0x00010000</resetValue>
           <fields>
